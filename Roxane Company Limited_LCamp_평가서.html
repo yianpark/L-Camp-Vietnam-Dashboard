@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roxane Company Limited — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Roxane Company Limited</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hong Kong</span>
+          <span class="etag et-ind">AI/Enterprise Software</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Roxane Company Limited</div>
+        <div class="hero-sub">설립 2025 · https://privos.ai/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">PrivOS는 기업 팀과 AI 에이전트가 단일 워크스페이스에서 협업하는 AI 운영 체제로, 채팅·프로젝트 관리·파일 저장·CRM·자동화·AI를 하나의 시스템으로 통합하며 모든 데이터를 고객 자체 서버에 보관한다. 현재 유럽에 3개 파일럿 고객이 있으나 매출은 아직 없으며, $5M 시드 투자 유치를 목표로 한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          고객사가 기존 SaaS 도구들을 모두 포기하고 PrivOS로 완전 전환할 만큼 통합 플랫폼의 경제적·기술적 이점이 명확하다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">12</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">3개 파일럿</div><div class="kpi-desc">유럽 소재, 유료 전환 여부 미확인</div></div>
+<div class="kpi"><div class="kpi-val">$0</div><div class="kpi-desc">2024/2025 매출 없음</div></div>
+<div class="kpi"><div class="kpi-val">$5M</div><div class="kpi-desc">시드 라운드, 현재 미진행</div></div>
+<div class="kpi"><div class="kpi-val">10인 엔지니어링</div><div class="kpi-desc">핵심 멤버 외부 검증 불가</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 시장 규모 및 경쟁 분석이 전혀 제시되지 않음. 통합 엔터프라이즈 플랫폼 시장은 Microsoft, Slack, Notion 등 거대 플레이어가 지배하는 초경쟁 시장이며, '5~7개 SaaS 통합'이라는 가치 제안만으로 고객이 기존 도구를 모두 포기할 만큼 명확한 차별점이 확인되지 않음. [미확인] 베트남/APAC 시장 특화 전략 부재. TAM/SAM/SOM 정량 데이터 전무. 확장 가능성을 뒷받침하는 시장 근거 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 비즈니스 모델이 불명확. 3개 파일럿 고객이 유료 계약인지, MOU인지, PoC 테스트만인지 전혀 명시되지 않음. 매출 $0이며 현재 투자 유치도 진행 중이 아님. [미확인] 롯데벤처스 펀드 투자 적합성 근거 부재. 제품이 기술적으로 복잡하고(4-layer 아키텍처, MCP 프레임워크, 6-layer Sandbox) 고객사 자체 서버 배포가 필요한 구조이므로 B2B SaaS 대비 영업 사이클이 길고 CAPEX 부담이 크지만, 단위 경제나 고객 획득 비용 구조가 전혀 설명되지 않음. 투자 회수 경로 불명확.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] ESG 섹션에서 환경(E): SaaS 통합으로 인한 에너지 절감, 사회(S): AI 증강을 통한 직원 역량 강화, 거버넌스(G): 데이터 주권 보장을 명시. 논리적 연결성은 있으나, 실제 PrivOS 도입으로 인한 사회적 가치 창출 규모·깊이·지속성을 뒷받침하는 정량적 임팩트 데이터가 전무. [미확인] '종이 문서 감소', '직원 웰빙 향상', 'AI 리터러시 확산' 등은 모두 서술적 주장일 뿐 측정 가능한 근거 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 딥 리서치 결과 'research_performed: false'로, 모든 팀 배경이 외부 검증 불가. 자체 신고 경력(Thanh Dao AI/ML 15년, Steve 분산시스템 15년, Hung Nguyen 20년 등)이 실제로 존재하는지, 도메인 전문성이 본 문제(엔터프라이즈 통합 플랫폼)와 직접 연관되는지 확인 불가. [미확인] Deloitte 출신 컴플라이언스 담당자의 실제 재직 이력 및 역할 검증 불가. [미확인] 2025년 창립이므로 팀이 실제로 이 제품을 공동 개발한 이력이 1년 미만. 핵심 인물 의존도 높음.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">4<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[부분 확인] PoC 아이디어는 롯데마트(재고 자동화), 롯데호텔(HR·CRM 통합), 롯데파이낸스(컴플라이언스 문서 처리)로 구체적이며, 각 계열사의 실제 업무 흐름과 연결 가능성이 있음. AI/IT(롯데이노베이트) 및 유통·호텔·금융 사업분야에 부합. 그러나 [미확인] PrivOS의 자체 서버 배포 구조가 롯데 베트남의 기존 IT 인프라(POS, PMS, 코어뱅킹)와 실제로 통합 가능한지, 롯데 IT 거버넌스 정책과 호환되는지에 대한 사전 검증 근거 없음. [미확인] 3~6개월 PoC 종료 후 '전 베트남 확산 및 아시아 지역 확장'을 언급하나, 이는 PoC 성공 전제 하의 계획일 뿐 실행 가능성 미검증.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 4</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">12</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통, 호텔, 물류, 건설, 식음료, AI/IT</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데마트, 롯데호텔, 롯데파이낸스 베트남 지사</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 베트남 3개 계열사(롯데마트, 롯데호텔, 롯데파이낸스)에서 3~6개월간 PrivOS를 자체 서버에 배포하여 AI 에이전트 기반 협업 플랫폼을 시범 운영. 롯데마트는 재고·공급업체 관리 자동화, 롯데호텔은 HR·고객관계 통합 관리, 롯데파이낸스는 컴플라이언스 문서 처리 자동화를 각각 구현하여 운영 효율성 향상 및 기존 SaaS 도구 대체 가능성을 검증.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Environmental (E): PrivOS consolidates 5–7 separate SaaS platforms (chat, project management, file storage, CRM, automation, AI) into a single self-hosted system. For LOTTE Vietnam, this means significantly fewer redundant cloud servers, reduced energy consumption across data centers, and lower digital infrastructure overhead. AI Auto Parse and digital compliance workflows at LOTTE Finance directly reduce paper-based document processing, supporting the paperless operations direction that enterprises across industries are actively pursuing.
+PoC impact: LOTTE Mart, Hotel, and Finance each eliminate multiple cloud SaaS subscriptions, consolidating onto LOTTE's own private servers - reducing dependence on energy-intensive third-party data centers.
+
+
++Social (S):PrivOS is built on the core philosophy of AI Augmentation, Not Replacement. AI agents handle repetitive, error-prone tasks so LOTTE's employees can focus on higher-value, creative, and relationship-driven work - directly improving employee wellbeing and job quality. The no-code AgentFlow builder democratizes AI - any department head or team lead at LOTTE can design and deploy AI workflows without engineering resources, building practical AI literacy across LOTTE's Vietnamese workforce aligned with PrivOS's 6-level AI Maturity Model (L0 → L6).
+
+PoC impact: LOTTE Hotel's onboarding automation reduces administrative burden on HR staff. LOTTE Mart's operations automation removes repetitive manual reporting from frontline staff. LOTTE Finance's compliance automation reduces cognitive overload on compliance officers.
+
+
++Governance (G):PrivOS enforces a 6-layer Sandbox security model: room-scoped data isolation, explicit permission boundaries per agent, full audit trails of every AI action, human-in-the-loop approval gates, and rate limiting to prevent runaway automation. Data sovereignty is the cornerstone - all operational data stays on LOTTE's own servers, eliminating vendor dependency and ensuring LOTTE meets its enterprise data governance obligations.
+PoC impact: LOTTE Finance's compliance workflow - with [Approve] [Flag] [Escalate] gates in every AI-processed document - demonstrates responsible AI governance in a regulated industry. Every AI decision is logged, reviewable, and reversible.
+
+
++How the PoC Creates This Impact:The 3–6 month collaboration creates a documented, measurable case study of responsible enterprise AI adoption in Vietnam - across retail, hospitality, and finance. This gives LOTTE a replicable governance framework for expanding AI responsibly to all affiliates and regional markets, positioning both LOTTE and PrivOS as leaders in ethical, sovereign AI deployment in Southeast Asia.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>제품-시장 적합성(PMF) 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 3개 파일럿이 유료 고객인지 불명, 매출 $0. 고객이 실제로 기존 SaaS를 포기하고 전환할 만큼 PrivOS의 가치가 명확한지 검증 안 됨.</td></tr>
+<tr><td>팀 검증 불가 및 핵심 인물 의존도</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 모든 팀원의 경력이 외부 검증 불가. 2025년 창립으로 실제 협업 이력 1년 미만. CEO/CTO 이탈 시 사업 지속 불가 가능성.</td></tr>
+<tr><td>롯데 IT 인프라 통합 가능성 불확실</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] PrivOS의 자체 서버 배포 구조가 롯데의 POS, PMS, 코어뱅킹 시스템과 실제로 호환 가능한지 사전 기술 검증 근거 없음. PoC 실행 중 통합 실패 가능성.</td></tr>
+<tr><td>자금 조달 지연</td><td><span class="rpill-sm rp-m">중간</span></td><td>[확인] 현재 투자 유치 진행 중 아님. $5M 목표는 현재 트랙션(매출 $0, 파일럿 3개) 대비 과도. 자금 부족 시 PoC 실행 및 제품 고도화 지연.</td></tr>
+<tr><td>고객 전환 비용 및 영업 사이클 장기화</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 엔터프라이즈 고객이 기존 SaaS 생태계를 포기하고 단일 플랫폼으로 전환하는 데 필요한 교육, 마이그레이션, IT 재구성 비용이 극히 높음. 영업 사이클 12~24개월 추정.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — AI 엔터프라이즈 SaaS</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">초경쟁 시장에서의 차별화 검증</span><span class="dvtag dv-r">차별화 근거 불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] PrivOS가 제시하는 '5~7개 SaaS 통합'은 이미 Microsoft 365, Google Workspace, Notion 등이 부분적으로 달성한 가치이며, 이들 대비 명확한 기술적·경제적 우위가 정량적으로 입증되지 않음. [미확인] '자체 서버 보관'은 차별점이지만, Slack Enterprise Grid, Salesforce Private Cloud 등 기존 on-premise 옵션 대비 구체적 벤치마크 부재. [미확인] TAM/SAM/SOM 데이터가 전무하여 베트남/APAC 시장에서 실제 고객 획득 가능성을 판단할 근거 없음. 3개 유럽 파일럿이 실제 유료 전환 가능성이 있는지도 불명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">기술 아키텍처의 복잡도와 배포 실행 가능성</span><span class="dvtag dv-r">구현 리스크 높음</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 4-layer 아키텍처(Sandbox, Hub, Connect, Execution) + MCP 프레임워크 + 6-layer Sandbox는 기술적으로 야심차나, 엔터프라이즈 고객사의 기존 레거시 시스템(ERP, CRM, POS 등)과의 실제 통합 난이도가 매우 높음. [미확인] 현재 3개 파일럿에서 이 아키텍처가 실제 프로덕션 환경에서 안정적으로 작동하는지, 고객사 IT 팀이 자체 운영 가능한지에 대한 검증 사례 없음. [미확인] 자체 서버 배포 구조는 초기 구축 비용(CAPEX)과 유지보수 부담을 고객에게 전가하므로, SaaS 대비 영업 사이클이 최소 6~12개월 이상 소요될 가능성 높으나 이에 대한 대응 전략 부재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">비즈니스 모델 및 단위경제 불명확성</span><span class="dvtag dv-r">수익화 경로 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 3개 파일럿 고객이 유료 PoC인지, 무료 테스트인지, MOU 단계인지 전혀 명시되지 않으며, 현재 매출 $0로 실제 고객 지불 의사(willingness-to-pay)가 검증되지 않음. [미확인] Seat-based 구독 모델인지, 서버 라이선스 모델인지, 사용량 기반 과금인지 가격 전략이 불분명하며, CAC(고객 획득 비용), LTV(고객 생애 가치), Payback Period 등 단위경제 지표 부재. [미확인] $5M 시드 투자 유치 목표를 명시했으나, 이 자금이 어떻게 매출 창출로 이어질지, Break-even까지의 런웨이가 충분한지에 대한 재무 계획 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">AI 에이전트 기능의 실제 엔터프라이즈 가치</span><span class="dvtag dv-a">가치 입증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] Room-scoped AI agents와 MCP 기반 커스텀 앱 구축은 기술적으로 흥미롭지만, 엔터프라이즈 고객이 실제로 이를 활용하여 측정 가능한 ROI(업무 시간 단축, 오류 감소, 매출 증대 등)를 달성한 사례가 전무. [미확인] AI 에이전트가 부서 간 워크플로우 자동화를 실제로 수행하려면 각 부서의 레거시 시스템과 깊이 통합되어야 하나, 현재 파일럿에서 이러한 수준의 통합이 이루어졌는지 불명확. [미확인] '데이터를 외부로 전송하지 않는다'는 보안 강점이 실제 고객 의사결정에서 프리미엄 가격을 정당화할 만큼 결정적 요인인지 시장 검증 부재.</div></div>
+<div class="deep-category-label">Category D — 팀/실행 역량</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">팀 배경 검증 불가 및 도메인 적합성</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 딥 리서치 결과 'research_performed: false'로, Thanh Dao(AI/ML 15년), Steve(분산시스템 15년), Hung Nguyen(AI 20년) 등 자체 신고 경력이 실제로 존재하는지, LinkedIn·GitHub 등을 통해 외부 검증 불가. [미확인] Steve의 Sparkdex 창업 경험은 분산 금융(DeFi) 프로토콜 개발이므로, 엔터프라이즈 B2B 소프트웨어 영업·고객 성공 관리와는 도메인이 상이하며, 해당 분야 실행 경험이 부족할 가능성 높음. [미확인] Deloitte 출신 Chief Business Development Officer의 실제 재직 이력 및 세무/HR 컨설팅 경험이 PrivOS의 엔터프라이즈 영업 및 컴플라이언스 설계에 직접 기여하는지 확인 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">창립 1년 미만 팀의 제품 개발 이력</span><span class="dvtag dv-a">실행 이력 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 2025년 창립이므로 팀이 실제로 PrivOS를 공동 개발한 기간은 1년 미만이며, 4-layer 아키텍처를 포함한 복잡한 엔터프라이즈 플랫폼을 이 짧은 기간에 프로덕션 수준으로 구축했는지 의문. [미확인] 3개 파일럿 고객에게 실제로 배포된 버전이 안정적인 프로덕션 빌드인지, 데모 수준의 PoC 코드인지 불명확. [미확인] 10명의 AI 실행 팀이 명시되었으나, 이들의 구체적 역할(백엔드·프론트엔드·ML 엔지니어링·DevOps 등)과 과거 프로젝트 이력이 공개되지 않아 실제 개발 역량 판단 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">글로벌 팀 구성의 실행 리스크</span><span class="dvtag dv-a">협업 효율성 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 팀이 홍콩·EU·베트남에 분산되어 있으며, Steve와 Merve는 EU 기반, 엔지니어링 팀은 베트남으로 추정. 이러한 지리적 분산은 시차·커뮤니케이션 비용·의사결정 속도 저하를 초래할 수 있음. [미확인] 실제로 이 팀이 물리적으로 한 번이라도 모여 협업한 이력이 있는지, 원격 협업 프로세스가 확립되어 있는지 불명확. [부분 확인] 롯데 베트남 PoC를 추진하려면 현지 팀이 고객사와 긴밀히 협력해야 하나, 현재 Business Development Manager Asya Maria의 베트남 상주 여부 및 베트남어 역량이 명시되지 않아 실행 가능성 우려.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] 데이터 주권 보장(자체 서버 배포)이라는 차별화 포인트는 금융·의료 등 규제 산업에서 잠재 수요 가능</li>
+<li>[부분 확인] 롯데 3개 계열사(마트·호텔·파이낸스)를 타겟으로 한 PoC 아이디어는 각 산업의 실제 업무 흐름과 연결 가능성이 있음</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 3개 파일럿 고객의 유료 전환 여부 불명, 매출 $0으로 제품-시장 적합성 미검증</li>
+<li>[미확인] 팀 배경이 외부 검증 불가하며, 2025년 창립으로 제품 개발 이력 1년 미만</li>
+<li>[미확인] 비즈니스 모델(가격, 계약 구조, 고객 획득 비용) 전혀 제시되지 않음</li>
+<li>[미확인] 시장 규모, 경쟁 분석, TAM/SAM/SOM 데이터 전무로 시장 기회 정량화 불가</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>엔터프라이즈 데이터 주권 및 AI 거버넌스 규제 강화 트렌드와 부합 가능성</li>
+<li>롯데 그룹의 다수 계열사 보유 구조는 성공 시 빠른 확산 가능성 제공</li>
+<li>베트남 디지털 전환 수요 증가에 따른 B2B SaaS 시장 성장</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Microsoft 365, Slack, Notion 등 글로벌 플레이어와의 정면 경쟁, 고객 전환 비용 극히 높음</li>
+<li>자체 서버 배포 구조는 고객사 IT 부서의 높은 기술 역량 요구, 영업 사이클 장기화</li>
+<li>PoC 실패 시 롯데 그룹 내 신뢰 회복 어려움, 베트남 시장 진입 장벽 높음</li>
+<li>투자 유치 없이 $5M 목표 달성 시 제품 개발 및 시장 확장 자금 부족</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">12</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">PrivOS는 기술적으로 야심찬 통합 플랫폼이지만, 가장 큰 미검증 가정은 '고객사가 기존 SaaS 생태계를 완전히 포기하고 PrivOS 단일 플랫폼으로 전환할 만큼 명확한 경제적·기술적 이점이 존재한다'는 점이다. 현재 3개 파일럿 고객이 있으나 유료 계약 여부 불명, 매출 $0, 투자 미진행, 팀 배경 외부 검증 불가로, 비즈니스 실행 기반이 극히 취약하다. 롯데 PoC는 구체적이나, 자체 서버 배포 구조가 롯데의 복잡한 IT 환경과 실제로 호환 가능한지에 대한 사전 검증 근거가 전무하다. 시장 분석, 경쟁 우위, 고객 획득 전략이 모두 부재하며, 초기 단계임에도 $5M 투자 목표는 현재 트랙션 대비 과도하다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">4 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">12 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Roxane Company Limited · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENFUE JOINT STOCK COMPANY — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">ENFUE JOINT STOCK COMPANY</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam, Danang</span>
+          <span class="etag et-ind">HR Tech for Recruitment</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">ENFUE JOINT STOCK COMPANY</div>
+        <div class="hero-sub">설립 2024 · www.enfue.com</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">ENFUE는 기업 인사팀을 위한 AI 기반 채용 관리 SaaS이다. 여러 채널에 분산된 지원서를 중앙화하고 AI로 이력서 파싱 및 후보 매칭을 지원하며, 구독 기반 SaaS와 검증된 후보 제안 유료 서비스로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          베트남 및 APAC 시장에서 기업들이 수동적 채용 프로세스에 충분한 불편을 느껴 유료 SaaS 전환 의지를 가진다는 가정이 아직 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">16</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$50K</div><div class="kpi-desc">출시 5개월 후 달성 (2025년 4월 출시 기준)</div></div>
+<div class="kpi"><div class="kpi-val">6개국</div><div class="kpi-desc">SaaS 사용 국가 수 [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">TOP 10</div><div class="kpi-desc">SURF DANANG 2025 스타트업 선정</div></div>
+<div class="kpi"><div class="kpi-val">3회</div><div class="kpi-desc">네덜란드(2012), 미국(2020), 스위스(2024) 투자 유치 [미확인: ENFUE 투자인지 불명확]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">글로벌 ATS 시장 규모는 크나 베트남/APAC SAM/SOM이 명시되지 않음 [미확인]. IR Deck에서 80% 프로세스 개선, 40% 시간 절감, 50% 비용 절감 등 효과를 주장하나 실제 고객 검증 데이터 부재 [미확인]. 6개국 사용처 언급되나 구체적 고객사명, 계약 형태, 국가별 분포 불명 [부분 확인]. 경쟁사 대비 차별점이 'AI 매칭'과 'All-in-one' 정도로 제시되나 ATS 시장은 Greenhouse, Lever, Workday 등 글로벌 강자와 현지 경쟁사가 포화 상태. 기술적 방어 요소나 데이터 기반 모트 설명 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">$50K ARR (5개월)은 매출 발생 확인되나 [확인], 연간화 시 약 $120K로 초기 단계 수준. 고객 수, 평균 계약 규모, MRR, churn rate 등 핵심 SaaS 지표 부재 [미확인]. 비즈니스 모델은 구독 SaaS + '검증된 후보 제안(10K VND/건)' 병행 구조로 확인되나, 후자의 매출 기여도 불명. 투자 유치 이력은 TechSoft 관련으로 추정되며 ENFUE 자체 투자는 미확인 [미확인]. 롯데벤처스 투자 적합성은 초기 ARR로 볼 때 pre-seed 단계로 적절할 수 있으나, unit economics 및 확장 비용 구조가 제시되지 않아 투자 판단 근거 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">사회문제는 '수동적 채용 프로세스로 인한 인재 접근성 저하 및 불공정성'으로 정의됨 [확인]. 솔루션(중앙화 플랫폼, AI 스크리닝)이 문제 해결에 논리적으로 연결되나, 실제 임팩트 측정 데이터(예: 소외 지역 후보 채용률 증가, 채용 공정성 지표 개선) 부재 [미확인]. ESG 섹션에서 Social(접근성·투명성), Governance(채용 거버넌스), Environment(종이 절감) 기여 주장하나, 정량적 임팩트나 사례 없음. 롯데 PoC에서 측정 가능한 ESG 지표 제안은 긍정적이나 아직 계획 단계.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 연구 결과 기반 평가: CEO Huy Nguyen의 기술 역량은 검증됨 [확인] — AI/소프트웨어 박사급, Philips/TomTom 경력, TechSoft 400명 조직 구축, 다수 수상. 그러나 HR Tech 도메인 전문성은 확인 불가 [미확인]. 채용 산업 경험, ATS 시장 이해도, HR 워크플로우 전문성을 가진 팀원 부재. 공동 창업자 및 핵심 팀원 정보 전혀 없음 [미확인] — 키 퍼슨 리스크 높음. CEO가 Olinno, TechSoft, aBitBe 등 여러 사업 동시 운영 중으로 ENFUE 집중도 우려. SaaS 스타트업 필수 기능(제품, 영업, 마케팅, 고객성공) 커버하는 균형잡힌 팀 구성 불명확.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">5<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">주요 사업분야(유통·F&B·호텔·건설·AI) 전방위 해당 [확인]. PoC 제안은 구체적: 롯데마트·롯데리아·롯데시네마 2-3개사 선정, 3-6개월 타임라인, 명확한 월별 단계(설정-실행-최적화), 측정 가능한 결과 지표 제시 [확인]. 그러나 실행 가능성에서 약점: 1) 롯데 계열사가 이미 사용 중인 ATS/HRIS 시스템과의 통합 방안 없음 [미확인], 2) 롯데 HR팀의 실제 페인포인트가 이 솔루션으로 해결 가능한지 검증 부재 [미확인], 3) '인재풀 공유' 제안은 개인정보 보호법상 계열사 간 데이터 공유 규제 이슈 미고려 [미확인]. PoC 아이디어는 구조적이나 롯데 인프라 활용이 '채용 데이터 제공' 수준에 그침 — 롯데 고유 자산(매장망, 고객 DB, 물류망 등) 활용 부족.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 3 + D 2 + E 5</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">16</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce, Hospitality/Hotel/Tourism, Logistics/Supply Chain, Smart City/PropTech, F&B/Food, AI/IT</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미명시 (제안서에서 LOTTE Mart, LOTTERIA, LOTTE Cinema, LOTTE Hotel, LOTTE Innovate 언급)</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데마트, 롯데리아, 롯데시네마 등 2-3개 계열사와 3-6개월 파일럿 진행. 여러 채널의 지원자를 중앙 플랫폼에 수집, AI 이력서 스크리닝 및 후보 매칭, 협업 채용 워크플로우 구축, 계열사 간 공유 가능한 인재풀 생성, 채용 분석 대시보드 제공. 월별 단계: 1개월 설정, 2-3개월 실행, 4-6개월 최적화 및 확장.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Enfue addresses ESG impact mainly through the **Social** and **Governance** dimensions, with additional contribution to **Environmental** impact by reducing paper-based and fragmented recruitment operations.
+
+From a **Social** perspective, Enfue helps organizations create a more accessible, transparent, and inclusive hiring process. Many candidates, especially young talents, frontline workers, fresh graduates, and applicants from different regions, may lose opportunities because recruitment processes are fragmented across emails, spreadsheets, job boards, and informal communication channels. Enfue centralizes candidate applications, structures candidate profiles, and helps HR teams manage applicants more fairly and consistently. With AI-assisted CV screening and candidate matching, hiring teams can process a higher number of applications more efficiently while still maintaining human decision-making. This can improve candidate experience, reduce missed opportunities, and help companies build stronger talent pools for future employment.
+
+For LOTTE Vietnam, this impact is highly relevant because LOTTE operates across retail, F&B, cinema, hospitality, and technology, where hiring needs can be frequent, distributed, and high-volume. A PoC collaboration with LOTTE Mart, LOTTERIA, LOTTE Cinema, LOTTE Hotel, or LOTTE Innovate could help create better access to job opportunities for store staff, service staff, interns, graduates, and professional roles. Candidates who are not selected for one position could still be considered for other suitable roles within the broader LOTTE ecosystem, helping improve employment matching and reduce wasted recruitment effort.
+
+From a **Governance** perspective, Enfue supports better recruitment transparency, data management, and decision accountability. The platform provides structured recruitment pipelines, candidate records, interview feedback, evaluation forms, status tracking, user roles, and activity history. This helps organizations reduce reliance on informal communication and manual files, while improving consistency, compliance, and visibility across the hiring process. For a large ecosystem like LOTTE, this can support stronger recruitment governance across multiple affiliates and locations.
+
+From an **Environmental** perspective, Enfue can help reduce paper-based CV handling, printed evaluation forms, manual document storage, and unnecessary administrative work. By moving recruitment workflows into a digital platform, LOTTE teams can reduce paper usage and improve operational efficiency. In addition, better interview scheduling and centralized collaboration can help reduce unnecessary coordination, duplicated work, and repeated candidate processing.
+
+A PoC collaboration with LOTTE could help create and measure this ESG impact in a practical way over 3–6 months. Enfue would work with selected LOTTE affiliates to run live recruitment campaigns through the platform, centralize applications, apply AI-assisted screening, support collaborative evaluations, and build a reusable talent pool. The PoC could measure ESG-related indicators such as:
+
+* Number of candidates managed through a centralized and transparent process
+* Reduction in manual CV screening and administrative workload
+* Number of candidates reused or reconsidered for other LOTTE opportunities
+* Improvement in time-to-shortlist and hiring visibility
+* Reduction in paper-based recruitment documents
+* Level of adoption by HR teams, hiring managers, and interviewers
+* Improvement in structured feedback and decision tracking
+
+Through this PoC, Enfue and LOTTE can demonstrate how digital recruitment infrastructure can create measurable ESG value by improving access to employment, strengthening fair and transparent hiring practices, reducing operational waste, and building a more data-driven talent ecosystem for LOTTE Vietnam.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">기술 개발 역량은 매우 강력하나 HR Tech 도메인 전문성이 부족함. CEO는 소프트웨어 엔지니어링, AI, IoT 분야의 전문가이나 채용, HR 프로세스, ATS 시장에 대한 직접 경험은 확인되지 않음. 다른 공동 창업자나 핵심 팀원 정보를 찾을 수 없어 팀 구성의 완전성을 평가하기 어려움. 이상적으로는 HR 전문가, 채용 담당자 출신, 또는 ATS 산업 경험자가 공동 창업자나 핵심 리더십에 포함되어야 하나 이에 대한 정보가 없음.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">불완전. 공개된 정보로는 CEO 1인만 확인되며, CTO, CPO, Sales/Marketing 리더, HR 도메인 전문가 등 핵심 팀원에 대한 정보가 전혀 없음. SaaS 스타트업으로서 제품, 영업, 마케팅, 고객 성공 등 다양한 기능을 커버할 균형잡힌 팀이 필요하나 현재로서는 팀 구성을 확인할 수 없음. 이는 초기 단계 스타트업으로서 우려스러운 부분.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">창업자의 기술적 역량과 실행 능력은 검증됨(400명 조직 구축, 국제 확장, 다수 수상). 그러나 HR Tech 분야 전문성과 팀 구성의 투명성 부족으로 전반적 신뢰도는 중간 수준. LinkedIn 프로필, 공식 웹사이트, 수상 내역 등을 통해 CEO의 배경은 확인되나, 다른 팀원 정보 부재는 투명성 측면에서 부정적. ENFUE가 2025년 4월 출시로 매우 초기 단계이며 트랙션 데이터가 제한적.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 HR Tech 도메인 전문성과 완전한 경영진 팀의 부재. 1) 채용 산업 전문가 부족: ATS 시장 이해도, HR 워크플로우 경험, 채용 담당자 페인포인트에 대한 깊은 통찰을 가진 팀원이 필요. 2) 공동 창업자/핵심 팀 정보 부재: 성공적인 SaaS 스타트업은 일반적으로 기술(개발), 제품, 비즈니스(영업/마케팅) 역량을 가진 균형잡힌 공동 창업팀이 필요하나 현재는 CEO 외 팀 구성이 불명확. 3) 집중도 우려: CEO가 여러 회사를 동시 운영 중이어서 ENFUE에 대한 전념도가 의문.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Huy Nguyen ENFUE LinkedIn · Huy Nguyen CEO enfue.com · ENFUE JOINT STOCK COMPANY founders team · Huy Nguyen TechSoft Vietnam CEO · Xuan Huy Nguyen Eindhoven University · TechSoft Vietnam founders team members</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Huy Nguyen (Nguyen Xuan Huy)</div><div class="member-role">Co-Founder & CEO</div></div>
+    <div class="member-meta"><a href="https://www.linkedin.com/in/xuanhuynguyen/" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ HR Tech 도메인 경험 부족: 채용 플랫폼 산업에 대한 직접적인 사전 경험이나 전문성이 확인되지 않음</span><span class='flag-item'>⑊ 다수의 동시 벤처: Olinno, aBitBe, TechSoft, ENFUE 등 여러 회사를 동시에 운영 중으로 보이며, 이는 ENFUE에 대한 집중도 저하 우려</span><span class='flag-item'>⑊ 공동 창업자 정보 부재: ENFUE의 다른 공동 창업자나 핵심 팀원에 대한 정보를 찾을 수 없음. 단독 창업자일 경우 키 퍼슨 의존도 위험 높음</span><span class='flag-item'>⑊ 제품 출시 타이밍: 2025년 4월 출시로 매우 초기 단계. 시장 검증 미흡</span><span class='flag-item'>⑊ 산업 전환: 소프트웨어 아웃소싱 배경에서 SaaS HR Tech로의 큰 전환</span><span class='flag-item'>⑊ 자금 조달 정보 불명확: 2024년 스위스로부터 투자 유치했다고 주장하나 ENFUE에 대한 투자인지 TechSoft에 대한 투자인지 불명확</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>Professional Doctorate in Engineering (PDEng)/Software Technology</td><td>Eindhoven University of Technology</td><td>2010-2012</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Master's Degree/Artificial Intelligence / Computer Science</td><td>Maastricht University</td><td>2009</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Bachelor's Degree (Cum Laude)/Computer Science / ICT</td><td>Fontys University of Applied Sciences</td><td>2000년대 중반 추정</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>TechSoft</td><td>Chairman & CEO</td><td>2022-현재 (2008년 설립)</td><td style="font-size:11px;">네덜란드, 베트남, 벨기에, 캐나다에 사무소를 둔 국제 기업으로 성장. 400명 이상의 개발팀으로 확장. 헬스케어, IoT, 교육 분야 디지털 제품 개발.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Olinno</td><td>Founder & CEO / Chairman</td><td>2022-현재</td><td style="font-size:11px;">벤처 빌더 역할. ENFUE는 Olinno의 포트폴리오 회사로 시작.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>aBitBe</td><td>Founder & Servant Leader</td><td>2022-현재</td><td style="font-size:11px;">이전 스타트업 경험</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>DataHouse Asia</td><td>Co-Founder & Managing Partner</td><td>2020-2022</td><td style="font-size:11px;">데이터 관련 벤처</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Sioux High Tech Software / TomTom / Philips</td><td>Software Engineer / Technical roles</td><td>2000년대 중후반</td><td style="font-size:11px;">ASML, Philips Healthcare, FEI, Thermo Fisher Scientific, Canon, Niko, Cisco, TomTom 등 글로벌 하이테크 기업에서 근무. AI, IoT, 임베디드 시스템 프로젝트 참여.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 기술 배경은 매우 강력하나(AI, 소프트웨어 개발 15년+ 경력, 글로벌 테크 기업 경험), HR Tech 및 채용 도메인에 대한 직접적인 경험은 확인되지 않음. TechSoft에서 400명 규모 팀을 구축한 경험은 인재 채용의 어려움을 직접 경험했을 가능성을 시사하나, 이는 간접적 경험임. SaaS 제품 개발 경험은 있으나 HR Tech 특화 경험은 부족해 보임.</div><div class="ma-overall"><strong>종합 평가:</strong> 강력한 기술적 배경과 글로벌 경험을 보유한 시리얼 앤트러프러너. 네덜란드 명문대에서 AI 및 소프트웨어 공학 박사급 학위 취득, Philips, TomTom 등 글로벌 기업 경력, 다수의 창업 경험, 국제적 네트워크 보유 등 인상적인 이력을 가짐. 그러나 HR Tech 및 채용 산업에 대한 직접적 전문성이 부족하며, 여러 사업을 동시 운영하는 점은 우려 요소. 기술 리더로서는 훌륭하나 HR Tech의 도메인 특수성(채용 프로세스, ATS 시장, HR 워크플로우)에 대한 깊은 이해를 입증하지 못함. 제품-시장 적합성 달성을 위해 HR 도메인 전문가가 팀에 필요해 보임.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>시장 검증 부족 — 6개국 사용처 및 고객 수 구체 정보 없음</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 국가 수만 언급, 실제 유료 고객 수·계약 형태·재구매율 등 핵심 지표 전무. 초기 ARR이 파일럿 혹은 무료 사용자 기반일 가능성 배제 불가.</td></tr>
+<tr><td>팀 구성 불완전 — HR 도메인 전문가 및 공동 창업자 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 팀 연구 결과 CEO 외 핵심 팀원 정보 없음. SaaS 성공에 필수적인 제품·영업·마케팅 기능 커버 불명확. CEO의 여러 사업 동시 운영으로 집중도 우려.</td></tr>
+<tr><td>경쟁 우위 불명확 — AI 매칭 및 All-in-one만으로는 차별화 약함</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] IR Deck에서 기능 소개는 있으나, 기술적 모트·데이터 우위·네트워크 효과 등 방어 가능한 경쟁력 제시 없음. 가격 경쟁력 강조는 마진 압박 우려.</td></tr>
+<tr><td>수익성 경로 불투명 — Unit economics 미제시</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] CAC, LTV, Gross Margin, Payback Period 등 SaaS 필수 지표 전무. $50K ARR의 고객 구성(대기업 vs. 중소기업), 계약 규모, churn rate 알 수 없어 확장 가능성 판단 불가.</td></tr>
+<tr><td>롯데 PoC 실행 가능성 — 기존 시스템 통합 및 법적 규제 고려 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 롯데 계열사 기존 ATS/HRIS와의 통합 방안, 개인정보 보호법상 계열사 간 인재 데이터 공유 적법성, IT 보안 요구사항 등 실행 세부 사항 미언급.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">시장 접근성 및 경쟁 우위 검증</span><span class="dvtag dv-r">경쟁력 근거 불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">글로벌 ATS 시장은 Greenhouse, Lever, Workday 등 선도 기업이 포화 상태이며, ENFUE의 차별점은 'AI 매칭'과 'All-in-one' 수준에 그침 [확인]. 베트남/APAC의 실질 가능 시장(SAM/SOM)과 시장 진입 전략이 명시되지 않음 [미확인]. IR Deck의 80% 프로세스 개선, 40% 시간 절감, 50% 비용 절감 주장은 실제 고객 검증 데이터로 뒷받침되지 않음 [미확인]. 기술적 방어 요소(특허, 독자적 알고리즘)나 데이터 기반 해자(moat) 설명이 전혀 없어 지속 가능한 경쟁 우위 확보가 불투명함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">Unit Economics 및 확장성</span><span class="dvtag dv-r">핵심 지표 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">$50K ARR(5개월)은 매출 발생을 입증하나 [확인], 연간화 시 약 $120K로 초기 단계 수준임. 고객 수, 평균 계약 규모(ACV), MRR, churn rate, CAC, LTV 등 SaaS 필수 지표가 전혀 제시되지 않음 [미확인]. 비즈니스 모델이 구독 SaaS + '검증된 후보 제안(10K VND/건)' 혼합 구조로 확인되나, 각 매출원의 기여도와 수익성이 불명확함 [부분 확인]. 6개국 사용 언급에도 구체적 고객사명, 계약 형태, 국가별 분포가 밝혀지지 않아 확장 가능성을 판단할 근거가 부족함 [부분 확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">제품-시장 적합성(Product-Market Fit)</span><span class="dvtag dv-a">검증 단계 미도달</span><span class="deep-arrow">▾</span></div><div class="deep-body">중앙화된 지원서 관리와 AI 이력서 파싱은 ATS의 기본 기능으로, 기존 솔루션 대비 명확한 우위가 입증되지 않음 [미확인]. 6개국 사용 주장에도 레퍼런스 고객 사례나 사용자 피드백이 부재하여 실제 문제 해결 검증이 불가함 [미확인]. 롯데 PoC 제안에서 기존 ATS/HRIS 시스템과의 통합 방안이 제시되지 않았고 [미확인], '인재풀 공유'는 개인정보 보호법상 계열사 간 데이터 공유 규제 이슈를 고려하지 않음 [미확인]. 실제 HR팀의 페인포인트 해결 여부가 검증되지 않은 상태임.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">투자 이력 및 자금 조달 전략</span><span class="dvtag dv-a">투자 내역 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">CEO 프로필에서 네덜란드(2012), 미국(2020), 스위스(2024) 투자 유치 언급되나, 이는 TechSoft 관련으로 추정되며 ENFUE 자체 투자는 확인되지 않음 [미확인]. 현재 투자 유치 계획 'No'로 표시되어 성장 자금 조달 전략이 불분명함 [확인]. 초기 ARR 수준으로 볼 때 pre-seed 단계로 적합할 수 있으나, unit economics 미제시로 투자 매력도 판단 근거가 부족함 [미확인]. 롯데벤처스 관점에서 추가 투자 필요성과 규모, 사용 계획이 명시되지 않아 투자 전략 수립이 어려움.</div></div>
+<div class="deep-category-label">Category D — 팀/조직</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업팀 구성 및 도메인 전문성</span><span class="dvtag dv-r">핵심 역량 공백</span><span class="deep-arrow">▾</span></div><div class="deep-body">CEO Huy Nguyen의 기술 역량(AI/소프트웨어 박사급, Philips/TomTom 경력, TechSoft 400명 조직 구축)은 검증되었으나 [확인], HR Tech 도메인 전문성은 전혀 확인되지 않음 [미확인]. 채용 산업 경험, ATS 시장 이해도, HR 워크플로우 전문성을 가진 팀원이 부재하며 [미확인], 공동 창업자 및 핵심 팀원 정보가 전혀 제공되지 않아 키 퍼슨 리스크가 매우 높음 [미확인]. SaaS 스타트업 필수 기능인 제품 개발, 영업, 마케팅, 고객성공을 커버하는 균형 잡힌 팀 구성이 불명확하여 실행 역량에 중대한 우려가 있음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">CEO 집중도 및 리더십</span><span class="dvtag dv-a">분산 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">CEO가 Olinno, TechSoft(400명 규모), aBitBe 등 여러 사업을 동시 운영 중으로 확인되어 [확인], ENFUE에 대한 full-time 집중도에 의문이 제기됨. 2024년 창업한 초기 스타트업이 CEO의 최우선 과제인지 검증되지 않음 [미확인]. 성공적인 기술 기업가 경력에도 불구하고, 초기 SaaS 스타트업 특유의 고객 개발, 빠른 실행, 피봇 능력보다는 안정적 조직 운영 경험이 부각되어 스타트업 단계와 리더십 스타일의 정합성 확인 필요함. 다수 수상 경력은 긍정적이나 ENFUE 사업에 대한 헌신도 측정이 어려움.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">조직 확장 계획 및 인재 전략</span><span class="dvtag dv-r">전략 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">6개국 진출과 $50K ARR 달성에도 불구하고 현재 팀 규모, 구성원 역할, 채용 계획이 전혀 공개되지 않음 [미확인]. SaaS 성장에 필수적인 고객성공(CS), 영업개발(BDR/SDR), 제품 관리(PM) 등 전문 인력 확보 전략이 제시되지 않음 [미확인]. TechSoft에서 400명 규모 개발팀 구축 경험은 있으나 [확인], 이는 아웃소싱 개발사 모델로 SaaS 스타트업의 린(lean) 조직 운영과는 상이한 접근임. 향후 1-2년 내 조직 확장 로드맵과 핵심 포지션 충원 계획이 부재하여 성장 실행력 평가가 불가능함.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>CEO의 검증된 기술 역량 및 글로벌 네트워크 (AI/소프트웨어 박사급, 400명 조직 구축 경험) [확인]</li>
+<li>출시 5개월 만에 $50K ARR 달성 및 6개국 진출 [부분 확인 — 상세 데이터 부족]</li>
+<li>All-in-one ATS 플랫폼으로 채용 전 과정 커버 (지원서 수집-스크리닝-협업-분석) [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>HR Tech 도메인 전문성 부족 — 창업팀 내 채용 산업 경험자 부재 [확인]</li>
+<li>공동 창업자 및 핵심 팀원 정보 전무 — 키 퍼슨 리스크 매우 높음 [확인]</li>
+<li>Unit economics 및 SaaS 핵심 지표(MRR, CAC, LTV, churn) 미제시로 수익성 경로 불명 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 및 APAC의 디지털 채용 전환 수요 증가 (특히 고성장 스타트업 및 중소기업)</li>
+<li>롯데 PoC 성공 시 대형 그룹 레퍼런스 확보 → 베트남 내 대기업 확장 기회</li>
+<li>LOTTE Innovate와 협력 시 AI 기능 고도화 및 기술 검증 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>ATS 시장 과포화 — Greenhouse, Lever, Workday 등 글로벌 강자와 베트남 로컬 경쟁사 존재</li>
+<li>베트남 기업의 SaaS 지불 의향 낮음 — 무료/저가 도구 선호 경향, 수익화 어려움</li>
+<li>개인정보 보호법 강화 — 계열사 간 인재풀 공유 시 법적 리스크</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">16</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">기술 역량과 실행 경험을 갖춘 창업자가 이끄는 초기 단계 HR Tech SaaS. 출시 5개월 만에 $50K ARR 달성은 긍정적이나, 가장 큰 미검증 가정은 '베트남/APAC 기업들이 현재의 수동적 채용 프로세스 불편을 느껴 유료 SaaS로 전환할 의지가 충분한가'이다. ATS 시장은 글로벌 강자들과 현지 경쟁사로 포화 상태이며, AI 매칭과 All-in-one 플랫폼만으로는 차별화가 약하다. 가격 경쟁력('Very affordable')을 강조하나 unit economics 미제시로 수익성 경로 불명. 팀 구성에서 HR 도메인 전문가 부재와 공동 창업자 정보 부재는 핵심 약점. 롯데 PoC는 구조적으로 잘 제안되었으나 실제 계열사 시스템 통합 및 법적 규제(개인정보) 고려 부족.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">5 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">16 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>ENFUE JOINT STOCK COMPANY · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

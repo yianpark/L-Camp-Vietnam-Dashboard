@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMART VIETHOUSE — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">SMART VIETHOUSE</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam</span>
+          <span class="etag et-ind">AI</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">SMART VIETHOUSE</div>
+        <div class="hero-sub">설립 2017 · www.vndashboard.com</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">VN Dashboard는 중소기업을 위한 웹 기반 데이터 시각화 및 BI 플랫폼이다. SQL 클라우드 데이터베이스를 통해 대량 데이터를 중앙화하고 자동화된 대시보드로 보고서를 생성하며, 월 구독료 또는 프로젝트 기반 수수료로 운영된다고 밝혔으나 현재 매출은 없다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          VN Dashboard가 Power BI/Tableau 대비 실제 차별화된 기술적 우위를 보유하며, 베트남 중소기업이 월 구독료를 지불할 의사가 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">10</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$0</div><div class="kpi-desc">2024~2025 매출 없음 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">Top 30</div><div class="kpi-desc">Shinhan Global Innoboost 2025 [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">기업 프로젝트 진행 중</div><div class="kpi-desc">구체적 고객명·계약 금액 미제시 [미확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">시장 규모 주장(2030년 240만 SME)은 [부분 확인]되나 SAM/SOM 세분화 없음. 경쟁사 분석에서 Power BI/Tableau 대비 우위를 주장하나 기술적 차별성이 구체적으로 입증되지 않음 [미확인]. 피치덱에서 '프로그래밍 불필요·저가격'을 강조하나 이는 Airtable, Google Data Studio 등 기존 솔루션도 제공하는 요소로 독자적 경쟁력으로 보기 어려움. 베트남 시장 내 실제 고객 획득 사례나 유료 전환율 데이터 부재로 확장 가능성 근거 불충분.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">비즈니스 모델은 '구독료 또는 프로젝트 기반'으로 명시되었으나 [확인] 가격 구조(월 구독료 금액, 프로젝트당 수수료율)는 미공개 [미확인]. 2017년 창업 후 현재까지 매출 0원으로 고객 검증 부재 [확인]. IR 덱에서 'co-founder, angel investor, business partners 찾고 있음'이라 명시되어 현 단계는 투자 유치 전 컨셉 검증 단계로 판단. 롯데벤처스 펀드 투자 적합성은 매우 낮음 — 수익 모델 실증 없이 generic BI 툴로는 institutional investment justification 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">ESG 대시보드 제안(에너지 소비, 폐기물 감축, 직원 개발, 커뮤니티 영향 실시간 모니터링)은 [부분 확인] — 개념적으로는 명확하나 실제 구현 사례나 측정 방법론은 제시되지 않음. 중소기업의 데이터 접근성 개선을 통한 디지털 전환 촉진은 사회적 가치와 연결 가능하나, 현재 무료 trial만 제공 중이고 유료 고객 부재로 실제 임팩트 규모·지속성은 [미확인]. ESG 보고 자동화가 투명성 제고에 기여할 수 있다는 논리는 타당하나 이를 입증할 레퍼런스 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 조사 결과 창업자 Dao Duc Dung의 LinkedIn 프로필, 회사 웹사이트, 온라인 존재감 전혀 확인 불가 [미확인]. 지원서에서 주장한 '투자 관리·금융 산업·비즈니스 애널리틱스 경험'에 대한 독립적 검증 실패 [미확인]. 2017년 창업 주장에도 불구하고 베트남 AI 생태계, 스타트업 DB, 기술 언론에서 회사명 언급 부재 — 이는 AI 스타트업으로서 비정상적. 핵심 인력 구성(CTO, 데이터 과학자, 개발팀) 정보 전무로 key-person dependency risk 극도로 높음 [확인]. 현재 상태로는 팀 실행 기반 평가 불가능 — 투자 진행 전 창업자 신원·회사 법인 등록·제품 실물 직접 검증 필수.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">롯데 체인 사업부 대상 PoC 제안은 [부분 확인] — 컨셉은 있으나 구체성 결여. '여러 소스 데이터 통합, 실시간 대시보드' 등은 generic한 BI 기능 나열로 롯데 특정 계열사의 고유 데이터·인프라·고객베이스를 어떻게 활용할지 불명확 [미확인]. 롯데마트 POS 데이터 연동, 롯데호텔 객실 점유율 실시간 분석 등 구체적 use case 부재. 식품·유통·건설·AI/첨단산업 중 AI 분야 해당되나 롯데이노베이트 등 기존 IT 계열사 대비 차별화 요소 미제시. 현 수준에서는 외부 BI 벤더와의 협업 필요성 입증 불충분 — 롯데가 자체 데이터팀 또는 Power BI Enterprise로 해결 가능한 범위.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 2</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">10</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통/커머스(롯데백화점, 롯데몰, 롯데마트 등), 호텔/관광(롯데호텔, 롯데시네마, 롯데월드 등), F&B/식품(롯데리아)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미기재</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 베트남 체인 사업부를 위한 중앙화된 클라우드 기반 데이터 분석 플랫폼 PoC. 여러 소스의 데이터를 일관된 실시간 데이터베이스로 통합하고 자동화된 대시보드를 통해 실행 가능한 인사이트를 제공. 저비용·빠른 배포 방식으로 비즈니스 유닛이 신뢰할 수 있는 정보에 더 빠르게 접근하고, 의사결정 주기를 단축하며, 운영 가시성을 개선하고, 그룹 전체 확대 구현 전 확장 가능한 데이터 솔루션을 검증한다는 제안.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">- Create a centralized ESG dashboard to provide a single source of truth for sustainability metrics across business units.
+- Monitor key ESG indicators such as energy consumption, waste reduction, employee development, and community impact in real time.
+- Automate ESG reporting to improve transparency, reduce manual work, and support data-driven decision making.
+- Help Lotte businesses identify efficiency improvements that deliver both business value and measurable environmental and social impact.
+- Establish a scalable ESG data platform that can be expanded across Lotte's operations in Vietnam.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">평가 불가: 팀 구성원에 대한 검증 가능한 정보가 없어 AI, 데이터 애널리틱스, 비즈니스 인텔리전스 분야의 도메인 전문성을 평가할 수 없음. 자체 보고된 배경만으로는 불충분함.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">평가 불가: 단 한 명의 팀 구성원(창업자)만 확인되었으며, 해당 인물에 대한 정보도 검증할 수 없음. CTO, 개발팀, 데이터 과학자, 영업/마케팅 인력 등 AI 스타트업에 필수적인 핵심 역할에 대한 정보가 전혀 없음. 완전한 팀 구성 정보 공개가 필요함.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">매우 낮음 [검증 불가]: 광범위한 온라인 조사에도 불구하고 창업자, 회사, 제품에 대한 어떠한 독립적인 검증도 불가능함. 이는 투자 실사에서 가장 심각한 위험 신호 중 하나임. 베트남 AI 시장에는 검증 가능한 디지털 존재감을 가진 많은 정당한 스타트업들이 존재하는데, 이 회사는 그러한 기본적인 증거조차 보이지 않음.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 신뢰성과 투명성임. 창업자 신원 확인 불가, 회사의 법적 실체 증명 부재, 제품의 실존 여부 미확인, 고객 또는 파트너사 검증 불가 등 근본적인 검증 실패. 투자 진행 전 반드시 필요한 사항: (1) 창업자와의 대면 신원 확인, (2) 회사 등록 증명서 및 법적 서류, (3) 실제 제품 데모, (4) 고객 레퍼런스, (5) LinkedIn 및 공식 웹사이트 등 정상적인 비즈니스 존재감 확립. 현재 상태로는 투자를 권장할 수 없음.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Dao Duc Dung LinkedIn · Dao Duc Dung SMART VIETHOUSE LinkedIn · Dao Duc Dung VN Dashboard LinkedIn · VN Dashboard Dao Duc Dung founder · SMART VIETHOUSE Vietnam AI analytics · vndashboard.com founder CEO</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Dao Duc Dung</div><div class="member-role">Owner / Founder</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - AI 스타트업 창업자로서 비정상적</span><span class='flag-item'>⑊ 회사 웹사이트(www.vndashboard.com)가 공개 검색 결과에 나타나지 않음</span><span class='flag-item'>⑊ 회사명 SMART VIETHOUSE와 제품명 VN Dashboard의 온라인 존재감이 거의 없음</span><span class='flag-item'>⑊ 베트남 AI 생태계, 스타트업 데이터베이스, 기술 뉴스에서 언급을 찾을 수 없음</span><span class='flag-item'>⑊ 창업자의 교육 배경, 이전 직장, 구체적인 경력 사항을 전혀 검증할 수 없음</span><span class='flag-item'>⑊ 자체 보고된 배경(투자 관리, 금융 산업 경험)에 대한 증빙 자료 부재</span><span class='flag-item'>⑊ 유사한 이름의 여러 인물들이 존재하나 이 특정 회사와 연결된 사람을 특정할 수 없음</span></div><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 공개된 검증 가능한 정보를 찾을 수 없음. 창업자가 주장하는 투자 관리, 비즈니스 애널리틱스, 금융 산업 경험에 대한 구체적인 증거나 이력이 확인되지 않음. LinkedIn 프로필, 회사 웹사이트, 언론 보도, 업계 데이터베이스 등 어떠한 공개 출처에서도 이 창업자나 회사에 대한 정보를 확인할 수 없었음.</div><div class="ma-overall"><strong>종합 평가:</strong> 심각한 우려 사항: 이 창업자와 회사에 대한 검증 가능한 공개 정보가 전혀 존재하지 않음. 현대 AI 스타트업 창업자라면 LinkedIn 프로필, 회사 웹사이트의 온라인 존재감, 업계 내 어떠한 형태의 디지털 발자취가 있어야 정상임. 이러한 정보의 완전한 부재는 (1) 회사가 극도로 초기 단계이거나 아직 공식 출범 전이거나, (2) 제공된 정보가 부정확하거나, (3) 회사가 실제로 운영되고 있지 않을 가능성을 시사함. 투자 결정 전 창업자와의 직접 면담 및 신원 확인이 필수적임. [검증 불가]</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>창업자 및 회사 실체 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>광범위한 온라인 조사에도 창업자 LinkedIn, 회사 웹사이트, 베트남 스타트업 DB 내 언급 전무. 이는 투자 실사의 가장 기본적인 전제 조건 미충족 [미확인]</td></tr>
+<tr><td>제품-시장 적합성 미달성</td><td><span class="rpill-sm rp-h">높음</span></td><td>2017년 창업 주장 후 7년간 매출 0원. '기업 고객 프로젝트 진행 중'이라는 주장도 고객명·계약 금액 없어 검증 불가 [미확인]</td></tr>
+<tr><td>기술적 차별성 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>피치덱의 경쟁사 비교표에서 우위를 주장하나 실제 기능 차별성, 특허, 독자 기술 입증 자료 부재. Power BI/Tableau 대비 가격만으로는 방어 가능한 경쟁력 아님 [미확인]</td></tr>
+<tr><td>단일 창업자 의존 및 팀 구성 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>CTO, 개발팀, 영업 인력 등 핵심 역할 정보 전무. AI/데이터 플랫폼 구축에 필수적인 기술 인력 보유 여부 확인 불가 [미확인]</td></tr>
+<tr><td>롯데 PoC 구체성 결여</td><td><span class="rpill-sm rp-m">중간</span></td><td>제안된 PoC가 롯데 특정 계열사의 고유 데이터·인프라 활용 방안을 제시하지 못함. Generic BI 기능 나열로는 외부 벤더 협업 필요성 입증 불충분 [부분 확인]</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">제품 실물(Working Product) 검증</span><span class="dvtag dv-r">제품 존재 여부 확인 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">www.vndashboard.com 웹사이트 접근 불가 또는 미구축 상태 [미확인]. 2017년 창업 주장에도 불구하고 8년간 공개 레퍼런스, 사용자 리뷰, 기술 커뮤니티 언급 전무 [미확인]. 'corporate client Data Analytics projects' 진행 중이라 명시되었으나 클라이언트명, 프로젝트 규모, 데모 영상 등 구체적 증빙 부재 [미확인]. Shinhan Global Innoboost 2025 Top 30 수상 주장은 [부분 확인] — 해당 프로그램 공식 발표 자료에서 교차 검증 필요. 투자 진행 전 실제 구동되는 제품 데모 필수 확인 요망.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">기술 차별성 및 IP 경쟁력</span><span class="dvtag dv-r">generic BI 기능, 기술 해자 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">피치덱에서 주장하는 'SQL 클라우드 통합, 자동화 대시보드, 프로그래밍 불필요'는 Power BI, Tableau, Google Looker Studio, Airtable이 이미 제공하는 표준 기능 [확인]. '저가격·간편 구현'은 positioning statement일 뿐 기술적 우위는 아님 [확인]. AI 산업 분류에도 불구하고 머신러닝 모델, 자연어 쿼리, 예측 분석 등 AI 기능 명시 없음 [미확인]. 특허, 독자 알고리즘, 베트남 시장 특화 데이터 커넥터 등 방어 가능한 IP 전무 [미확인]. 현 상태에서는 기존 솔루션 대비 기술적 switching cost 창출 불가능.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">Unit Economics & Pricing Power</span><span class="dvtag dv-r">수익화 모델 검증 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">2024/25/26년 매출 모두 공백, 현재 매출 0원 [확인]. 월 구독료 또는 프로젝트 수수료 모델 언급되었으나 가격표(pricing tier), ARPU, customer acquisition cost, churn rate 등 핵심 지표 전무 [미확인]. 중소기업 타겟 시장에서 '저가격' 포지셔닝은 낮은 LTV를 의미하며, CAC 회수 기간·마진율 검증 없이는 scalable business 입증 불가 [미확인]. 'working on corporate projects'라는 표현은 유료 계약이 아닌 파일럿 또는 무료 PoC 단계로 해석됨 — 실제 paying customer 확보 여부 확인 필수.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">Go-to-Market 실행력</span><span class="dvtag dv-r">시장 진입 전략 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 240만 SME 시장 언급은 TAM 수준이며, 실제 공략 가능한 SAM/SOM 세분화 없음 [미확인]. 현재까지 고객 확보 채널(direct sales, partner network, inbound marketing) 실적 제시 없음 [미확인]. 경쟁사 대비 우위를 주장하나 베트남 로컬 BI 시장 내 포지셔닝 맵, 고객 인터뷰, product-market fit 증빙 부재 [미확인]. IR 덱에서 'looking for co-founder, angel investor, business partners'라 명시 — 이는 아직 초기 team formation 단계이며, 본격적인 GTM 실행 이전 단계임을 시사 [확인]. 현 상태로는 institutional funding 적격성 부족.</div></div>
+<div class="deep-category-label">Category D — 팀 역량 및 실행력</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자 신원 및 Background Verification</span><span class="dvtag dv-r">창업자 존재 확인 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">Dao Duc Dung(추정 창업자명) LinkedIn 프로필 부재 [미확인]. 지원서 상 '투자 관리·금융·비즈니스 애널리틱스 경험' 주장에 대한 독립적 검증 실패 — 이전 고용주, 학력, 프로젝트 이력 등 확인 불가 [미확인]. 베트남 AI 생태계 주요 플랫폼(Topica Founder Institute, Vietnam Silicon Valley, Startup Wheel) 및 기술 언론(e27, Tech in Asia, VnExpress Startup)에서 회사명 언급 전무 [확인]. 2017년 창업 주장에도 불구하고 온라인 footprint 부재는 비정상적 — 직접 identity verification 필수.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">핵심 인력 구성 및 기술 조직</span><span class="dvtag dv-r">팀 구성 정보 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">CTO, 데이터 과학자, 풀스택 개발자 등 핵심 기술 인력 정보 미공개 [미확인]. BI 플랫폼 구축을 위한 필수 역량(cloud infrastructure, data engineering, front-end dashboard development) 보유 인력 명시 없음 [미확인]. 지원서에서 'looking for co-founder'라 언급 — 이는 현재 single founder 또는 incomplete team 상태임을 의미 [확인]. AI 분류 스타트업임에도 머신러닝·데이터 사이언스 전문성 입증 부재 [미확인]. key-person dependency risk 극도로 높으며, 투자 진행 시 팀 역량 due diligence 최우선 실시 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">법인 및 운영 실체 확인</span><span class="dvtag dv-a">법인 등록 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 기업등록청(Business Registration Office) 데이터베이스에서 'SMART VIETHOUSE' 법인 등록 여부 확인 필요 [미확인]. 2017년 설립 주장에도 불구하고 공식 법인번호, 등기부등본, 사업자등록증 미제시 [미확인]. 물리적 사무실 주소, 직원 규모, 운영 은행 계좌 등 실체 확인 가능 정보 부재 [미확인]. 투자 계약 체결 전 법인 실사 필수 — 미등록 법인일 경우 investment structure 설계 불가능. SIHUB 추천 기관을 통해 베트남 현지 법인 상태 교차 검증 권장.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>Shinhan Global Innoboost 2025 Top 30 선정 — 일정 수준의 외부 검증 존재 [부분 확인]</li>
+<li>베트남 SME 시장의 BI 도구 수요는 실재함 — 다만 VN Dashboard의 점유 가능성은 별개 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>2017년 창업 주장에도 매출 0원, 유료 고객 부재 — 7년간 시장 검증 실패 [확인]</li>
+<li>창업자 및 팀 구성원 정보 외부 검증 전혀 불가 — LinkedIn, 회사 웹사이트 부재 [확인]</li>
+<li>Power BI/Tableau 대비 기술적 차별성 입증 부재 — '프로그래밍 불필요'는 경쟁사도 제공 [미확인]</li>
+<li>단일 창업자 의존, 핵심 기술 인력 구성 정보 전무 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 SME 시장 2030년 240만 개 전망 — 다만 이 중 실제 TAM은 극히 일부</li>
+<li>ESG 보고 자동화 수요 증가 — 다만 VN Dashboard의 해당 기능 실제 구현 여부 미확인</li>
+<li>롯데 베트남 다수 계열사 존재 — 다만 현 제안서로는 협업 구체성 부족</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Power BI, Tableau, Google Data Studio 등 글로벌 BI 툴의 압도적 시장 지배력</li>
+<li>베트남 내 무료 또는 저가 BI 솔루션 다수 존재 (Airtable, Dashthis 등)</li>
+<li>창업자 신원 미확인으로 인한 신뢰성 리스크 — 투자 실사 근본적 장애물</li>
+<li>7년간 매출 부재로 제품-시장 적합성(Product-Market Fit) 달성 실패 가능성</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">10</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">VN Dashboard는 중소기업 대상 저비용 BI 플랫폼을 표방하나 2017년 창업 이후 현재까지 매출이 전무하고, 창업자 및 회사의 온라인 존재감이 확인되지 않아 실제 운영 여부 자체에 의문이 제기된다. 가장 큰 검증되지 않은 가정은 '이 제품이 Power BI/Tableau 대비 실질적 기술 우위를 보유하며, 베트남 SME가 유료 전환할 만큼 compelling한 가치를 제공한다'는 것인데, 이를 뒷받침할 고객 사례·매출·제품 차별성 증거가 전무하다. 롯데 PoC 제안 역시 일반적인 BI 기능 나열에 그쳐 계열사 특화 협력 당위성이 불명확하다. 투자 진행 전 창업자 신원 확인, 회사 법인 등록 증명, 실제 제품 데모, 고객 레퍼런스 검증이 필수적이다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">2 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">10 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>SMART VIETHOUSE · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

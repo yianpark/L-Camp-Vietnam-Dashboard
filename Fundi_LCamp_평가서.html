@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fundi — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Fundi</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam, Ho Chi Minh City</span>
+          <span class="etag et-ind">E-commerce & Retail</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Fundi</div>
+        <div class="hero-sub">설립 2021 · fundi.vn</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Fundi는 베트남과 말레이시아의 온라인 쇼핑객을 위한 캐시백 앱이다. 25-40세 여성 고객(월 평균 지출 $500)이 주요 타겟이며, 주로 Shopee와 Lazada를 통한 구매에 캐시백을 제공하고 머신러닝으로 개인화된 딜을 추천한다고 주장하나, 실제 ML 모델의 작동 방식이나 성과 데이터는 제시되지 않았다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          머신러닝 기반 개인화 캐시백이 실제로 사용자 구매 전환과 리텐션을 유의미하게 증가시킨다는 가설이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">8</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$900</div><div class="kpi-desc">2024년 및 2025년 동일 수준 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">5,000명</div><div class="kpi-desc">총 가입자 수 [부분 확인 — 활성 사용자 비율 미확인]</div></div>
+<div class="kpi"><div class="kpi-val">$500K</div><div class="kpi-desc">Pre-seed 라운드 목표 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">$10K</div><div class="kpi-desc">주요 제휴 채널 성과 추정치 [미확인 — 출처 불명]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">베트남 캐시백 시장 규모 및 경쟁 현황에 대한 구체적 분석이 전혀 없음 [미확인]. IR Deck은 Shopee/Lazada의 월 매출 추정치($10K/$4K)를 제시하나 출처나 근거가 없어 신뢰도 낮음. 캐시백 앱 시장은 Shopback, Atome 등 선발주자가 이미 존재하며 차별화 전략이 "머신러닝 개인화"라고 주장하나 실제 알고리즘 우월성이나 전환율 비교 데이터는 제시되지 않음 [미확인]. 말레이시아 확장은 언급만 되고 시장 진입 전략이나 현지 규제 대응 계획 부재.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">연 매출 $900는 2021년 설립 후 4년차 기업으로서 극히 낮은 수준이며, 2024년과 2025년이 동일하다는 것은 성장 정체를 시사함 [확인]. 비즈니스 모델은 제휴 커머스 수수료 기반으로 추정되나 단위경제(사용자당 매출, CAC, LTV)가 전혀 제시되지 않음 [미확인]. 5,000명 사용자 중 활성 사용자 비율, 재구매율, 월간 거래액 등 핵심 지표 부재. 투자유치 적합성 측면에서 $500K 목표 대비 현재 매출 수준은 시장 검증이 이루어지지 않았음을 보여주며, 롯데벤처스 펀드 투자 기준에 부합하기 어려움.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">사회적 가치 창출 주장("사용자에게 더 나은 절약 경험 제공", "D2C 브랜드 매출 성장 지원")은 있으나 이는 일반적인 커머스 플랫폼의 부가가치 수준이며, 구체적인 사회문제 정의가 없음 [미확인]. 캐시백 앱이 저소득층의 구매력 향상이나 중소상인 지원 등 명확한 사회적 임팩트로 연결되는 메커니즘이 제시되지 않음. 타겟 고객이 월 $500 지출하는 25-40세 여성이라는 점에서 경제적 포용보다는 중산층 대상 소비 촉진에 가까움. 임팩트의 규모·깊이·지속성 모두 불분명.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 심층 조사 결과, 외부 검증이 전혀 이루어지지 않음 [미확인]. 자기보고된 배경("Applied Machine Intelligence 석사", "기술 배경 2명")은 구체적인 학력·경력 확인 없이는 신뢰하기 어려움. 4명 중 역할 분장("말레이시아 담당 1명")은 언급되나 실제 도메인 전문성(캐시백 산업 경험, 이커머스 제휴 네트워크, 대규모 ML 모델 운영 경험)에 대한 증거가 전혀 없음. 창업 4년차임에도 팀 구성이나 주요 인력의 LinkedIn 프로필조차 확인 불가능한 것은 팀 공개성과 실행 기반에 대한 신뢰도를 크게 낮춤. Key-person dependency 리스크 높음.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">유통·호텔·F&B 등 롯데 주요 사업분야와의 연관성은 있으나 [부분 확인], PoC 아이디어가 극히 포괄적이고 비구체적임 [미확인]. "독점 캐시백 파트너"라는 제안은 롯데 입장에서의 차별적 가치나 배타적 협력 근거가 제시되지 않음. 롯데 계열사 특정 없이 "유통/이커머스/호텔/F&B 전반"을 대상으로 한다는 것은 실행 가능성이 낮음. 머신러닝 모델을 통한 매출 증대 주장은 있으나 롯데의 기존 CRM·로열티 시스템과의 통합 방식, 고객 데이터 활용 계획, 예상 ROI 등 구체성 전무. 연계 가능 계열사 중 어느 곳과도 사전 접촉이나 MOU 체결 이력 없음 [미확인].</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 1 + C 2 + D 1 + E 2</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">8</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통/커머스(롯데백화점, 롯데마트), 호텔/관광(롯데호텔, 롯데시네마, 롯데월드), F&B(롯데리아), AI/IT(롯데이노베이트)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데그룹과 독점 캐시백 파트너로 협력하여 유통/이커머스/호텔/F&B 부문의 매출 증대를 지원하고, 머신러닝 모델을 통해 롯데의 판매 성장과 자사 기술 스택 강화를 동시에 달성하고자 함. 그러나 구체적인 연계 방식이나 롯데 고객 데이터 활용 방안은 제시되지 않음.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">동남아시아 기술 부문에서 강력한 임팩트를 창출하고, 사용자에게 더 나은 절약 경험을 제공하며 D2C 브랜드의 매출 성장을 지원하고자 함.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>시장 견인력 부재 — 4년간 연 매출 $900 수준 유지</td><td><span class="rpill-sm rp-h">높음</span></td><td>매출 수치는 확인되나 성장 경로나 턴어라운드 전략 제시 없음. 이는 제품-시장 적합성(PMF) 미확보를 강력히 시사.</td></tr>
+<tr><td>기술 차별성 미검증 — ML 개인화의 실효성 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>IR Deck에서 AI/ML 강조하나 알고리즘 성능, A/B 테스트 결과, 전환율 개선 데이터 전무 [미확인]. 일반 룰베이스 추천과의 차이 입증 필요.</td></tr>
+<tr><td>팀 역량 및 실행력 불투명 — 외부 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>심층 조사 결과 팀원의 학력·경력 확인 불가 [미확인]. 4년 운영 경험이 있음에도 외부 가시성이 전무한 것은 조직 신뢰도 문제.</td></tr>
+<tr><td>롯데 PoC 실행 가능성 낮음 — 제안 구체성 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>독점 파트너십 제안은 롯데 기존 CRM·마케팅 시스템과의 통합 방안, ROI 추정치 없이는 실행 난이도 높음 [미확인].</td></tr>
+<tr><td>캐시백 모델의 낮은 락인 효과 — 고객 이탈 위험</td><td><span class="rpill-sm rp-m">중간</span></td><td>캐시백율이 경쟁력의 핵심인 모델 특성상, 사용자 충성도 확보 어려움. 5,000명 중 활성 사용자 비율 미공개 [미확인].</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — E-commerce/커머스 플랫폼</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">시장 포지셔닝 및 차별화 전략의 실체</span><span class="dvtag dv-r">경쟁 우위 근거 불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 캐시백 시장은 ShopBack(Series D, $200M+ 조달), Atome 등 자금력 있는 선발주자가 이미 장악한 상황이다 [확인]. Fundi는 '머신러닝 개인화'를 차별점으로 제시하나, IR Deck의 "AI/ML models to recommend best buying products"는 구체적 알고리즘 설명이나 성과 지표(추천 정확도, 전환율 개선폭 등)가 전혀 없어 검증 불가능하다 [미확인]. Shopee/Lazada 월 매출 추정치($10K/$4K)는 출처 불명으로 시장 분석의 신뢰도를 크게 떨어뜨린다 [미확인]. 5,000명 사용자 중 활성 사용자 비율, 월간 거래액, 재구매율 등 핵심 지표가 부재하여 실제 시장 검증 여부를 확인할 수 없다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">단위경제 및 수익화 모델의 지속가능성</span><span class="dvtag dv-r">비즈니스 모델 검증 실패</span><span class="deep-arrow">▾</span></div><div class="deep-body">연 매출 $900는 2021년 설립 후 4년차 스타트업으로서 극히 낮으며, 2024-2025년 동일 매출은 성장 정체를 의미한다 [확인]. 5,000명 사용자 기준 사용자당 연간 매출은 약 $0.18로, 제휴 커머스 수수료 모델(통상 3-5%)로는 월 평균 지출 $500 타겟 고객 주장과 완전히 불일치한다 [확인]. CAC(고객획득비용), LTV(생애가치), 월간 활성 사용자당 거래액 등 단위경제 지표가 전무하여 확장 시 수익성 개선 가능성을 판단할 수 없다 [미확인]. $500K 투자 유치 목표 대비 현재 매출 수준은 Product-Market Fit 미달성을 시사하며, 롯데벤처스의 최소 투자 기준(통상 연 매출 수억원 이상 성장기업)에 현저히 미달한다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">말레이시아 시장 진출 전략의 구체성</span><span class="dvtag dv-r">확장 계획 미성숙</span><span class="deep-arrow">▾</span></div><div class="deep-body">말레이시아 담당 공동창업자 1명을 언급하나, 현지 시장 진입 전략(규제 대응, 파트너십, 마케팅)이나 베트남 대비 차별화된 가치제안이 전혀 제시되지 않았다 [미확인]. 베트남 시장에서의 검증도 불충분한(연 매출 $900) 상황에서 다국가 동시 확장은 자원 분산 리스크가 크다. IR Deck의 "Our main market is Vietnam"이라는 표현과 말레이시아 시장 담당 인력 배치는 전략적 우선순위가 불명확함을 보여준다 [부분 확인]. 현지 라이선스, 금융 규제, 데이터 보호법(PDPA) 대응 계획이 전무하며, 말레이시아 주요 이커머스 플랫폼(Shopee MY, Lazada MY)과의 제휴 현황도 확인되지 않는다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">"빠른 캐시백" 약속의 이행 가능성</span><span class="dvtag dv-a">운영 모델 실현성 의문</span><span class="deep-arrow">▾</span></div><div class="deep-body">IR Deck은 "pre-approve for faster cashback"을 솔루션으로 제시하나, 이는 제휴사(Shopee/Lazada)의 주문 승인 및 정산 프로세스를 우회할 수 없는 구조적 한계가 있다 [부분 확인]. 선지급 캐시백 모델은 막대한 운영자금(working capital)을 요구하는데, 연 매출 $900 수준에서 이를 감당할 재무 기반이 전혀 없다 [확인]. 경쟁사 ShopBack도 표준 정산 주기(45-90일)를 따르는 점을 고려할 때, Fundi만의 "빠른 캐시백" 실현 방법론(자체 자금 투입인지, 금융기관 제휴인지)이 명시되지 않아 실행 가능성이 낮다 [미확인]. 이는 핵심 가치제안의 실체가 불분명함을 의미한다.</div></div>
+<div class="deep-category-label">Category D — 팀 구성 및 실행력</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">팀 전문성 및 도메인 경험의 검증</span><span class="dvtag dv-r">팀 역량 근거 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">"Applied Machine Intelligence 석사", "strong background in Tech 2명"은 자기보고일 뿐 학력·경력 증빙이나 외부 검증이 전혀 없다 [미확인]. 4년차 스타트업임에도 창업자들의 LinkedIn 프로필이나 이전 경력 정보가 확인 불가능한 것은 팀 공개성과 실행 기반에 대한 신뢰도를 크게 낮춘다. 캐시백 산업 특성상 필수적인 이커머스 플랫폼 제휴 협상 경험, 대규모 거래 데이터 처리, 머신러닝 모델 프로덕션 운영 경험 등 도메인 전문성 증거가 전무하다 [미확인]. 팀 구성상 "growth marketing 담당"이 언급되나, 연 매출 $900 수준은 그로스 역량이 작동하지 않았음을 보여준다 [확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">실행 성과 및 조직 확장 가능성</span><span class="dvtag dv-r">실행력 검증 실패</span><span class="deep-arrow">▾</span></div><div class="deep-body">2021년 설립 후 4년간 5,000명 사용자, 연 매출 $900는 팀의 실행 속도와 성장 능력에 심각한 의문을 제기한다 [확인]. IR Deck의 "we have a prober(proper?) product ready to scale"이라는 주장과 실제 트랙션의 괴리가 크며, 제품 완성도 주장을 뒷받침할 객관적 지표(MAU, 거래 완료율, NPS 등)가 없다 [미확인]. 4명 창업팀으로 베트남·말레이시아 2개국 동시 운영은 현실적으로 불가능하며, 특히 "말레이시아 담당 1명" 구조는 현지 시장 공략에 필요한 조직 역량이 부재함을 보여준다. Key-person dependency 리스크가 매우 높으며, 투자 유치 후 조직 확장 및 전문 인력 영입 계획이 전혀 제시되지 않았다 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">기술 역량의 실체 및 ML 모델 운영 증거</span><span class="dvtag dv-r">기술 차별화 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">"머신러닝 개인화"를 핵심 차별점으로 내세우나, 실제 ML 모델의 아키텍처, 학습 데이터 규모, 성능 지표(precision/recall, A/B 테스트 결과 등)가 전혀 공개되지 않았다 [미확인]. 5,000명 사용자 규모로는 개인화 추천에 필요한 충분한 행동 데이터가 축적되기 어렵다는 점에서, 주장하는 ML 모델이 실제로 작동하는지조차 의심스럽다. IR Deck의 "Apply Data modeling to personalize Cashback amounts"는 단순 규칙 기반 세그먼테이션일 가능성이 높으며, 진정한 머신러닝 모델과 구분되지 않는다 [미확인]. "Tech 배경 2명"의 실제 ML/데이터 엔지니어링 경력이 확인되지 않아, 기술 팀의 실체적 역량을 판단할 수 없다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>베트남과 말레이시아 2개 시장 진출 시도 (다만 실제 운영 증거는 미확인)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>4년차 스타트업으로서 연 매출 $900는 시장 검증 실패를 시사하며, 2024→2025년 성장 정체 [확인]</li>
+<li>머신러닝 개인화의 실제 효과나 기술 우위에 대한 증거 전무 — 일반적인 추천 알고리즘과의 차별성 불명확 [미확인]</li>
+<li>팀 배경 외부 검증 불가능 — 학력·경력·도메인 전문성 모두 자기보고 수준 [미확인]</li>
+<li>단위경제(CAC, LTV, 활성 사용자 비율, 재구매율) 데이터 부재로 비즈니스 지속가능성 판단 불가 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 이커머스 시장 성장세 (다만 캐시백 카테고리 내 경쟁 심화)</li>
+<li>롯데 계열사와의 협력 가능성 (구체화 필요)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Shopback, Atome 등 자금력 있는 선발주자와의 경쟁 — 네트워크 효과와 브랜드 인지도 격차</li>
+<li>캐시백 모델의 낮은 고객 충성도 — 사용자는 캐시백율이 높은 곳으로 쉽게 이탈</li>
+<li>제휴사(Shopee, Lazada) 정책 변경 위험 — 커미션율 하락 시 수익성 악화</li>
+<li>말레이시아 시장 진입 시 현지 규제 및 결제 인프라 리스크</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">8</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Fundi는 캐시백 앱 모델 자체는 검증된 비즈니스이나, 4년차 기업으로서 연 매출 $900는 시장 견인력이 전혀 없음을 보여준다 [확인]. 가장 큰 미검증 가정은 "머신러닝 개인화가 기존 캐시백 앱 대비 유의미한 전환율 향상을 가져온다"는 것인데, 이를 뒷받침할 A/B 테스트 결과나 코호트 분석이 전혀 없다 [미확인]. 팀 역량도 외부 검증 불가능하며, 롯데와의 PoC 제안은 일반론 수준으로 실행 가능성이 낮다. 투자 적합성 관점에서 현재 단계는 Idea에 가까우며, Pre-seed 투자 유치 전에 사용자 리텐션과 단위경제 검증이 선행되어야 한다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">2 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">8 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Fundi · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

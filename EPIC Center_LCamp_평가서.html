@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPIC Center — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">EPIC Center</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam</span>
+          <span class="etag et-ind">Prop-tech</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">EPIC Center</div>
+        <div class="hero-sub">설립 2019 · https://epicgroup.vn/</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">EPIC Center는 베트남 하노이의 Gen Z 임차인을 위한 장기임대 중개 플랫폼이다. 허위 매물과 사기를 줄이기 위해 AI 매칭, 검증된 매물, 디지털 계약 기능을 제공하며, 예약 수수료(보증금의 30~60%)와 서비스 수수료(10%)로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          검증된 매물과 AI 매칭이 실제로 사기 감소와 임대 기간 단축으로 이어지며, Gen Z 임차인들이 기존 무료 플랫폼 대신 수수료를 지불할 의향이 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">25,000명</div><div class="kpi-desc">하노이 기준, 검증 방법 미명시</div></div>
+<div class="kpi"><div class="kpi-val">80% 전문 관리 체인</div><div class="kpi-desc">20%는 개인 소유주, 구체적 수량 없음</div></div>
+<div class="kpi"><div class="kpi-val">$500K</div><div class="kpi-desc">Seed 라운드, 현재 진행 중</div></div>
+<div class="kpi"><div class="kpi-val">예약 30~60%, 서비스 10%</div><div class="kpi-desc">보증금 대비 예약 수수료, 별도 서비스 수수료</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">베트남 임대 시장 규모는 언급되나 TAM/SAM/SOM 구체화 없음 [미확인]. IR에서 주요 경쟁사(Batdongsan.com 30~40%, Chotot.com 20~30%)를 언급하지만 EPIC의 시장점유율이나 차별화 우위 검증 자료는 부재 [미확인]. '사기 감소, 검증 매물' 주장은 정성적이며, 실제 사기 발생률 감소 또는 고객 만족도 비교 데이터 없음 [미확인]. 확장 가능성은 하노이 외 지역 전략 언급 없이 '롯데 협력' 기대에 의존하여 구체성 결여.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">수익모델(예약 수수료 30~60%, 서비스 수수료 10%)은 명시되나 실제 매출액, 거래 건수, 단위경제 데이터 전무 [미확인]. 투자 유치 이력 없으며 현재 $500K 목표로 Seed 진행 중이나 리드 투자자나 진척 상황 불명 [미확인]. 25,000 사용자 주장은 구체적 검증 방법(가입자/월활성/거래 완료자 구분) 없음 [미확인]. 롯데벤처스 펀드 적합성은 PoC 아이디어가 일반적 협력 제안 수준이고, 롯데 계열사별 구체적 연계 방안이나 수익 분배 모델이 불명확하여 투자 연계 가능성 낮음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">사회문제(임대 사기, 불투명 거래, Gen Z 주거 접근성 부족) 정의는 명확함 [확인]. 솔루션(검증 매물, 디지털 계약, 보증금 보호)이 문제 해결에 논리적으로 연결되나, 실제 사기 감소율, 분쟁 해결 사례 수, 취약 계층 수혜자 수 등 정량적 임팩트 지표 부재 [부분 확인]. ESG 서술은 사회적 가치(투명성, 안전, 접근성 개선)에 집중하나 지속성 및 규모 확장 증거는 제한적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">**[심각한 우려]** 팀 심층 조사 결과, 창업자 Trần Thanh Tùng의 LinkedIn 프로필 미확인, 온라인 검증 가능한 경력 전무, 동명이인 다수로 신원 특정 불가 [미확인]. Director Nong Quoc Viet도 D&B 등록 외 공개 정보 없음 [미확인]. 자체 보고한 '전략/금융, 기술/제품, 프롭테크 전문성'을 뒷받침하는 구체적 팀원 경력이나 학력 전무 [미확인]. 베트남 프롭테크 생태계 내 미디어 노출, 투자 발표, 업계 인지도 전무하여 신뢰성 평가 불가. 유사 단계 경쟁사(Propzy, Rever) 대비 투명성 극히 낮음. 팀 역량 검증 불가능은 실행 리스크를 극대화함.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">PoC 아이디어는 롯데자산(매물 제공) + 롯데금융(보증금 대출, BNPL, 보험)과의 2단계 협력 구조를 제시하나, 구체적 운영 방안 결여 [부분 확인]. 1단계는 단순 매물 등록 대행으로 롯데가 기존 채널(자체 웹사이트, 주요 포털) 대비 EPIC을 선호할 이유 불명확. 2단계 금융 상품 연계는 롯데금융의 사업 전략, 규제 적합성, 수익 분배 모델이 전혀 언급되지 않아 실현 가능성 낮음 [미확인]. 롯데 계열사 특정 인프라나 고객 데이터 활용 방안 없이 '제휴 제안' 수준에 그침. 주요 사업분야(부동산, 금융) 연관성은 있으나 PoC 구체성 극히 부족.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">부동산(LOTTE Properties), 금융(Lotte Finance)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">LOTTE Properties, Lotte Finance</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데자산과 롯데금융과의 파일럿: 롯데 관리 부동산을 EPIC 플랫폼에 등록하여 검증된 매물, AI 매칭, 지도 기반 탐색으로 외국인 및 Gen Z 임차인 유치. 이후 롯데금융이 보증금 대출, BNPL, 보험 등 임대 금융 상품 제공하여 입주율 향상 및 임대 사이클 단축 목표.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">EPIC primarily addresses Social and Governance (ESG) challenges in the rental housing market. We improve access to safe, transparent, and affordable housing by reducing fraud, verifying listings, and helping renters make informed decisions. Our platform also promotes fair and trusted transactions through digital contracts, secure payments, and rental protection services. A PoC with LOTTE could expand access to quality housing, particularly for expatriates, young professionals, and relocating workers, while demonstrating how technology can improve transparency, trust, and operational efficiency across the rental ecosystem.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">불충분. 팀의 배경 및 전문성을 검증할 수 없어 프롭테크 사업에 필요한 핵심 역량(부동산 운영, 기술 개발, 금융 전문성) 보유 여부를 확인할 수 없음. 웹사이트는 '전략 및 금융', '기술 및 제품 개발', '프롭테크 및 임대 생태계' 전문성을 주장하나 이를 뒷받침하는 팀원의 경력이나 자격이 공개되지 않음.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">심각한 불완전성. 창업 팀의 구성원, 역할 분담, 책임 범위가 불명확함. 일반적인 스타트업이 갖추어야 할 CTO, CPO, CFO 등 핵심 임원진에 대한 정보가 전혀 없음. 자체 보고한 전문성 영역(전략/금융, 기술/제품, 프롭테크)을 담당하는 구체적인 팀원 정보 부재.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">[매우 낮음] 창업 팀의 신원, 경력, 전문성을 검증할 수 없는 것은 중대한 레드플래그임. 투명성 결여는 투자자, 파트너, 고객에게 높은 리스크를 제시함. 베트남 프롭테크 생태계에서 회사 또는 창업자에 대한 공개 기록, 미디어 언급, 또는 업계 인지도가 전무함. 유사 단계의 베트남 프롭테크 스타트업들(Propzy, Rever, APlus Homes 등)은 창업자 프로필, 자금 조달 이력, 미디어 노출이 명확히 있음에 비해, EPIC Center는 이러한 최소한의 신뢰성 지표조차 없음.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 갭은 **검증 가능한 팀 정보의 전면적 부재**임. 1) 창업자/CEO의 LinkedIn 프로필 없음 2) 팀원들의 이전 경력 및 성과 기록 없음 3) 프롭테크, 부동산 기술, 또는 관련 산업에서의 입증된 경험 없음 4) 미디어 노출이나 업계 인지도 전무 5) 투자 유치 또는 파트너십 발표 기록 없음. 이는 due diligence 진행이 불가능한 수준이며, 사업의 실행 가능성과 팀의 역량을 평가할 수 없음을 의미함.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Trần Thanh Tùng EPIC Center LinkedIn · EPIC Center epicgroup.vn founder CEO · EPIC Center Vietnam proptech rental · epicgroup.vn founders team · Nong Quoc Viet EPIC Group LinkedIn · Tran Thanh Tung EPIC Vietnam founder</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Trần Thanh Tùng</div><div class="member-role">Founder/CEO (보고됨)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 미확인 - 창업자로서 공개 프로필이 없다는 것은 투명성 문제를 제기함</span><span class='flag-item'>⑊ 온라인 상에서 검증 가능한 경력 정보 부재</span><span class='flag-item'>⑊ 동명이인이 매우 많아 신원 확인 불가</span><span class='flag-item'>⑊ 회사 웹사이트에 팀 소개 또는 리더십 정보 부재</span></div><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 공개된 정보로는 확인 불가. 프롭테크, 금융, 부동산 분야에서의 구체적인 경력이나 전문성을 확인할 수 없음. 동명이인이 다수 존재하며(IT 유통, 화장품, 스타트업 등 다양한 분야), EPIC Center의 CEO와 정확히 매칭되는 프로필을 특정할 수 없음.</div><div class="ma-overall"><strong>종합 평가:</strong> [심각한 우려] 창업자의 신원과 배경을 전혀 확인할 수 없음. 베트남 프롭테크 생태계에서 EPIC Center 또는 해당 창업자에 대한 언론 보도, 투자 발표, 또는 업계 인지도가 없음. 일반적인 스타트업 창업자들이 보유하는 LinkedIn 프로필, 미디어 노출, 또는 공개 track record가 전무하여 실제 사업 운영 경험 및 역량 검증이 불가능함.</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nong Quoc Viet</div><div class="member-role">Director-General (D&B 데이터베이스 기록)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 없음</span><span class='flag-item'>⑊ 온라인 검색으로 확인되는 경력 또는 전문성 정보 전무</span><span class='flag-item'>⑊ D&B 등록 외 검증 가능한 공개 정보 부재</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>EPIC GROUP JOINT STOCK COMPANY</td><td>Director-General</td><td>불명</td><td style="font-size:11px;">Dun & Bradstreet 데이터베이스에 주요 인물로 등재됨. 회사 주소: 42 Lane 860, Bach Dang Street, Thanh Luong Ward, Ha Noi</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 공개 정보로는 프롭테크, 부동산 임대 관리, 또는 디지털 플랫폼 분야의 전문성을 확인할 수 없음. D&B 레코드 외에는 배경 정보가 전혀 없음.</div><div class="ma-overall"><strong>종합 평가:</strong> [높은 우려] 법인 등기상 임원으로 보이나, 실제 프롭테크 사업 운영 경험이나 관련 분야 전문성을 전혀 확인할 수 없음. 공개된 프로필이나 업적이 없어 리더십 역량 평가 불가.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>창업팀 신원 및 경력 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] LinkedIn 프로필, 미디어 노출, 베트남 생태계 내 인지도 전무. 투명성 결여는 due diligence 진행 불가 수준.</td></tr>
+<tr><td>트랙션 데이터 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 25,000 사용자, 파트너 비율 주장의 검증 방법 불명. 매출, 거래 건수, 재구매율 등 핵심 지표 전무.</td></tr>
+<tr><td>수수료 모델 시장 수용성 불확실</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 무료 경쟁사 대비 유료 모델 선호도 검증 데이터 없음. 단위경제 미공개로 수익성 평가 불가.</td></tr>
+<tr><td>롯데 PoC 실현 가능성 낮음</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 협력 구조는 제시되나 계열사별 구체적 운영 방안, 수익 분배, 규제 적합성 검토 부재.</td></tr>
+<tr><td>자금 조달 실패 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 투자 유치 이력 없고, 현재 Seed 진행 중이나 리드 투자자나 진척 불명. 팀 투명성 부재로 조달 난항 예상.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">시장 규모 및 TAM/SAM/SOM 검증 부족</span><span class="dvtag dv-r">핵심 데이터 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 임대 시장의 일반적 규모는 언급되나 하노이 내 장기임대 세부 시장(TAM), EPIC이 현실적으로 도달 가능한 시장(SAM), 초기 목표 시장(SOM) 구분이 전무함 [미확인]. 주요 경쟁사 Batdongsan.com(30~40%), Chotot.com(20~30%) 점유율은 제시되나, EPIC의 현재 점유율이나 3년 내 목표 점유율 데이터 없음 [미확인]. 25,000 사용자 주장은 총 가입자인지 월활성 사용자인지, 실거래 완료자인지 구분 불명확하며 검증 방법 부재 [미확인]. 하노이 외 지역 확장 전략은 '롯데 협력 기대'에만 의존하고 구체적 로드맵 결여.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">차별화 요소의 실질적 검증 부재</span><span class="dvtag dv-r">정성적 주장만 존재</span><span class="deep-arrow">▾</span></div><div class="deep-body">AI 매칭, 검증된 매물, 디지털 계약을 핵심 차별화로 제시하나 경쟁 우위의 정량적 증거가 전무함 [미확인]. '사기 감소' 주장은 실제 사기 발생률 비교 데이터, 사기 신고 건수 감소율, 분쟁 해결 사례 수 등 구체적 지표 없이 정성적 서술에 그침 [미확인]. 검증 매물 비율(80% 전문 관리 체인, 20% 개인)은 언급되나, 검증 프로세스의 엄격성이나 허위 매물 적발률 등 신뢰성 지표 부재 [미확인]. AI 매칭 알고리즘의 정확도, 사용자 만족도, 경쟁사 대비 매칭 속도 등 비교 우위 데이터 전무 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">단위경제 및 수익화 구조의 구체성 부족</span><span class="dvtag dv-r">비즈니스 모델 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">예약 수수료(보증금의 30~60%)와 서비스 수수료(10%)라는 수익모델은 명시되나, 실제 거래당 평균 수수료, 월간 거래 건수, 총 매출액 등 핵심 지표 전무 [미확인]. 고객획득비용(CAC), 생애가치(LTV), LTV/CAC 비율 등 단위경제 데이터 부재로 수익성 판단 불가 [미확인]. '매출 있음(Has Revenue: Yes)' 표기에도 불구하고 2024/2025/2026 매출 수치 미기재로 성장 추이 확인 불가 [미확인]. 현재 $500K Seed 투자 유치 진행 중이나 리드 투자자, 밸류에이션, 진척 상황 불명확하며 투자 유치 이력 전무 [미확인].</div></div>
+<div class="deep-category-label">Category D — 창업팀</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자 신원 및 경력 검증 불가</span><span class="dvtag dv-r">심각한 신뢰성 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">창업자 Trần Thanh Tùng의 LinkedIn 프로필이 확인되지 않으며, 온라인에서 검증 가능한 경력이 전무하고 동명이인 다수로 신원 특정 불가능 [미확인]. Director Nong Quoc Viet 역시 D&B 등록 외 공개 정보가 없음 [미확인]. 자체 보고한 '투자/은행/전략 전문성', 'Fintech 제품 개발 경험', '프롭테크 운영 이해도'를 뒷받침하는 구체적 이력, 학력, 이전 소속 회사 정보 전무 [미확인]. 베트남 프롭테크 생태계 내 미디어 노출, 투자 발표, 컨퍼런스 발표 등 업계 인지도 흔적이 전혀 없어 유사 단계 경쟁사(Propzy, Rever) 대비 투명성 극히 낮음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">팀 구성 및 실행 역량 불투명</span><span class="dvtag dv-r">핵심 역량 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">전략/금융, 기술/제품, 프롭테크 3개 분야 전문성을 주장하나 각 분야 담당자의 구체적 이름, 직책, 경력, 실적이 일절 공개되지 않음 [미확인]. AI 매칭, 디지털 계약 등 기술 기반 서비스를 제공한다고 하나 CTO나 기술팀 구성원 정보 전무로 내부 개발 역량 확인 불가 [미확인]. 2019년 설립 이후 5년 이상 운영했다는 주장에도 불구하고 팀 확장 이력, 핵심 인재 영입 사례, 조직 규모 등 성장 지표 부재 [미확인]. 현재 25,000 사용자를 서비스한다는 주장과 팀 규모 간 정합성 확인 불가능하여 실행 리스크 극대화.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">업계 신뢰도 및 검증 가능성 부재</span><span class="dvtag dv-r">생태계 인지도 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 스타트업 생태계 주요 미디어(Tech in Asia, e27, Vietnam Investment Review) 및 프롭테크 업계 리포트에서 EPIC Center 언급 전무 [미확인]. 투자 유치 이력이 없어 외부 투자자의 실사(Due Diligence) 검증을 거친 적 없음 [미확인]. 협력사로 '전문 관리 체인 80%'를 언급하나 구체적 파트너사 명칭, 계약 조건, 파트너십 공식 발표 자료 부재 [미확인]. 웹사이트(https://epicgroup.vn/)의 트래픽, 앱 다운로드 수, 소셜미디어 팔로워 등 제3자 검증 가능한 지표 전무하여 25,000 사용자 주장의 신뢰성 평가 불가 [미확인].</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>베트남 임대 시장의 실재하는 사회문제(사기, 불투명성) 해결 방향 제시 [확인]</li>
+<li>수익모델(예약 및 서비스 수수료) 명확히 정의됨 [확인]</li>
+<li>롯데자산·금융과의 협력 가능성 있는 사업 영역(부동산, 금융) [부분 확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>창업팀 신원 및 경력 검증 불가, LinkedIn·미디어 노출 전무로 투명성 극히 낮음 [미확인]</li>
+<li>매출, 거래 건수, 단위경제 데이터 전무로 사업모델 검증 불가 [미확인]</li>
+<li>25,000 사용자 주장의 검증 방법 불명, 실사용자/거래 완료자 구분 없음 [미확인]</li>
+<li>주요 경쟁사(Batdongsan, Chotot) 대비 차별화 우위 실증 데이터 부재 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 도시화 및 Gen Z 임대 수요 증가 추세</li>
+<li>롯데 계열사 부동산·금융 인프라 활용 가능성</li>
+<li>디지털 임대 계약 및 금융 상품 결합 시너지</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>무료 대형 플랫폼(Batdongsan, Chotot) 대비 수수료 모델의 시장 수용성 불확실</li>
+<li>창업팀 투명성 부재로 인한 파트너·투자자 신뢰 확보 어려움</li>
+<li>베트남 임대차 규제 변화 및 금융상품 인허가 리스크</li>
+<li>검증된 트랙션 없이 Seed 자금 조달 실패 시 사업 지속 불가</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">EPIC Center는 베트남 Gen Z 임대 시장의 실재하는 문제(사기, 불투명성)를 다루나, 가장 큰 미검증 가정은 '검증 매물과 수수료 모델이 무료 경쟁사 대비 시장 점유율을 확보할 수 있다'는 점이다. 25,000 사용자 주장은 검증 방법 불명으로 [미확인], 매출 및 거래 건수 데이터 전무로 단위경제 평가 불가 [미확인]. 가장 심각한 것은 창업팀 신원과 경력을 전혀 검증할 수 없다는 점으로, LinkedIn 부재, 미디어 노출 전무, 베트남 프롭테크 생태계 내 인지도 없음은 투명성과 실행 역량에 중대한 의문을 제기한다 [미확인]. 롯데 PoC는 일반적 협력 제안 수준으로 계열사별 구체적 연계 방안 결여.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>EPIC Center · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

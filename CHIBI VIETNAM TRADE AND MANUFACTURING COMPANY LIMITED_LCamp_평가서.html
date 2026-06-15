@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHIBI VIETNAM TRADE AND MANUFACTURING COMPANY LIMITED — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">CHIBI VIETNAM TRADE AND MANUFACTURING COMPANY LIMITED</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Thai Binh City, Vietnam</span>
+          <span class="etag et-ind">Healthy Food</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">CHIBI VIETNAM TRADE AND MANUFACTURING COMPANY LIMITED</div>
+        <div class="hero-sub">설립 2018 · https://safato.vn/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Chibi는 베트남 소비자를 위한 식물성 피자, 파스타, 채식 간편식을 제조·유통하는 식품 제조기업이다. VinSchool 출신 교사 2명이 창업하였으며, 481개 유기농 매장·미니마트·리조트에 납품 중이고, 2025년 4분기~2026년 1분기 매출 $200으로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          식물성 피자가 베트남 시장에서 대중적 수요를 창출할 수 있다는 가정이 소규모 매출($200/분기)로는 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">481개</div><div class="kpi-desc">2025년 말 기준 유기농 매장·미니마트 납품처</div></div>
+<div class="kpi"><div class="kpi-val">$200</div><div class="kpi-desc">2025년 Q4 + 2026년 Q1 합산 (분기당 $100 수준)</div></div>
+<div class="kpi"><div class="kpi-val">$100K</div><div class="kpi-desc">현재 시드 라운드 유치 목표</div></div>
+<div class="kpi"><div class="kpi-val">7년</div><div class="kpi-desc">2018년 개인사업 시작, 2019년 법인 전환</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 베트남 식물성 식품 시장의 TAM/SAM/SOM이 전혀 제시되지 않았으며, 481개 유통망이 실제 판매량·재구매율·매출 기여도로 연결되는지 데이터 없음. [미확인] 경쟁 현황(Beyond Meat, 현지 채식 브랜드 등)과의 차별화 전략이 '베트남 입맛에 맞춤'이라는 서술적 주장뿐, 구체적 검증 부재. 분기 매출 $100 수준은 유통망 481개 대비 극히 저조하여 제품-시장 적합성(PMF) 검증 미달.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[확인] 2025년 4분기~2026년 1분기 합산 매출 $200 (분기당 약 $100) — 481개 유통망 대비 평균 점포당 분기 매출 $0.21로, 실질적 수익 구조 부재. [미확인] 손익 구조, 단위 경제성(unit economics), 마진율 전혀 공개 안 됨. [미확인] 투자 유치 이력 없고 목표 $100K 시드 라운드의 용도(운영비/마케팅/증설) 불명확. 7년간 운영했으나 법인 자본금 1억 VND(약 $4K)로 극히 소규모이며, 교사 출신 창업자의 식품 사업 전문성 결여로 투자 적합성 낮음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 식물성 식품을 통한 환경 부담 감소 및 동물성 재료 대체는 명확한 ESG 방향성이나, 실제 환경 성과(탄소 저감량, 용수 절감량 등) 측정 데이터 없음. [확인] 무첨가·무방부제 원칙은 건강 가치 기여. [미확인] 사회적 임팩트(안정적 일자리 창출 규모, 지역사회 기여 활동)는 서술뿐 구체적 성과 미제시. 깊이와 지속성 측면에서 제한적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 전문성 외부 검증 불가 — TEAM DEEP RESEARCH 미수행으로 창업자 경력·학력 사실 확인 안 됨. [부분 확인] IR Deck에서 VinSchool 출신 교사 2명 창업 명시되나, 식품 제조·유통·SCM 분야 실무 경험 전혀 언급 없음. [미확인] 조직도(경영진·영업·마케팅·생산·물류 부서) 존재는 확인되나 각 핵심 인력의 전문성·경력 구체적 정보 부재. 교사 → 식품 제조업 전환은 도메인 미스매치 리스크 높음. Key-person dependency 및 식품 산업 전문 역량 결여로 실행 기반 매우 취약.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[부분 확인] 제안된 PoC 아이디어(롯데마트 시범 유통, OEM/PB 개발, 물류 인프라 활용)는 식음료·유통 계열사와 방향성 일치하나, 실행 가능성 근거 부족. [미확인] 특정 롯데 계열사 명시 없고, 롯데 측 니즈·베트남 시장 내 롯데마트 식물성 식품 카테고리 전략과의 정합성 검증 안 됨. [미확인] Chibi 측 PoC 실행 역량(품질 안정성, 대량 공급 능력, 콜드체인 관리) 입증 데이터 없음. 분기 매출 $100 수준에서 롯데 규모의 B2B 납품·물류 표준 충족 가능성 매우 낮음. PoC 아이디어는 구조적으로 타당하나 실행 기반이 극히 취약하여 협력 가능성 제한적.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통/커머스(롯데백화점, 롯데마트), 식음료(롯데리아), 물류(롯데글로벌로지스), 호텔·관광</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시 없음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데마트 내 Chibi 피자 및 식물성 식품 시범 유통, OEM/PB 제품 공동 개발, 롯데 물류·냉장 인프라 활용한 유통 최적화 테스트 (3~6개월)</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Chibi’s solution addresses multiple Environmental, Social, and Governance (ESG) impacts through the development of plant-based and healthier food products.
+
+Environmental Impact:
+Chibi focuses on plant-based and natural food products that help reduce dependence on animal-based ingredients, contributing to lower environmental impact and supporting sustainable consumption trends. The company also prioritizes products without preservatives, harmful additives, or artificial coloring, promoting healthier and cleaner food systems.
+
+Social Impact:
+Chibi aims to provide consumers with safe, convenient, and healthier food choices while creating stable jobs and a positive working environment for young employees. The company emphasizes employee training, teamwork, and long-term personal development. In addition, Chibi actively promotes a healthier lifestyle and community-oriented values through its products and business culture.
+
+Governance Impact:
+Chibi is building a transparent and professionally managed organization with clear operational structures across production, quality control, logistics, sales, and administration. The company operates under food safety standards and continuously improves internal systems to support sustainable growth.
+
+A PoC collaboration with LOTTE could significantly amplify these ESG impacts by leveraging LOTTE’s retail ecosystem, logistics infrastructure, and customer network. Through pilot distribution programs, customer testing, and co-development opportunities, the partnership could help accelerate access to healthier plant-based food products for a wider consumer market, while also strengthening sustainable food innovation in Vietnam and potentially across regional markets.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>제품-시장 적합성(PMF) 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 481개 유통처 대비 분기 매출 $100는 점포당 $0.21로 실질 판매 부재 수준. 재구매율·고객 만족도 데이터 없어 시장 수요 검증 안 됨.</td></tr>
+<tr><td>창업팀 도메인 전문성 부족</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 교사 출신 창업자의 식품 제조·SCM·영업 실무 경험 외부 검증 불가. 7년 운영 기간 대비 성과 부진은 실행 역량 취약 시사.</td></tr>
+<tr><td>재무 기반 취약</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 법인 자본금 1억 VND(약 $4K), 투자 유치 이력 없음. 운영 자금·마케팅·증설 재원 확보 경로 불명확.</td></tr>
+<tr><td>B2B 공급 능력 미입증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 롯데마트 등 대형 유통과의 PoC 시 요구되는 대량 공급·품질 균일성·콜드체인 관리 능력 입증 데이터 전무.</td></tr>
+<tr><td>단일 사업 의존도</td><td><span class="rpill-sm rp-m">중간</span></td><td>[확인] 피자·파스타 중심 제품 구조. 식물성 식품 다각화 언급되나 실제 매출 기여도 불명.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category C — 식음료·소비재</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">제품-시장 적합성(PMF) 검증 수준</span><span class="dvtag dv-r">심각한 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 481개 유통망 대비 2분기 합산 매출 $200(분기당 $100)은 점포당 분기 $0.21 수준으로, 실질적 판매 발생 여부 자체가 의심됨. [미확인] 재구매율, SKU별 판매량, 유통망 중 active seller 비율 등 PMF 핵심 지표 전혀 제시 안 됨. [미확인] 베트남 식물성 식품 시장의 TAM/SAM/SOM 및 경쟁사 대비 차별점(Beyond Meat, Green Common, 현지 채식 브랜드)에 대한 정량적 근거 부재. 7년 운영에도 매출 구조가 형성되지 않아 제품-시장 적합성 미달로 판단됨.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-2</span><span class="deep-title">생산·품질 관리 역량 및 스케일업 가능성</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 생산 시설 규모, 위치, HACCP·ISO 등 식품안전 인증, 일일/월간 생산 캐파시티 정보 전무. [미확인] 콜드체인 물류 체계, 유통기한 관리, 재고 회전율 등 식품 SCM 핵심 요소 검증 안 됨. [미확인] 롯데마트 수준의 B2B 납품 요구사항(대량 공급 안정성, 품질 편차 최소화, 리콜 대응 체계) 충족 여부 불명. 법인 자본금 1억 VND(약 $4K) 및 분기 매출 $100 수준에서 대형 유통망 공급 역량 보유 가능성 극히 낮음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-3</span><span class="deep-title">단위 경제성(Unit Economics) 및 수익 구조</span><span class="dvtag dv-r">데이터 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 제품별 원가율, 판매가, 유통 마진, 순이익률 등 손익 구조 전혀 공개 안 됨. [미확인] CAC(고객 획득 비용), LTV(고객 생애 가치), 마케팅 효율 등 성장 지표 부재. [미확인] 현재 BEP(손익분기점) 도달 여부, 월 고정비·변동비 규모 불명. 분기 $100 매출로는 2인 창업팀 급여조차 불가능한 수준으로, 사업 지속성 자체가 의문. 투자 목표 $100K의 용도(운영비/마케팅/시설 증설) 및 효과 예측 근거 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-4</span><span class="deep-title">롯데 계열사 협력 실행 가능성</span><span class="dvtag dv-r">구조적 미스매치</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 제안된 PoC(롯데마트 시범 유통, OEM/PB 개발, 물류 인프라 활용)는 식음료·유통 계열사와 방향성은 일치하나, 실행 기반 극히 취약. [미확인] 롯데마트 베트남 내 식물성 식품 카테고리 전략, 기존 협력사(예: 현지 vegan 브랜드) 현황, Chibi 제품의 롯데 표준(품질·가격·패키징) 적합성 검증 안 됨. [미확인] 대량 납품 시 안정적 공급 능력, 품질 일관성, 클레임 대응 체계 입증 자료 전무. 분기 매출 $100 수준의 스타트업이 롯데 규모의 B2B 파트너 요구사항 충족 가능성 사실상 없음.</div></div>
+<div class="deep-category-label">Category D — 창업팀 전문성·실행력</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업팀 도메인 전문성 및 산업 경험</span><span class="dvtag dv-r">심각한 미스매치</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] IR Deck에서 VinSchool 출신 교사 2명 창업 명시되나, 식품 제조·유통·SCM·품질 관리 분야 실무 경험 전혀 언급 없음. [미확인] 창업자 학력·경력 사실 확인 불가(TEAM DEEP RESEARCH 미수행). [미확인] 식품안전 규제, HACCP, 콜드체인, 유통 계약 등 핵심 도메인 지식 보유 증거 부재. 교사 → 식품 제조업 전환은 극도로 높은 도메인 리스크를 내포하며, 7년간 매출 $200 수준에 머문 것은 산업 이해도 결여의 결과로 해석됨.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">조직 구성 및 핵심 인력 역량</span><span class="dvtag dv-a">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] IR Deck에 조직도(경영진·영업·마케팅·생산·물류 부서) 존재 확인되나, 각 핵심 인력의 이름·경력·전문성 구체적 정보 전무. [미확인] 생산 책임자의 식품공학 배경, 영업 책임자의 B2B 유통 경험, 품질 관리자의 인증 이력 등 실행 역량 입증 불가. [미확인] 외부 자문단(식품 산업 멘토, 법률·회계 전문가) 존재 여부 불명. Key-person dependency 리스크 및 전문 인력 부재로 사업 확장 시 조직 역량 한계 명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">사업 지속성 및 창업자 몰입도</span><span class="dvtag dv-a">의문 부호</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 2018년 설립(7년 운영) 및 481개 유통망 구축은 일정 수준의 persistence 시사하나, [미확인] 창업자의 full-time 몰입 여부, 타 직업 겸업 가능성 불명. [미확인] 7년간 매출 $200 수준(연 환산 약 $400)은 사실상 수익 미발생 상태로, 생계 유지 방식(가족 지원, 타 소득원) 의문. [미확인] 과거 pivot 이력, 전략 변경, 투자 유치 시도 실패 경험 등 사업 진화 과정 불명. 장기 저성과 속에서도 사업 지속 배경과 향후 돌파 전략 근거 부족.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[확인] 481개 유통처 확보 — 유기농 매장·미니마트·리조트 네트워크 보유</li>
+<li>[확인] 자체 생산 시설(흥옌성) 및 조직 구조(영업·마케팅·생산·물류) 갖춤</li>
+<li>[확인] 무첨가·무방부제 원칙으로 건강식품 포지셔닝 명확</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[확인] 분기 매출 $100 수준 — 481개 유통처 대비 점포당 분기 $0.21로 실질 판매 극히 저조</li>
+<li>[미확인] 창업자 식품 산업 전문성 외부 검증 불가, 교사 → 제조업 전환 도메인 미스매치</li>
+<li>[미확인] 손익 구조·단위 경제성·재구매율 데이터 전무 — 사업 지속가능성 불투명</li>
+<li>[미확인] 투자 유치 이력 없고 법인 자본금 $4K 수준 — 재무 기반 취약</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 건강식·채식 트렌드 성장 가능성</li>
+<li>롯데 물류·냉장 인프라 활용 시 유통 효율화 잠재력</li>
+<li>OEM/PB 협력 통한 대기업 유통망 진입 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Beyond Meat 등 글로벌 식물성 식품 브랜드의 베트남 시장 진출</li>
+<li>낮은 재구매율 또는 제품-시장 부적합 시 유통처 이탈 위험</li>
+<li>대량 납품·품질 안정성 요구 충족 실패 시 B2B 협력 불가</li>
+<li>자본 부족으로 마케팅·R&D 투자 제약 심화</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Chibi는 식물성 피자·채식 간편식을 481개 유통처에 납품 중이나, 2025년 4분기~2026년 1분기 합산 매출이 $200(분기당 $100)에 불과하여 제품-시장 적합성이 검증되지 않았다. 교사 출신 창업자 2명의 식품 제조·유통 전문성이 외부 검증되지 않았고, 7년 운영 기간 대비 매출·투자 유치 성과가 극히 저조하다. 롯데마트 시범 유통 및 OEM 협력 제안은 방향성은 있으나, 대량 공급 능력·콜드체인 관리·품질 안정성 입증 데이터가 전무하여 PoC 실행 가능성이 낮다. 가장 큰 검증 안 된 가정: 식물성 피자가 베트남 대중 시장에서 규모 있는 수요를 창출할 수 있다는 전제가 현 매출 수준으로는 입증되지 않았다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>CHIBI VIETNAM TRADE AND MANUFACTURING COMPANY LIMITED · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

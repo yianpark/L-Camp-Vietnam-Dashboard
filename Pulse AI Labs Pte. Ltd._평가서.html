@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulse AI Labs Pte. Ltd. — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Pulse AI Labs Pte. Ltd.</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City, Vietnam</span>
+          <span class="etag et-ind">AI</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Pulse AI Labs Pte. Ltd.</div>
+        <div class="hero-sub">설립 2026 · https://thepulseapi.com</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">온라인 쇼핑몰의 익명 방문자(전체 트래픽의 98%)가 쿠키나 로그인 없이 개인화된 경험을 얻지 못해 이탈하는 문제가 있다. Pulse AI Labs는 디바이스, 시간대, 유입 경로 등 행동 신호를 50ms 이내에 분석해 페르소나를 추론하고 맞춤 상품을 노출하는 API를 SaaS 구독 모델($99~1,499/월)로 제공한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          행동 신호 기반의 실시간 페르소나 추론(50ms 이내)이 쿠키 기반 개인화와 동등하거나 더 높은 전환율 향상을 가져온다는 기술적·상업적 가설이 실제 고객 환경에서 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$200K</div><div class="kpi-desc">Pre-seed 라운드 목표 금액</div></div>
+<div class="kpi"><div class="kpi-val">특허 출원 중</div><div class="kpi-desc">EchoGraph 엔진 USPTO 특허 신청 [미확인]</div></div>
+<div class="kpi"><div class="kpi-val">5개 예정</div><div class="kpi-desc">2026년 4월 베트남 이커머스 [미확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] 쿠키 폐지(2024 Google)와 AI 에이전트 성장이라는 시장 타이밍 논리는 타당하나, 베트남/동남아 타겟 시장 규모가 구체적으로 제시되지 않음. 글로벌 '연간 $260B 손실' TAM은 전체 이커머스 개인화 실패액이며 SAM/SOM 분할 없음 [미확인]. 경쟁사(Nosto, Bloomreach, Algolia) 대비 차별점(쿠키 없는 즉시 작동, 저렴한 가격)은 명확하나 실제 고객 채택 증거 부재. 시장 확장 가능성은 기술 검증 이후 판단 가능하나 현재로서는 근거 불충분.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 문제(익명 방문자 98% 이탈)-솔루션(50ms 페르소나 추론)-수익(SaaS 구독) 논리는 명확하나, 실제 매출 이력 전무. 데모 환경 A/B 테스트(5,000 세션, 전환율 +33%)는 통제된 환경 결과이며 실제 고객 검증 아님 [부분 확인]. 5개 파일럿 론칭(2026년 4월) 계획은 구체적이나 계약서나 LOI 없음 [미확인]. AWS Activate $24K 크레딧 주장도 외부 검증 불가 [미확인]. 투자 유치 이력 없으며 $200K 목표는 초기 단계 적정 수준이나, 투자 적합성 판단 위해 기술 검증 및 고객 확보가 선행되어야 함.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] ESG 연계성: 개인정보 미수집 구조가 베트남 AI법 준수 및 데이터 주권 문제 해결에 기여한다는 논리는 명확함. 과거 이력 없이 현재 의도만으로 개인화하여 신규/저소득 사용자 포용성을 높인다는 사회적 가치 주장도 이론적으로 타당. Rust 기반 에너지 효율 주장은 일반적으로 알려진 언어 특성과 일치하나 실제 측정 데이터 없음 [미확인]. 문제 정의(개인정보 침해 vs 개인화 트레이드오프)는 명확하나, 솔루션의 실제 임팩트 규모·깊이·지속성은 PoC 이후 판단 가능. 사회적 가치 창출 방향성은 인정되나 검증 전 단계.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[심각한 미확인] 팀 심층 조사 결과: (1) 확인된 인원은 창업자 Suman Bonakurthi 1명뿐. LinkedIn 프로필에서 15년 마이크로서비스 아키텍처 경험 확인되나, 지원서 주장 '20년 이상 경력'과 불일치 [부분 확인]. (2) Cox Automotive, Criteo 등 광고 기술 주요 기업 경력 주장은 전혀 검증되지 않음 [미확인]. (3) Rust, AI/ML 특화 경험, 베이지안 추론 전문성 등 핵심 기술 역량 확인 불가 [미확인]. (4) 공동창업자, CTO, CPO 등 핵심 팀원 전무. Da Nang 엔지니어링 허브 구축 주장도 검증 불가 [미확인]. (5) 회사 웹사이트 정보 부재, Singapore 법인 등록 미확인, USPTO 특허 검색 불가 [미확인]. 광고 기술 도메인 전문성 부재, 단독 창업자 키맨 리스크 매우 높음. 실행 기반 검증 불가능.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">[부분 확인] 식품·유통(롯데마트), 호텔·관광(롯데시네마) 분야 부합. PoC 아이디어는 구체적: 롯데이노베이트 API 게이트웨이 통합, 롯데마트 West Lake Hanoi + 시네마 트래픽 10% A/B 테스트, 50ms 응답 속도 검증, 평균 장바구니 15~20% 증가 목표 등 세부 계획 명시 [확인]. 그러나 (1) 특정 롯데 계열사 지정 없음 - '롯데이노베이트와 협력' 언급만으로는 실제 협업 가능성 불명 [미확인]. (2) PoC 실행 전제 조건(SDK 통합 2시간, 베트남 법규 준수 검증 등) 검증 안 됨. (3) 롯데 인프라(ERP/CRM 연동) 사용은 언급되나 실제 데이터 접근 방식 불명확. (4) 기술 미검증 상태에서 롯데 트래픽에 배포하는 것은 운영 리스크. PoC 계획은 세밀하나 실행 가능성은 기술 검증 후 판단 가능.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통(롯데마트, 롯데백화점), 호텔/관광(롯데시네마, 롯데월드), AI/IT(롯데이노베이트)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미지정</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데마트 앱 및 롯데시네마 플랫폼에서 익명 방문자(전체의 70% 이상)를 대상으로 PulseAPI의 EchoGraph 엔진을 배포하여, 첫 클릭부터 실시간 개인화를 제공함으로써 평균 장바구니 금액 15~20% 증가를 목표로 함. 4~6개월 PoC 기간 동안 롯데이노베이트의 API 게이트웨이와 Rust 기반 SDK를 통합하고, 롯데마트 West Lake Hanoi 및 롯데시네마 트래픽의 10%에 대해 A/B 테스트를 진행하여 50ms 이하 응답 속도 유지 및 전환율 향상을 검증. 베트남 AI법(Law No. 134/2025/QH15) 준수하는 개인정보 미수집 구조 시연.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">거버넌스(G): 베트남 AI법 및 개인정보보호법 준수를 위한 '제로 개인정보' 아키텍처로 쿠키나 영구 이력 없이 의도 매핑. 롯데의 컴플라이언스 리스크 및 데이터 유출 책임 감소. 사회(S): 과거 구매 이력이나 인구통계 데이터 없이 현재 의도만으로 개인화하여 신규·저소득·익명 사용자도 동등한 서비스 경험 제공. 필터 버블 및 차별적 가격 책정 위험 완화. 환경(E): Rust 언어 기반 저지연 엔진으로 요청당 컴퓨팅 전력 소모를 레거시 Python 모델 대비 대폭 절감. AWS 에너지 최적화 인스턴스 활용으로 롯데의 Scope 3 탄소 배출 증가 없이 AI 확장 가능.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">광고 기술 및 AI 기반 개인화 솔루션을 구축하는 데 필요한 핵심 역량(광고 플랫폼 경험, 머신러닝/AI 전문성, 제품 관리, 사업 개발 등)이 팀 구성에서 확인되지 않음. 확인된 인원은 창업자 1명뿐이며, 회사가 주장하는 'Da Nang 기술 허브의 고성능 엔지니어링 팀'은 검증되지 않음. 비즈니스 리더십, 도메인 전문가, 제품 책임자 등 핵심 역할 공석 또는 미확인.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">팀 정보가 거의 없어 완전성 평가 불가. 단독 창업자 구조로 보이며, 프리시드 단계 스타트업이 주장하는 복잡한 기술 스택(Rust 저지연 시스템, 베이지안 추론, 실시간 행동 매핑 등) 및 사업 실행(5개 파일럿, 특허 출원, AWS 크레딧, 액셀러레이터 관계 등)을 1인 또는 소규모 팀으로 달성했다는 것이 검증되지 않음. CTO, CPO, Head of Business Development 등 필수 역할 미확인.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">심각한 신뢰성 문제. 회사가 제공한 배경 정보의 대부분(20년 경력, 주요 기업 경력, 특허, AWS 크레딧, 파트너십 등)이 독립적으로 검증되지 않음. 웹사이트는 접근 불가하거나 정보 부재. Singapore Pte. Ltd. 등록도 확인 안 됨. LinkedIn에서 확인된 정보(15년 마이크로서비스 경험, University of Hertfordshire 학력)와 회사 주장 간 불일치. 투자자 실사 시 모든 주장에 대한 문서 증빙 필수.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 검증 가능한 정보의 거의 전면적 부재. 구체적으로: (1) 팀 구성 전체 불명확 - 공동창업자, 핵심 엔지니어, 제품/비즈니스 리더 미확인, (2) 광고 기술 도메인 전문성 부재 - Criteo, Cox Automotive 등 주장된 경력 미검증, (3) 기술적 실행 증거 부족 - EchoGraph 엔진, 특허, 실제 제품 존재 여부 불명, (4) 사업 추진 검증 불가 - 파일럿 고객, 파트너십, 펀딩 현황 확인 불가, (5) 회사 법적 실체 미확인 - 싱가포르 등록 정보 검색 불가. 투자 고려 시 철저한 오프라인 실사 및 레퍼런스 체크 필수.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Suman Bonakurthi LinkedIn · Suman Bonakurthi Pulse AI Labs · thepulseapi.com founder team · "Pulse AI Labs" Singapore thepulseapi · Suman Bonakurthi GSI Software Vietnam · site:thepulseapi.com about team</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Suman Bonakurthi</div><div class="member-role">Founder</div></div>
+    <div class="member-meta"><a href="https://www.linkedin.com/in/suman-bonakurthi/" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⚑ 회사 웹사이트(thepulseapi.com)에 공개 정보 없음 또는 웹사이트 미운영</span><span class='flag-item'>⚑ 회사가 주장하는 '20년 이상 경력'과 LinkedIn 프로필의 '15년 경력' 불일치</span><span class='flag-item'>⚑ Cox Automotive, Criteo 등 주요 기업 경력 미확인</span><span class='flag-item'>⚑ 공동 창업자 또는 핵심 팀원 정보 전무</span><span class='flag-item'>⚑ Pulse AI Labs Pte. Ltd. 회사 등록 정보 미확인</span><span class='flag-item'>⚑ USPTO 특허 출원(EchoGraph™) 검증 불가</span><span class='flag-item'>⚑ $24,000 AWS Activate 크레딧 주장 검증 불가</span><span class='flag-item'>⚑ Antler, AngelCentral 파트너십 주장 검증 불가</span><span class='flag-item'>⚑ 2026년 4월 5개 파일럿 론칭 주장이 구체적이나 검증 불가</span><span class='flag-item'>⚑ 단독 창업자 의존도 매우 높음(키맨 리스크)</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>학위 정보 미확인/전산학/소프트웨어 관련 추정</td><td>University of Hertfordshire</td><td>미확인</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>GSI Software</td><td>Microservices Architect</td><td>현재 근무 중으로 추정 (2024년 12월 기준)</td><td style="font-size:11px;">15년 이상의 마이크로서비스 아키텍처 경험 보유. 호치민시 거주. 500+ LinkedIn 연결</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 15년 이상의 마이크로서비스 아키텍처 경험은 고동시성 분산 시스템 구축에 적합하나, 광고 기술(Ad-Tech)이나 개인화(personalization) 도메인에서의 직접적인 경력은 확인되지 않음. 회사가 주장하는 Cox Automotive, Criteo 등 주요 기업 경력은 검증되지 않았음. Rust, NestJS, Python 등 언급된 기술 스택과 AI/ML 특화 경험도 확인 불가. 베트남/동남아 지역 기반은 팀 구성 전략과 일치함.</div><div class="ma-overall"><strong>종합 평가:</strong> 검증 가능한 정보가 극히 제한적임. LinkedIn 프로필에서 확인된 마이크로서비스 아키텍처 경험은 있으나, 회사가 주장하는 광고 기술 도메인 전문성, 주요 기업 경력, 기술 리더십 등은 검증되지 않음. 단독 창업자로 보이며 팀 구성 상태 불명확. 프리시드 단계 스타트업으로서 공개 정보가 매우 부족하여 실제 실행 능력과 기술적 역량 평가 불가능.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>기술 검증 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 데모 환경 테스트만 존재. 실제 고객 인프라에서 50ms 응답, 75% 이상 정확도, 전환율 향상 달성 여부 불명. PoC 실패 시 비즈니스 모델 전체 무효화.</td></tr>
+<tr><td>팀 구성 및 실행 역량 불확실성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 확인된 팀원 1명. 광고 기술 도메인 경력 미검증. 주장된 20년 경력, 주요 기업 이력, 기술 전문성 독립 확인 불가. 복잡한 기술(Rust 저지연 시스템, 베이지안 추론) 구현 가능성 의문.</td></tr>
+<tr><td>고객 확보 불확실성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 5개 파일럿 론칭 계획 있으나 계약·LOI 전무. SaaS 구독 모델($99~1,499/월)의 실제 고객 지불 의사 검증 안 됨. 통합 2시간 주장도 실제 고객 환경 검증 필요.</td></tr>
+<tr><td>회사 실체 및 지식재산 검증 불가</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] Singapore Pte. Ltd. 등록, USPTO 특허(EchoGraph), AWS Activate 크레딧, Antler/AngelCentral 관계 등 주요 주장 모두 독립 검증 불가. 투자 전 실사 필수.</td></tr>
+<tr><td>롯데 PoC 실행 전제 조건 불충족</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] PoC 계획은 구체적이나, 롯데이노베이트 API 게이트웨이 실제 연동 가능성, 베트남 법규 준수 검증, 대규모 트래픽 배포 승인 여부 불명. 기술 미검증 상태 배포는 운영 리스크.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge active">✓ 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">TAM/SAM/SOM 구조 및 베트남 시장 집중도</span><span class="dvtag dv-r">시장 규모 근거 불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">글로벌 '$260B 손실' TAM은 전체 이커머스 개인화 실패액을 인용한 것으로 보이나, 실제 접근 가능한 SAM(Serviceable Available Market)과 SOM(Serviceable Obtainable Market) 분할이 전무함 [미확인]. 특히 베트남/동남아 타겟 시장의 구체적 규모, 연간 성장률, 경쟁 강도 등 정량 지표가 제시되지 않아 실제 매출 잠재력 판단 불가 [미확인]. 쿠키 폐지(Google 2024)와 AI 에이전트 성장이라는 시장 타이밍 논리는 타당하나, 베트남 이커머스 시장에서 실제로 개인화 API에 월 $99~1,499를 지불할 의사가 있는 타겟 고객 수가 검증되지 않음 [미확인]. Nosto, Bloomreach, Algolia 등 기존 경쟁사 대비 '쿠키 없는 즉시 작동'과 '저가 가격' 차별점은 명확하나, 이들이 베트남 시장에서 실제로 점유율을 확보하고 있는지, Pulse가 대체재로서 채택될 수 있는 시장 증거가 부재함 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">기술 검증 및 실제 운영 환경 적용 가능성</span><span class="dvtag dv-r">데모 환경 테스트만 존재</span><span class="deep-arrow">▾</span></div><div class="deep-body">50ms 응답 속도, 10,000+ 동시 요청 처리 능력, EchoGraph™ 엔진의 베이지안 추론 등 핵심 기술 스펙이 명시되어 있으나, 모두 자사 주장이며 독립적인 제3자 검증 없음 [미확인]. 5,000 세션 A/B 테스트에서 전환율 +33% 결과는 통제된 데모 환경에서 얻은 것으로, 실제 고객 트래픽·데이터 다양성·예외 상황 처리 능력이 검증되지 않음 [부분 확인]. Rust 기반 저지연 처리와 AWS 클라우드 네이티브 아키텍처는 일반적으로 알려진 기술 선택이나, 실제 프로덕션 환경에서 롯데마트급 트래픽(수십만 동시 접속)을 감당할 수 있는지 입증 부재 [미확인]. 특히 베트남 네트워크 인프라 조건(레이턴시, CDN 가용성)에서 50ms 응답 보장이 가능한지 실증 데이터 없음 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">SaaS 구독 모델 실현 가능성 및 Unit Economics</span><span class="dvtag dv-r">수익 모델 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">$99(Starter) ~ $1,499(Growth) 월 구독 가격은 글로벌 SaaS 벤치마크 대비 저가 포지셔닝이나, 베트남 중소 이커머스의 지불 능력·의지가 검증되지 않음 [미확인]. 5개 파일럿 론칭 계획(2026년 4월)은 구체적이나 실제 계약서, LOI(Letter of Intent), 또는 파일럿 고객사 명단이 제시되지 않아 실행 가능성 판단 불가 [미확인]. CAC(Customer Acquisition Cost), LTV(Lifetime Value), Churn Rate 등 SaaS 핵심 지표가 전무하며, 초기 고객 확보 전략(인바운드 마케팅, 파트너십, 세일즈 조직)이 불명확함 [미확인]. AWS Activate $24K 크레딧 주장도 외부 검증 불가하며, 실제 인프라 비용·마진 구조·확장성 경제가 제시되지 않아 수익성 판단 불가 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">경쟁 우위 지속 가능성 및 IP 보호</span><span class="dvtag dv-a">특허 미확인, 기술 장벽 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">USPTO 특허 출원 중(patent-pending)이라는 주장이 있으나, 실제 출원 번호·공개 여부·청구항 범위가 확인되지 않음 [미확인]. EchoGraph™ 엔진의 핵심 알고리즘(베이지안 추론, 디지털 바디 랭귀지 분석)이 특허로 보호받을 수 있는지, 또는 경쟁사가 유사 기술로 단기간 내 모방 가능한지 불명확함 [미확인]. Nosto, Bloomreach, Algolia 등 기존 경쟁사들도 AI 기반 개인화·실시간 추론을 제공하고 있으며, '쿠키 없는 작동'은 기술적 차별점이나 장기적 경쟁 우위로 전환될 수 있는 네트워크 효과·데이터 플라이휠이 부재함 [부분 확인]. 개인정보 미수집 구조가 베트남 AI법(Law No. 134/2025/QH15) 준수에 유리하다는 논리는 타당하나, 이것만으로는 시장 점유를 방어하기 어려우며, 실제 법적 검토 의견서나 컴플라이언스 인증이 제시되지 않음 [미확인].</div></div>
+<div class="deep-category-label">Category D — 팀 역량 및 실행력</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자 배경 검증 및 키맨 리스크</span><span class="dvtag dv-r">경력 불일치, 단독 창업자</span><span class="deep-arrow">▾</span></div><div class="deep-body">확인된 인원은 창업자 Suman Bonakurthi 1명뿐이며, LinkedIn 프로필에서 약 15년 마이크로서비스 아키텍처 경험이 확인되나 지원서 주장 '20년 이상 경력'과 불일치함 [부분 확인]. Cox Automotive, Criteo 등 글로벌 광고 기술 주요 기업 경력 주장은 LinkedIn이나 공개 자료에서 전혀 검증되지 않음 [미확인]. Rust, AI/ML 특화 경험, 베이지안 추론 전문성 등 핵심 기술 역량을 입증할 수 있는 오픈소스 기여, 논문, 기술 블로그, 또는 과거 프로젝트 포트폴리오가 전무함 [미확인]. 공동창업자, CTO, CPO 등 핵심 팀원이 부재하여 단독 창업자 키맨 리스크가 매우 높으며, Da Nang 엔지니어링 허브 구축 주장도 현재로서는 계획 단계에 불과해 실제 팀 규모·조직도·채용 현황이 불명확함 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">Ad-Tech 도메인 전문성 및 베트남 시장 이해도</span><span class="dvtag dv-r">도메인 전문성 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">Criteo, Cox Automotive 등 광고 기술 기업 경력 주장이 검증되지 않아, 실제로 'Cold Start' 문제·RTB(Real-Time Bidding)·개인화 엔진 설계 등 Ad-Tech 핵심 도메인에 대한 깊이 있는 이해가 있는지 확인 불가 [미확인]. 베트남 이커머스 시장에 대한 구체적 인사이트(주요 플레이어, 결제 시스템, 소비자 행동 패턴, 규제 환경)가 지원서에 제시되지 않았으며, '베트남 AI법 준수'라는 주장도 법률 자문 의견서나 컴플라이언스 파트너십 없이 일반론에 그침 [미확인]. 롯데 계열사와의 협력 언급도 특정 담당자·계약서·MOU 없이 '롯데이노베이트와 협력'이라는 추상적 표현만 있어, 실제 네트워크·관계·신뢰가 구축되어 있는지 의문 [미확인]. 베트남 로컬 기업(Tiki, Shopee Vietnam, Lazada Vietnam)과의 파트너십이나 파일럿 논의 증거가 전무하여, 시장 진입 전략의 실행 가능성이 낮음 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">회사 법인 및 운영 실체 검증</span><span class="dvtag dv-r">법인 등록 미확인</span><span class="deep-arrow">▾</span></div><div class="deep-body">회사명 'Pulse AI Labs Pte. Ltd.'는 싱가포르 법인 형태를 암시하나, ACRA(Accounting and Corporate Regulatory Authority) 공개 등록 정보에서 확인되지 않음 [미확인]. 공식 웹사이트(https://thepulseapi.com)는 접속 불가하거나 콘텐츠가 부재하여, 실제 제품 데모·기술 문서·고객 사례·팀 소개 등 투명성 확보가 안 됨 [미확인]. 베트남 호치민 소재지 주장도 구체적인 오피스 주소·임대 계약서·현지 법인 등록 여부가 제시되지 않아 실제 운영 거점인지 불명확함 [미확인]. 2026년 설립이라는 점에서 초기 단계임을 감안하더라도, 법인 등록·사업자 등록증·은행 계좌 개설 등 최소한의 운영 실체 증거가 필요하나 전무함 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-4</span><span class="deep-title">자본 효율성 및 펀딩 히스토리</span><span class="dvtag dv-a">투자 유치 이력 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">AWS Activate $24K 크레딧 확보 주장은 일반적으로 스타트업이 받을 수 있는 혜택이나, 실제 승인 이메일·계약서·사용 내역이 제시되지 않아 검증 불가 [미확인]. 현재까지 투자 유치 이력이 전무하며, Antler·AngelCentral 등과의 '관계 구축' 주장도 실제 투자 심사 진행·텀시트·커밋먼트 증거가 없어 단순 네트워킹 수준으로 보임 [미확인]. $200K 목표 펀딩 규모는 프리시드 단계로 적정하나, 이를 통해 5개 파일럿 론칭·Da Nang 엔지니어링 허브 구축·제품 고도화를 모두 실행할 수 있는 자금 계획(Burn Rate, Runway, Milestone)이 불명확함 [미확인]. 창업자 자체 자본 투입 여부, 팀 급여 지급 방식, 초기 고객 확보를 위한 마케팅 예산 등 자본 효율성 지표가 전혀 제시되지 않아 재무 건전성 판단 불가 [미확인].</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>쿠키 폐지 및 AI 에이전트 시장 성장이라는 명확한 시장 타이밍 포착 [확인]</li>
+<li>개인정보 미수집 구조로 베트남 AI법(Law No. 134/2025) 등 규제 리스크 선제 대응 [부분 확인]</li>
+<li>PoC 계획이 구체적(롯데마트/시네마 트래픽 10% A/B 테스트, 4~6개월 일정, 15~20% 전환율 목표) [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>팀 구성 심각한 불완전성: 확인된 인원 1명, 광고 기술 도메인 전문성 미검증, 공동창업자·CTO·CPO 부재 [미확인]</li>
+<li>매출 전무, 파일럿 고객 계약 없음, 실제 고객 환경 기술 검증 부재 [미확인]</li>
+<li>회사 법인 등록, 특허 출원, AWS 크레딧 등 주요 주장 외부 검증 불가 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남/동남아 이커머스 성장 및 개인정보보호 규제 강화 추세와 제품 방향성 일치</li>
+<li>롯데 계열사(마트, 시네마 등) 대규모 트래픽을 통한 기술 검증 및 레퍼런스 확보 가능성</li>
+<li>AI 에이전트 시장 성장 시 실시간 의도 추론 API 수요 증가 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Nosto, Bloomreach 등 기존 개인화 플랫폼의 쿠키 없는 솔루션 대응 가능성</li>
+<li>50ms 저지연 요구사항이 실제 고객 인프라(레거시 시스템, 네트워크 환경)에서 달성 불가능할 리스크</li>
+<li>단독 창업자 구조로 인한 극심한 키맨 리스크 및 실행 지속성 불확실성</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">쿠키 없는 실시간 개인화라는 문제 인식과 기술 접근은 시의적절하나, 가장 큰 미검증 가정은 '행동 신호만으로 50ms 이내 페르소나 추론이 실제 고객 환경에서 쿠키 기반 개인화 대비 동등 이상의 전환율을 달성할 수 있는가'이다. 데모 환경 A/B 테스트 결과(+33% 전환율)는 통제된 조건이며 실제 고객 검증 전무. 팀은 창업자 1인만 확인되며 지원서 주장(20년 경력, 주요 광고 기술 기업 이력, 특허, AWS 크레딧 등) 대부분이 독립 검증 불가능. 매출 없음, 파일럿 고객 계약 없음, 회사 법인 등록 미확인 등 실행 증거 부재. 롯데 PoC 계획은 구체적이나 기술 미검증 상태에서 대형 유통 트래픽 배포는 위험 높음. 투자 고려 시 기술 실사, 팀 구성 확인, 실제 고객 PoC 완료가 필수 선행 조건.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Pulse AI Labs Pte. Ltd. · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-05 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

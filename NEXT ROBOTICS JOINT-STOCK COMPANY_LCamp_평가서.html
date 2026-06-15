@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXT ROBOTICS JOINT-STOCK COMPANY — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">NEXT ROBOTICS JOINT-STOCK COMPANY</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City</span>
+          <span class="etag et-ind">Robotics</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">NEXT ROBOTICS JOINT-STOCK COMPANY</div>
+        <div class="hero-sub">설립 2022 · https://nextrobotics.io/</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">Next Robotics는 제조·물류·창고 현장을 위한 자율주행 모바일 로봇(AMR) 및 AI 비전 시스템이다. 고객사가 겪는 수동 자재 운반·품질 검사 병목·실시간 가시성 부족 문제를 해결하며, 로봇 판매 및 통합 프로젝트 수주로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          제조·물류 고객사들이 자율주행 로봇 도입 시 기존 WMS/ERP 시스템과의 복잡한 통합 비용을 감수하면서도 NextAMR을 선택할 만큼의 차별화된 가치가 실제로 존재한다는 점이 아직 규모 있게 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">17</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$700K</div><div class="kpi-desc">2024년 실적 (화폐 단위 및 매출 구성 미확인)</div></div>
+<div class="kpi"><div class="kpi-val">10개 기업</div><div class="kpi-desc">엔터프라이즈 고객 (구체적 명단 미공개)</div></div>
+<div class="kpi"><div class="kpi-val">15건</div><div class="kpi-desc">로봇 배치 프로젝트 (규모·기간 미명시)</div></div>
+<div class="kpi"><div class="kpi-val">$500K</div><div class="kpi-desc">차세대 모바일 코봇 개발 자금 목표</div></div>
+<div class="kpi"><div class="kpi-val">50+명</div><div class="kpi-desc">팀 구성 (외부 검증 없음)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] IR Deck은 글로벌 AMR/물류 로봇 시장 규모를 제시하지만 베트남 또는 아세안 SAM/SOM은 구체화하지 않음. 경쟁사 대비 차별점으로 'Software-Centric, Hardware-Agnostic', 'Universal integration platform' 등을 주장하나, 이를 뒷받침하는 고객 인터뷰·벤치마크 데이터 없음. 10개 엔터프라이즈 고객·15건 배치는 초기 시장 견인력을 시사하나 고객명·업종·계약 규모가 명시되지 않아 확장 가능성을 정량적으로 평가하기 어려움.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 문제(수동 운반·품질 검사 병목·가시성 부족)-솔루션(AMR+AI 비전+통합 플랫폼)-고객(제조·물류)은 명확. 2024년 매출 $700K는 확인되나 2025년 $400K 감소 후 2026년 $1M 목표는 역성장→급성장 패턴으로 실행 리스크 존재. 매출 구성(로봇 판매 vs. 통합 프로젝트 vs. 소프트웨어 라이선스)과 단위 경제가 불명확하여 투자 적합성 판단 제한적. 시드 단계 $500K 목표는 적정하나 투자 이력(기존 투자자·조건) 미공개.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[확인] ESG 임팩트를 에너지 효율 향상, 불필요한 이동 감소, 작업자 안전 개선, 운영 데이터 투명성 제고로 구체화. 롯데와의 PoC를 통해 수동 작업 감축·안전성·경로 최적화·추적성·CO₂ 감축을 측정 가능한 지표로 검증하겠다는 접근은 사회적 가치 창출 의도가 명확. 다만 실제 측정 방법론(MRV)과 과거 프로젝트에서의 임팩트 데이터는 제시되지 않아 지속성·규모 확인은 제한적.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 연구 결과: 외부 검증 수행되지 않음(research_performed: false). 자가 보고는 FPT 자율주행차·AI 연구(2015~), FPT Software 내 AMR 부서 설립(2020) 경력을 주장하나, 핵심 인물의 실명·LinkedIn·학력·이전 직무 성과가 확인되지 않음. IR Deck은 50+명 로봇 엔지니어를 언급하나 팀 구성(CTO·제품·영업 책임자)과 도메인 관련성이 불투명. 키맨 의존도 리스크 및 팀 완전성을 평가할 수 없어 실행 기반 미확인.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">5<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[부분 확인] 물류·유통·호텔 등 롯데 주요 사업분야와 부합. 롯데글로벌로지스(물류 자동화), 롯데마트·백화점(창고·매장 내 자재 이동), 롯데이노베이트(AI/로봇 통합) 등 다수 계열사 연계 가능성 있음. 그러나 PoC 아이디어가 '차세대 모바일 코봇 개발 자금 확보'에 초점을 맞추고 있어, 특정 롯데 계열사의 인프라·데이터·고객 베이스를 활용한 구체적 협력 시나리오가 부족. 제안이 범용적(any warehouse/factory)이어서 롯데만의 차별화된 가치 창출 방안이 명확하지 않음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 4 + D 2 + E 5</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">17</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통(롯데백화점·마트), 물류(롯데글로벌로지스), AI/IT(롯데이노베이트), 호텔·관광(롯데호텔·월드)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">제조·물류·유통 자동화를 위해 협동로봇 팔이 통합된 차세대 자율주행 모바일 로봇 개발이 목표. 현재 고객 파이프라인으로 사업 유지는 가능하나, 제품 개발 가속화 및 핵심 기술 강화를 위해 추가 자금이 필요. 롯데와의 PoC를 통해 제조·물류·창고 환경에서 수동 작업 감소, 안전성 향상, 운송 경로 최적화, 추적성 개선, CO₂ 감축 등 ESG 효과를 검증하고자 함.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Next Robotics addresses ESG by using robotics automation to improve energy efficiency, reduce unnecessary movement, enhance worker safety, and provide transparent operational data. A PoC with LOTTE would allow us to validate these impacts in a real manufacturing, logistics, or warehouse environment by measuring reduced manual workload, improved safety, optimized transport routes, better traceability, and potential CO₂ reduction. This collaboration can create a scalable ESG model for smarter, safer, and more sustainable industrial operations across LOTTE Group affiliates.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>2025년 매출 감소 ($700K→$400K) 원인 불명확 — 고객 이탈, 프로젝트 지연, 또는 일회성 대형 계약 종료 가능성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 매출 감소 원인과 2026년 회복 시나리오가 설명되지 않아 사업 지속성 리스크 존재</td></tr>
+<tr><td>팀 배경 미검증 — FPT 경력 및 50+명 엔지니어 주장을 외부 확인 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 핵심 인물의 실명·경력·도메인 전문성이 확인되지 않아 실행 역량 불투명</td></tr>
+<tr><td>Hardware-Agnostic 플랫폼 주장이 실제 고객 환경에서 검증되지 않아 통합 복잡성 과소평가 가능성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 15건 배치 사례는 있으나 다양한 로봇 브랜드·WMS 통합 성공 사례가 구체적으로 제시되지 않음</td></tr>
+<tr><td>롯데 PoC 아이디어가 범용적(any warehouse/factory)이어서 롯데 고유 인프라·데이터 활용 방안 불명확</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 계열사 연계 가능성은 높으나 구체적 협력 시나리오·예상 성과가 제시되지 않음</td></tr>
+<tr><td>매출 구성 불명확 — 로봇 판매 vs. 통합 프로젝트 vs. 라이선스 비중 미공개로 수익성·확장성 예측 곤란</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 단위 경제와 반복 수익 구조가 설명되지 않아 투자 적합성 판단 제한적</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 하드웨어 / 로봇 / IoT</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">제조·판매 비용 및 단위경제(Unit Economics)</span><span class="dvtag dv-r">주요 리스크</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] IR Deck은 AMR 판매와 통합 프로젝트 수주를 언급하나, 로봇 하드웨어 제조 원가(COGS), 소프트웨어 라이선스 비중, 프로젝트당 마진율을 공개하지 않음. 2024년 $700K → 2025년 $400K 역성장은 하드웨어 의존도 높은 사업 모델에서 재고·고객 이탈·프로젝트 지연 리스크를 시사. 'Hardware-Agnostic' 플랫폼을 주장하나 자체 AMR 제조 여부와 OEM 의존도가 불명확하여, 마진 구조와 확장성 평가 불가. 시드 $500K로 차세대 모바일 코봇 개발 시 R&D·금형·인증 비용 충당 여부 미확인.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">공급망(Supply Chain) 안정성 및 H/W 조달 역량</span><span class="dvtag dv-a">검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트남 기반 로봇 제조사로서 핵심 부품(LiDAR, 모터, 제어보드) 조달처, 리드타임, 재고 관리 정책이 공개되지 않음. 글로벌 반도체·센서 공급망 변동성이 높은 상황에서 15건 배치 이력만으로는 스케일업 시 안정적 납기 보장 근거 부족. 'Any Robot' 통합을 내세우나 타사 AMR(MiR, Fetch, KUKA 등)과의 API·미들웨어 호환성 테스트 결과 없음. 차세대 모바일 코봇 개발 시 협동로봇 암(UR, Doosan 등) 통합 경험과 안전인증(ISO 10218, CE) 취득 로드맵 미제시.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">프로젝트 중심 매출의 반복성(Recurring Revenue) 전환</span><span class="dvtag dv-a">구조적 과제</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 10개 엔터프라이즈 고객·15건 배치는 프로젝트 단위 매출 구조를 시사하나, SaaS/구독형 모니터링·플릿 관리 서비스 비중이 명시되지 않음. 2026년 $1M 목표 달성을 위해서는 신규 고객 확보 외 기존 고객 LTV 확대(유지보수 계약, 데이터 분석 서비스, 로봇 추가 판매)가 필수이나 재구매율·연간 계약 갱신율 미공개. '소프트웨어 중심' 포지셔닝과 달리 수익 모델이 하드웨어+일회성 통합 프로젝트에 의존할 경우 마진율·현금흐름 예측 불안정.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">현장 배치(Deployment) 복잡도 및 고객 온보딩 기간</span><span class="dvtag dv-a">실행 리스크</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 제조·물류·창고 현장은 레이아웃·작업 프로세스가 고객사마다 상이하여 AMR 도입 시 맞춤형 경로 설계·기존 WMS/ERP 연동·작업자 교육이 필수. IR Deck은 'Universal integration platform' 제시하나 평균 PoC→본 배치 소요 기간, 고객사 IT 팀 협업 범위, 배치 후 ROI 달성 기간이 불명확. 롯데와의 PoC 제안도 '차세대 모바일 코봇 개발 자금 확보'에 초점을 맞춰 특정 현장(롯데마트 물류센터, 롯데호텔 객실 서비스 등)의 구체적 요구사항·KPI·통합 일정 미제시. 배치 복잡도 과소평가 시 프로젝트 지연·비용 초과 리스크 존재.</div></div>
+<div class="deep-category-label">Category F — 동남아시아 / 신흥시장 특화</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">F-1</span><span class="deep-title">베트남 제조·물류 시장 내 AMR 도입 성숙도 및 고객 지불 여력</span><span class="dvtag dv-a">시장 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 베트남은 제조업 허브로 성장 중이나 중소 공장의 자동화 수준은 여전히 낮고, AMR 도입은 삼성·LG 등 대기업 현장 일부에 국한. IR Deck은 글로벌 AMR 시장 규모만 언급, 베트남 SAM/SOM·평균 프로젝트 규모·ROI 기대치 미제시. 10개 엔터프라이즈 고객 중 베트남 로컬 vs. 외자계 비중, 업종(전자·섬유·식품 등), 평균 계약 금액 불명확. 베트남 제조사들이 AGV(Automated Guided Vehicle) 대비 고가의 AMR을 채택할 유인(유연성, 설치 비용 절감)과 지불 의사(CAPEX vs. OPEX 모델) 검증 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">F-2</span><span class="deep-title">아세안 역내 확장 전략 및 현지 파트너십</span><span class="dvtag dv-a">불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 베트남 외 태국·인도네시아·필리핀 등 아세안 주요 제조 허브로의 확장 계획, 현지 SI(System Integrator)·로봇 디스트리뷰터와의 파트너십, 언어·규제·인증(안전 표준) 대응 방안이 제시되지 않음. 롯데 연계 시나리오도 베트남 롯데마트·물류센터에 국한되며, 한국 롯데 본사·일본·인도네시아 등 그룹 글로벌 거점 활용 구상 부재. 아세안 역내 AMR 경쟁사(Geek+, Hai Robotics 등 중국계 저가 공급자)와의 가격·기능 비교 없이 'Software-Centric' 차별화만 주장하여 시장 포지셔닝 불명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">F-3</span><span class="deep-title">베트남 스타트업 생태계 내 투자 유치 및 엑시트 환경</span><span class="dvtag dv-a">구조적 제약</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 베트남 VC 시장은 성장 중이나 B2B 하드웨어·로봇 분야 후속 투자(Series A 이상) 사례 제한적. 시드 $500K 이후 2026년 $1M 매출 달성 시에도 글로벌 로봇 VC(Playground Global, DCVC 등) 또는 전략적 투자자(ABB, KUKA, Hyundai Robotics 등) 유치 경로 불명확. 베트남 내 엑시트 옵션(M&A, IPO)도 제한적이어서 투자자 회수 시나리오 미약. 기존 투자 이력(엔젤·액셀러레이터·정부 지원금 여부) 미공개로 투자 적합성 판단 제한적. Top 10 Sao Khue·Qualcomm Award는 기술 검증 신호이나 상용화·매출 확장 지원으로 이어지는지 불명확.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>10개 엔터프라이즈 고객·15건 배치로 초기 시장 검증 확인 (고객명 미공개로 규모는 미확인)</li>
+<li>AMR+AI 비전+통합 플랫폼을 결합한 end-to-end 솔루션 구조</li>
+<li>ESG 임팩트(안전·효율·추적성)를 측정 가능한 지표로 구체화한 접근</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>2025년 매출 감소($700K→$400K) 후 2026년 급증 목표는 고객 파이프라인·계약 전환율 근거 부족</li>
+<li>팀 배경 외부 검증 없음 — FPT 경력·50+명 엔지니어 주장이 미확인 상태</li>
+<li>매출 구성(로봇 판매 vs. 프로젝트 vs. 라이선스)과 단위 경제 불명확하여 수익성 예측 곤란</li>
+<li>경쟁사 대비 기술 차별점('Universal integration')을 뒷받침하는 고객 사례·벤치마크 데이터 부재</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>아세안 제조·물류 자동화 수요 증가 및 인건비 상승이 AMR 도입 촉진</li>
+<li>롯데글로벌로지스·마트·이노베이트 등 다수 계열사와 물류·유통 자동화 협력 가능</li>
+<li>차세대 모바일 코봇(로봇 팔 통합) 개발 시 picking·sorting 시장으로 확장 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>ABB, KUKA, Geek+ 등 글로벌 AMR 업체와 MiR, Fetch 등 통합 플랫폼 경쟁사의 시장 선점</li>
+<li>제조·물류 고객사의 WMS/ERP 통합 복잡성과 높은 초기 투자 비용이 도입 장벽</li>
+<li>Hardware-Agnostic 주장이 실제로는 특정 로봇 브랜드 종속성·호환 이슈로 제한될 가능성</li>
+<li>2025년 매출 역성장 시 투자 유치 및 팀 유지에 현금 소진 리스크</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">17</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">Next Robotics는 제조·물류 자동화 시장에서 초기 견인력(10개 고객사, 15건 배치)을 확보했으나, 2025년 매출 감소($700K→$400K) 후 2026년 급성장($1M) 목표는 실행 리스크를 내포. 가장 큰 미검증 가정은 'Software-Centric, Hardware-Agnostic' 통합 플랫폼이 기존 WMS/ERP 연동 복잡성과 높은 통합 비용을 상쇄할 만큼의 차별화된 고객 가치를 제공한다는 점. 팀 배경은 FPT 자율주행·AI 경력을 주장하나 외부 검증 없어 실행 역량 불투명. 롯데와의 PoC는 다수 계열사 연계 가능하나 구체적 협력 시나리오가 범용적이어서 롯데 고유 인프라 활용 방안 보완 필요.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">5 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">17 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>NEXT ROBOTICS JOINT-STOCK COMPANY · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

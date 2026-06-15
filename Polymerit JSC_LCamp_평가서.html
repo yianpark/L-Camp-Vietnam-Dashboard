@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polymerit JSC — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Polymerit JSC</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam</span>
+          <span class="etag et-ind">Cosmetic and Pharma</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Polymerit JSC</div>
+        <div class="hero-sub">설립 2026 · 정보 없음</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">Polymerit은 화장품 및 제약 산업을 위한 폴리에스터아미드(PEA) 기반 경피전달 시스템이다. 기존 크림·젤 대비 24시간 지속되는 서방형 필름을 형성해 유효성분을 일정하게 전달하며, 생분해성 고분자로 수일 내 자연 아미노산으로 분해되어 환경 부담을 줄이고 구독형 B2C 판매 및 ODM 공급으로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          PEA 필름 기술의 24시간 서방형 효과가 실제 소비자 재구매로 이어지고, 생산 원가가 기존 하이드로콜로이드 패치 대비 경쟁력을 확보할 수 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">16</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$110K</div><div class="kpi-desc">모회사 Bioscope 추정 매출 (Polymerit 자체 매출 아님)</div></div>
+<div class="kpi"><div class="kpi-val">4건</div><div class="kpi-desc">약품·화장품·의료기기 등록 승인 (구체적 제품명 일부 확인)</div></div>
+<div class="kpi"><div class="kpi-val">6개사</div><div class="kpi-desc">Newtech Pharm, Dr. Amytas 등 (계약 형태·규모 미확인)</div></div>
+<div class="kpi"><div class="kpi-val">~$2.5M</div><div class="kpi-desc">고객사 제품 연 소매 매출 (Polymerit 직접 수익 미명시)</div></div>
+<div class="kpi"><div class="kpi-val">$860K</div><div class="kpi-desc">시드 라운드 목표 (라운드 타입 명시 없음)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 경피 약물전달 및 친환경 화장품 시장은 성장세이나 베트남·APAC 내 구체적 SAM/SOM 제시 없음. 기존 하이드로콜로이드 패치·실리콘 패치 대비 차별점(무형·통기성·24시간 지속)은 명확하나, 가격 경쟁력 및 대량 생산 원가 구조가 제시되지 않아 시장 침투 가능성 판단 불가. [미확인] 타겟 고객층(B2C 소비자 vs. ODM 파트너) 우선순위 및 채널 전략 불명확.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 매출 $90K~$110K는 '모회사(parent company)' 수치로 명시되어 Polymerit JSC 자체 매출 아님. Polymerit의 2026년 매출 $80K는 추정치일 뿐 실제 거래 내역 부재. [미확인] 6개 파트너사 언급되나 계약 형태(ODM 공급계약/MOU/LOI), 거래 규모, 지급 조건 전혀 제시 안 됨. Nacurgo $2.5M 매출은 '고객사 제품의 소매 매출'로 Polymerit의 직접 수익과 무관. 투자 적합성: 모회사 의존형 스핀오프 구조로 독립적 수익 모델 검증 안 됨.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[확인] 생분해성 고분자(PEA)가 수일 내 천연 아미노산으로 분해되어 플라스틱 패치·포장재 대체 효과 명확. 환경 임팩트(재료 절감·재사용 감소)와 사회적 가치(상처 치유 개선·무접촉 도포로 환자 편의성 증대) 모두 솔루션과 직접 연결됨. [부분 확인] 실제 제품(Novaskin, Dr. Anmu 등) 4건 등록 완료로 상용화 기반 확보. 다만 규모·지속성 측정 지표(연간 플라스틱 대체량, 환자 수 등) 구체적 데이터 없어 임팩트 규모 정량화 불가.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[심각한 우려 — 팀 딥 리서치 결과 반영] Dang Viet Hung(약사, Bioscope 창업 성공 경력)만 LinkedIn에서 확인됨. [미확인] 자체 보고된 '고분자 과학자' 및 '스타트업 개발 전문가' 공동창업자는 어떤 공개 소스에서도 확인 불가. 회사명 'Polymerit JSC' 자체가 베트남 기업 등록 DB, 웹사이트, 언론 보도 등 어디에서도 검색되지 않음 — 이는 듀딜리전스 진행 불가 수준의 레드플래그. Hung 개인의 제약 산업 경험은 검증되나 고분자 과학 전문성 부재. 기술 핵심 역량 담당자 부재로 R&D 실행력 판단 불가. 투자 논의 전 사업자등록증·세금코드·전체 팀 신원 확인 필수.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">5<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[부분 확인] 식품·유통(화장품 유통) 분야 부합. 롯데백화점·마트 등 소매 채널 통한 친환경 제품 파일럿 판매 아이디어는 구체적. [미확인] 어느 롯데 계열사와 협력할지 명시 안 됨(백화점/마트/케미칼 중 불명확). PoC 실행 계획(6개월 파일럿, 데이터 수집 방법, 성과 지표)은 제시되었으나 롯데 측 인프라·데이터 활용 방식이 일반적 유통 판매 이상으로 구체화되지 않음. 롯데케미칼과의 소재 공동 개발 또는 롯데호텔 어메니티 친환경 전환 등 더 깊은 연계 가능성 탐색 여지 있음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 2 + C 4 + D 2 + E 5</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">16</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce (LOTTE Department Store, LOTTE Mall, LOTTE Mart 등)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 유통망(백화점·마트)과 호텔 네트워크를 통해 PEA 기반 친환경 화장품·상처 보호 제품을 6개월간 파일럿 판매하여 플라스틱 패치·포장재 대체 효과를 측정하고, 실제 단위당 폐기물 감축량 및 소비자 재구매율 데이터를 확보하여 ESG 리포팅 근거를 마련한다는 계획.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">PEA's main ESG impact is environmental: a biodegradable, sprayed-on film (degrading into natural amino acids) that replaces persistent plastic patches, packaging, and aerosols while using less material and fewer applications. Socially, it improves wound healing and patient care, offers safe touchless application with zero irritation, and supports Vietnamese jobs and a homegrown biotech base. A LOTTE PoC is the multiplier that converts this potential into impact — its retail and hotel networks scale the substitution of plastic-based products fast, while the 6-month pilot generates the real-world data (units displaced, packaging avoided) needed for credible ESG reporting.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">**불완전하고 검증 불가**: CEO는 제약/화장품 산업 경험이 풍부하나 고분자 과학 전문성이 부족합니다. '고분자 과학자, 약사, 스타트업 개발 전문가'로 구성되어 있다는 자체 보고와 달리, 실제로는 CEO(약사) 외에 다른 팀원에 대한 정보를 전혀 찾을 수 없습니다. 고분자 과학자의 존재, 자격, 경력을 확인할 수 없어 기술적 핵심 역량에 대한 검증이 불가능합니다. 화장품 및 제약 제품 개발에 필수적인 고분자 합성, 제형 개발, 품질 관리 전문가의 실재 여부가 불명확합니다</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">**매우 불완전**: 단 1명의 팀원(CEO)만 확인 가능합니다. 자체 보고된 '고분자 과학자' 및 기타 공동창업자에 대한 정보가 전무합니다. 정상적인 화장품/제약 스타트업이라면 최소한 다음 역할이 필요합니다: 1) 고분자/화학 R&D 책임자, 2) 제형 개발 전문가, 3) 품질관리/규제 전문가, 4) 생산/제조 책임자, 5) 영업/마케팅 책임자. 이 중 어느 것도 확인되지 않았습니다. LinkedIn, 회사 웹사이트, 언론 보도 등 어떤 공개 소스에서도 다른 팀원 정보를 찾을 수 없다는 것은 매우 비정상적입니다</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">**심각한 우려 - 즉시 명확화 필요**: 'Polymerit JSC'의 실체를 확인할 수 없다는 것은 가장 근본적인 신뢰성 문제입니다. 베트남 기업 등록 데이터베이스, 웹사이트, 소셜 미디어, 뉴스 기사, 업계 디렉토리 등 어디에서도 이 회사를 찾을 수 없습니다. 이는 매우 비정상적이며 다음을 요구합니다: 1) 베트남 기획투자부 발행 사업자등록증(Enterprise Registration Certificate) 원본 확인, 2) 세금 코드(Tax Code) 확인, 3) 회사 주소지 실사, 4) 모든 공동창업자의 신원 및 주민등록증 확인, 5) 자본금 납입 증명. Dang Viet Hung 개인의 Bioscope에서의 성공 이력은 실재하고 검증 가능하지만, 이것이 Polymerit의 존재를 증명하지는 않습니다</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">**가장 큰 공백은 3가지입니다**: 1) **회사 자체의 실체 미확인** - 이것이 가장 심각한 문제입니다. 투자 논의 이전에 반드시 해결되어야 합니다. 2) **고분자 과학 전문가 부재 확인 불가** - 회사명이 'Polymerit'이고 고분자 기반 사업을 한다고 하면서 고분자 과학자를 확인할 수 없다는 것은 치명적입니다. 화장품과 제약 제품의 고분자 제형 개발에는 고도의 전문 지식이 필요합니다. 3) **완전한 팀 구성 정보 부재** - 단 한 명을 제외한 모든 팀원 정보가 없습니다. CTO, CFO, 연구개발 책임자, 생산 책임자 등 핵심 직책에 누가 있는지 전혀 알 수 없습니다. 정상적인 듀딜리전스가 불가능한 상태입니다</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Dang Viet Hung LinkedIn · Dang Viet Hung Polymerit CEO · Polymerit JSC founders team · Hung Dang Viet Bioscope pharmacy · Polymerit JSC Vietnam · "Polymerit" Vietnam cosmetic pharma</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Dang Viet Hung (Hung Dang Viet)</div><div class="member-role">Co-founder & CEO (자칭 - 검증 필요)</div></div>
+    <div class="member-meta"><a href="https://www.linkedin.com/in/hungdang1/" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-h" style="margin-left:8px;">Domain: High</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ **CRITICAL: 'Polymerit JSC'라는 회사가 공개적으로 확인되지 않음. 모든 검색 결과는 Bioscope Vietnam만 표시. 회사명 불일치는 중대한 우려 사항**</span><span class='flag-item'>⑊ 과거 1회 스타트업 실패 경험 (eBridge, 2005)</span><span class='flag-item'>⑊ 여러 차례의 사업 전환 이력 - 집중력 부족 또는 시장 적응력으로 해석 가능</span><span class='flag-item'>⑊ 공동 창업자 중도 포기 경험 (2011년 건강식품 R&D 회사의 2명 박사 파트너)</span><span class='flag-item'>⑊ 현재 여러 프로젝트 동시 진행 (Bioscope, Deepview, Polymerit?) - 리소스 분산 우려</span><span class='flag-item'>⑊ 고분자 과학 전문가가 아님 - 'Polymerit'의 기술적 핵심 역량과 불일치 가능성</span><span class='flag-item'>⑊ 팀 구성원 정보 부족 - CEO 외 다른 공동창업자나 핵심 팀원 정보 없음</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>약사 학위 (Pharmacist Degree)/약학 (Pharmacy)</td><td>Hanoi University of Pharmacy</td><td>정확한 졸업연도 미확인</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Bioscope Vietnam (Bioscope Technology)</td><td>창립자 겸 CEO / 이사회 의장</td><td>2011 - 현재</td><td style="font-size:11px;">의약, 식품, 화장품 산업을 위한 신기술 및 원료 연구개발 및 유통 전문 회사. 23개 이상의 연구 프로젝트 수행, 14건의 특허 출원, 100개 이상의 신규 원료 시장 출시. 나노 기술, 식물 미네랄 강화 기술, 경피 약물 전달 기술 등 3가지 신기술을 베트남 시장에 도입</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>소규모 제약회사 (회사명 미공개)</td><td>전략 및 투자 부사장 (Deputy CEO)</td><td>2008-2010년경</td><td style="font-size:11px;">연 매출 130만 달러 규모의 회사에 합류하여 OTC 브랜드 및 FMCG 모델로 전환하는 전략 수립. 2년 후 회사가 증권거래소에 상장되는 성과 달성</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr><tr><td>eBridge</td><td>창립자</td><td>2005년경</td><td style="font-size:11px;">전화 상거래 플랫폼 스타트업 설립. 한 통화로 여러 상점에서 구매할 수 있는 서비스. 자본금이 손익분기점 도달 전에 소진되어 파산</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr><tr><td>Deepview</td><td>현재 참여 중</td><td>최근</td><td style="font-size:11px;">효과적인 자기주도 학습을 지원하는 특허 출원 중인 플랫폼</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 약학 학위 소지자로 제약 산업에서 20년 이상의 경험을 보유. 의약품, 건강기능식품, 화장품 분야에서 연구개발 및 유통 전문성 확보. 14건의 특허 출원 경험과 혁신 기술 상용화 성공 사례 보유. 화장품 및 제약 산업의 원료 공급망과 기술 개발에 대한 깊은 이해를 갖추고 있어 고분자 기반 화장품 및 제약 사업과 매우 관련성이 높음. 다만 고분자 과학(polymer science) 전공은 아니므로 기술 공동창업자가 필요할 수 있음</div><div class="ma-overall"><strong>종합 평가:</strong> Dang Viet Hung은 베트남 제약 및 건강식품 산업에서 검증된 트랙레코드를 가진 시리얼 앙트러프러너입니다. 약사 자격증 보유자로 20년 이상의 산업 경험과 특허 포트폴리오, 성공적인 엑시트 경험을 갖추고 있습니다. 그러나 **가장 중대한 문제는 'Polymerit JSC'라는 회사의 실체를 전혀 확인할 수 없다는 점**입니다. 모든 검색 결과는 그가 Bioscope의 창립자임을 보여줄 뿐입니다. 이는 세 가지 가능성을 시사합니다: 1) Polymerit이 매우 초기 단계여서 온라인 흔적이 없음, 2) 회사명이 잘못 제공됨, 3) 회사가 실제로 존재하지 않을 가능성. 투자 결정 전 반드시 회사 등록 서류, 사업자 등록증, 법인 설립 증명서를 직접 확인해야 합니다. 약사 배경은 장점이나 고분자 과학자가 아니므로 기술 공동창업자의 존재와 자격이 매우 중요합니다.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>법인 실체 미확인</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인 불가] 'Polymerit JSC'가 베트남 기업 등록 DB, 웹사이트, LinkedIn 등 어디에서도 검색 안 됨. 사업자등록증·세금코드 직접 확인 전까지 투자 논의 불가.</td></tr>
+<tr><td>팀 구성 불투명</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 자체 보고된 '고분자 과학자' 공동창업자가 외부 검증 안 됨. CEO 외 핵심 인력(CTO, 연구책임자) 부재 시 기술 개발 지속 가능성 의문.</td></tr>
+<tr><td>매출 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] $90K~$110K는 모회사 Bioscope 수치. Polymerit 자체 매출·계약서·세금계산서 등 증빙 없음. 독립 사업 실체 확인 불가.</td></tr>
+<tr><td>생산 원가 경쟁력 불명</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 기존 패치 대비 원가 우위 데이터 없음. 대량 생산 시 kg당 원가, 최소 생산량, 수율 등 제조 경제성 입증 필요.</td></tr>
+<tr><td>PoC 구체성 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] 롯데 유통 파일럿 아이디어는 있으나 어느 계열사인지, 어떤 데이터를 어떻게 수집할지 구체적 실행 계획 불명확.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge active">✓ 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category D — 바이오/헬스케어/의약</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">핵심 기술의 IP 보유 및 방어 가능성</span><span class="dvtag dv-r">심각한 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] PEA(폴리에스터아미드) 기반 경피전달 기술의 특허 출원·등록 여부가 전혀 제시되지 않음. 고분자 과학이 핵심인 기술임에도 발명자·출원번호·권리범위 일체 부재. [미확인] '모회사(parent company)'로부터 기술이전 받았는지, 라이선스 계약 형태인지 불명확하며, Polymerit JSC 자체가 베트남 기업 등록 DB에서 검색 안 됨. 듀딜리전스 불가 수준의 레드플래그로 투자 논의 전 사업자등록증·특허권 이전 계약서 필수 확인 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">규제 승인(의약외품·의료기기) 경로 및 타임라인</span><span class="dvtag dv-a">부분 확인</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 4개 제품(Novaskin, Dr. Anmu 등)이 의약품/화장품/의료기기로 등록 완료되었다고 명시. 베트남 내 등록 기반 확보는 긍정적. [미확인] 각 제품의 등록 카테고리(화장품 vs. 의료기기 vs. 일반의약품) 및 규제 기관 명시 없음. LOTTE 협업 시 한국·APAC 확장 계획 있으나 MFDS 의료기기 또는 기능성화장품 승인 경로·소요 기간 전혀 제시 안 됨. 글로벌 확장 시 각국 규제 대응 로드맵 부재로 시장 진입 지연 리스크 존재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">임상 데이터 또는 제3자 검증 수준</span><span class="dvtag dv-r">미확인</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 24시간 지속 방출·생분해 특성에 대한 임상시험 결과, 피부자극 테스트, 또는 제3자 연구기관 검증 데이터 일체 부재. '무자극·통기성·수일 내 분해' 주장은 모두 정량 근거 없음. [미확인] 6개 파트너사(Newtech Pharm, Bioflex 등)와의 협력이 ODM 공급인지 공동 연구인지 불명확하며, 파트너사가 PEA 기술을 자체 검증했는지 여부 미제시. B2C 확장 시 소비자 신뢰 확보를 위해 피어 리뷰 논문 또는 GMP 인증 제조 파트너 검증 필수.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-4</span><span class="deep-title">제조 파트너 확보 및 대량 생산 준비도</span><span class="dvtag dv-r">미확인</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] PEA 바이오필름 제조를 담당하는 GMP 인증 제조사 또는 CMO(Contract Manufacturing Organization) 파트너 명시 없음. 스프레이 제형 충전·포장 설비 보유 여부 불명확. [미확인] 원료(PEA 폴리머) 공급망, 단위당 원가(COGS), 최소주문량(MOQ) 등 대량 생산 경제성 관련 정보 전혀 부재. LOTTE 유통망 통해 파일럿 판매 계획 있으나 공급 역량 입증 안 되어 PoC 실행 가능성 의문. 투자 전 제조 파트너 LOI 또는 샘플 생산 기록 확인 필요.</div></div>
+<div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-5</span><span class="deep-title">B2C 구독 모델의 Unit Economics 및 CAC 회수</span><span class="dvtag dv-r">검증 안 됨</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 구독형 B2C 판매 계획 언급되었으나 월 구독 가격, 고객생애가치(LTV), 고객획득비용(CAC), 재구매율(retention) 등 경제성 지표 일체 부재. [미확인] '24시간 지속'으로 재적용 빈도 낮아지면 오히려 소비량·매출 감소 가능성 존재하나 이에 대한 대응 전략 없음. LOTTE 유통망 파일럿 통해 CAC 데이터 확보 계획이지만 6개월 PoC 이후 독립적 채널 구축 방안 불명확. 초기 고객 코호트 유지율 50% 이상 입증 전까지 B2C 확장성 판단 불가.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[확인] 생분해성 PEA 필름 기술로 플라스틱 대체 가능 — 환경·사회적 가치 명확</li>
+<li>[확인] 4건 제품 등록 완료(Novaskin, Dr. Anmu 등) — 상용화 단계 진입</li>
+<li>[부분 확인] Nacurgo 제품이 연 $2.5M 소매 매출 기록 — 기술 검증 신호</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 'Polymerit JSC' 법인 실체 외부 확인 불가 — 듀딜리전스 진행 불가 수준</li>
+<li>[미확인] 고분자 과학자 공동창업자 존재·자격 검증 안 됨 — 기술 개발 주체 불명</li>
+<li>[미확인] 매출 $90K~$110K는 모회사 수치, Polymerit 자체 매출·계약 증빙 없음</li>
+<li>[미확인] 6개 파트너사와의 계약 형태·규모·지급 조건 전혀 제시 안 됨</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남·APAC 친환경 화장품 시장 성장세 — 플라스틱 규제 강화 수혜 가능</li>
+<li>롯데 유통망 통한 대규모 파일럿 가능 — ESG 데이터 확보 후 B2B 확장 가능</li>
+<li>ODM 모델로 글로벌 화장품 브랜드 공급 확장 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>하이드로콜로이드·실리콘 패치 제조사들의 가격 경쟁 — 원가 우위 입증 필요</li>
+<li>법인 실체 미확인 시 투자자·파트너 신뢰 상실 — 사업 진행 불가</li>
+<li>모회사 의존형 스핀오프 구조 — 독립적 성장 동력 부족 리스크</li>
+<li>핵심 팀원 부재 또는 키맨 리스크 — CEO 외 검증된 인력 없음</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">16</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">[최대 리스크] 'Polymerit JSC'의 법인 실체를 외부에서 전혀 확인할 수 없다는 점이 가장 심각한 문제다. 베트남 기업 등록 정보, 웹사이트, LinkedIn 회사 페이지 등 어떤 공개 소스에서도 검색되지 않으며, 자체 보고된 '고분자 과학자' 공동창업자 역시 미확인이다. 기술(PEA 필름)과 사회적 가치(생분해성)는 명확하나, 매출 $90K~$110K는 모회사 Bioscope 수치이고 Polymerit 자체 거래 증빙이 없다. 투자 검토 전 사업자등록증·세금코드·전체 팀원 신원 확인이 필수적이며, 이를 통과하지 못하면 투자 진행 자체가 불가능하다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">5 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">16 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Polymerit JSC · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

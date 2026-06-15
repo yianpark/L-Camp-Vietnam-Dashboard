@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KidsEdu Education Joint Stock Company — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">KidsEdu Education Joint Stock Company</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hanoi, Vietnam</span>
+          <span class="etag et-ind">Edutainment / EdTech</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">KidsEdu Education Joint Stock Company</div>
+        <div class="hero-sub">설립 2022 · http://kidsedu.vn</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">KidsEdu는 베트남 유치원을 대상으로 STEM 커리큘럼과 교사 연수를 판매하는 B2B 에듀테크 기업이다. 2024-2025학년도 기준 19,500명의 유치원생이 등록했으며, 앱 구독(STEM Playhouse, Bible for Kids)과 AR 컬러링북 판매를 통해 B2C로 확장 중이고, 2024년 매출 $125K, 2025년 $281K를 기록했다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          B2B 유치원 고객 기반이 B2C 앱 구독 전환으로 이어진다는 가정이 아직 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">19</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$281K (2025)</div><div class="kpi-desc">전년 대비 2배 이상 성장, B2B 중심</div></div>
+<div class="kpi"><div class="kpi-val">19,500명</div><div class="kpi-desc">2024-2025학년도 STEM 커리큘럼 등록</div></div>
+<div class="kpi"><div class="kpi-val">5,000명</div><div class="kpi-desc">2023-2025 누적 유치원 교사 STEM 연수</div></div>
+<div class="kpi"><div class="kpi-val">$300K~$500K</div><div class="kpi-desc">Seed 단계, B2C 확장 자금 목표</div></div>
+<div class="kpi"><div class="kpi-val">4건</div><div class="kpi-desc">HundrED 후보, UNDP·AWS 선정, Deloitte 액셀</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 베트남 유치원생 540만 명이라는 시장 규모는 명시했으나 TAM/SAM 세분화가 없음. B2B 유치원 시장에서는 367,500시간 누적 제공 및 19,500명 등록이라는 실적 [확인]되나, B2C 앱 구독 시장의 경쟁 환경과 차별화 전략은 구체적 근거 없이 서술만 있음. 파키스탄·나이지리아·가나 확장 계획은 구체적 파트너나 계약 없이 언급만 되어 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[확인] 2024년 $125K → 2025년 $281K 매출 성장 및 $300K~$500K 투자유치 목표는 명시. B2B 커리큘럼 판매 + B2C 앱 구독 + IP 라이선싱이라는 복합 수익 모델은 설명되었으나, 앱 구독 ARR·MRR, churn rate, 고객획득비용 등 핵심 지표가 전혀 제시되지 않아 B2C 단위경제 [미확인]. Freemium → 유료 전환율, 구독 유지율 데이터 없이 사업 모델 지속성 판단 불가. 투자 적합성은 조건부.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">[확인] SDG 4(교육 접근성) 및 SDG 13(기후 행동) 정렬은 UNDP SDG Venture Scaler 2025 선정, AWS Education Equity 그랜트 수령으로 입증됨. 유치원생 대상 STEM 교육 제공 및 환경 교육 콘텐츠(Bun&Pin IP)는 사회적 가치 창출에 직접 기여. 4,800명의 여성 교사 STEM 연수 제공은 젠더 평등 측면에서도 긍정적. 임팩트 규모(19,500명 학생)와 지속성(B2B 재구매 구조) 확인.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 심층 조사 결과 외부 검증 불가. 지원서 자체 보고에서는 '유치원 STEM 커리큘럼 개발 및 전국 확산 리더십'만 서술했으나, 창업자 성명·학력·경력이 명시되지 않음. 36명 직원 규모는 언급되나 핵심 인력 구성(기술, 콘텐츠, 영업)이 불명확. B2B에서 B2C 전환 시 필수인 제품·마케팅 역량 보유 여부 [미확인]. 키맨 의존도 리스크 높음.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">7<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[부분 확인] 롯데 주요 사업 분야(유통·호텔·F&B·AI)와 명시적 연계 가능. 5가지 PoC 제안(롯데 멤버십 앱 프로모션, 롯데마트 서가 배치, 롯데리아 해피밀, 롯데몰 AR 키즈존, IP 라이선싱)은 구체적이나, 실행 가능성 검증 없음. 롯데 측 니즈 사전 확인이나 파일럿 진행 이력 [미확인]. 롯데 계열사 특정 인프라(멤버십 DB, 매장망, IP 라이선싱 프로세스) 활용 방안은 제시되었으나, 단순 마케팅 채널 활용 수준을 넘는 전략적 협력 근거는 부족.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 4 + D 2 + E 7</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">19</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통(롯데백화점, 롯데마트), 호텔·시네마·월드, F&B(롯데리아), AI/IT(롯데이노베이트)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미명시 (PoC 제안서 참조)</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 멤버십 고객에게 STEM Playhouse 앱 1개월 무료 체험 제공, 롯데마트 서가에 AR 컬러링북 배치, 롯데리아 해피밀 교육 완구 제공, 롯데몰 키즈존 AR 체크포인트 설치, Bun&Pin IP 캐릭터 굿즈 독점 판매 및 ESG 캠페인 마스코트 활용 등 5가지 협력안 제시</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">KidsEdu is alinged with the United Nations' Sustainable Development Goals #4 (SDG 4: Access to Quality Education) and SDG 13: Climate Action. In slide 5-slide 9 of our pitch deck, we highlighted how each collaboration project can amplify SDG 4 and SDG 13.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>B2C 전환 실패 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 앱 구독 단위경제 미공개. B2B 고객이 B2C 유료 구독자로 전환된다는 가정에 대한 실증 데이터 없음.</td></tr>
+<tr><td>팀 실행 역량 불확실성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 창업팀 구성원 및 경력이 외부 검증 안 됨. B2C 마케팅·제품 개발 전문성 불명확.</td></tr>
+<tr><td>롯데 협력 불확정성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 5가지 PoC 제안은 일방적이며, 롯데 측 사전 협의나 파일럿 이력 없음.</td></tr>
+<tr><td>해외 확장 조기 추진 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 파키스탄·나이지리아·가나 진출 계획이 구체적 파트너나 계약 없이 언급만 됨. 베트남 B2C 검증 전 해외 확장은 자원 분산 우려.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — B2B SaaS/구독형 비즈니스</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">ARR·MRR 및 구독 단위경제 지표 부재</span><span class="dvtag dv-r">핵심 지표 미공개</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] B2C 앱 구독(STEM Playhouse, Bible for Kids) 확장을 명시했으나 ARR, MRR, 월별 구독자 수, churn rate 등 구독 비즈니스 핵심 지표가 전혀 제시되지 않음. [확인] 2024년 $125K → 2025년 $281K 매출 성장은 B2B 커리큘럼 판매 중심으로 추정되나, B2C 앱 구독 매출 비중과 성장률 세분화 없음. Freemium → 유료 전환율, 구독 유지율 데이터 부재로 B2C 사업 모델의 unit economics 검증 불가. [미확인] 고객획득비용(CAC) 및 생애가치(LTV) 데이터 없어 B2C 확장 시 수익성 지속 가능성 판단 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">B2B→B2C 전환 시 Product-Market Fit 검증 부족</span><span class="dvtag dv-a">전환 전략 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] B2B 기반(19,500명 유치원생, 367,500시간 커리큘럼 제공)은 견고하나, B2C 앱 시장에서의 경쟁 우위 근거 미흡. [미확인] 베트남 유아 앱 시장 내 경쟁자(Monkey Junior, ELSA Speak Kids 등) 대비 차별화 전략이 서술 수준에 그침. [미확인] 앱 다운로드 수, DAU/MAU, 리텐션 지표 등 B2C PMF 검증 데이터 부재. B2B 커리큘럼을 앱으로 전환할 때 발생하는 사용자 경험·콘텐츠 소비 패턴 차이에 대한 검증 없음. [부분 확인] AR 컬러링북 판매는 언급되나 판매량·재구매율 데이터 부재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">복합 수익 모델의 실행 우선순위 불명확</span><span class="dvtag dv-a">포커스 분산 우려</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] B2B 커리큘럼 + B2C 앱 구독 + IP 라이선싱(Bun&Pin) 3개 수익원 존재. [미확인] 각 수익원의 2024-2025 매출 기여도가 명시되지 않아 주력 사업 판단 불가. [미확인] IP 라이선싱 수익 규모, 계약 건수, 파트너사 정보 없음. 36명 조직이 B2B 영업·B2C 앱 개발·IP 라이선싱을 동시 추진할 때 리소스 분산 리스크 존재. [미확인] 투자금 $300K~$500K의 배분 계획(B2C 마케팅 vs. B2B 확장 vs. IP 개발) 불명확. 전략적 우선순위 설정 없이 다각화 시도 시 실행력 저하 우려.</div></div>
+<div class="deep-category-label">Category C — EdTech/콘텐츠·플랫폼</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">B2C 앱 콘텐츠 차별화 및 제작 역량 검증 부족</span><span class="dvtag dv-a">콘텐츠 경쟁력 불분명</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] B2B 유치원 STEM 커리큘럼은 STEM.org 인증으로 품질 입증. [미확인] B2C 앱(STEM Playhouse, Bible for Kids)의 콘텐츠 깊이, 업데이트 주기, 학습 효과 측정 데이터 부재. [미확인] 베트남 유아 대상 앱 시장에서 콘텐츠 현지화(베트남어 품질, 문화적 적합성), 학부모 만족도, 교육 성과 지표 없음. AR 컬러링북은 기술 구현은 확인되나, 경쟁 제품(Quiver, Crayola Color Alive) 대비 차별점 미흡. [미확인] 콘텐츠 제작 인력(교육 설계자, 일러스트레이터, 개발자) 구성 및 역량 불명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-2</span><span class="deep-title">국제 확장 계획의 구체성 부족</span><span class="dvtag dv-r">확장 전략 미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 파키스탄·나이지리아·가나 확장 계획은 언급만 되었을 뿐, 현지 파트너십, 시장 조사, 법규 검토, 현지화 전략 등 실행 근거 전무. [미확인] 각국 유치원 교육 시스템, 결제 인프라, 인터넷 보급률 등 진입 전제 조건 검토 내용 없음. [미확인] 베트남 외 국가에서의 pilot 실적, MoU, LoI 등 구체적 진척 사항 부재. 국내 B2C 전환도 미완인 상황에서 다국가 확장 계획은 리소스 분산 및 실행 리스크 높음. [부분 확인] UNDP SDG Venture Scaler 선정은 국제 네트워크 접근 가능성 시사하나, 구체적 연결 성과 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-3</span><span class="deep-title">학습 효과 측정 및 교육 성과 데이터 부재</span><span class="dvtag dv-a">교육 효과 미입증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 19,500명 유치원생 등록, 367,500시간 커리큘럼 제공은 양적 규모 입증. [미확인] 학생 학습 성과 향상, STEM 역량 개선, 학부모·교사 만족도 등 질적 효과 데이터 부재. [미확인] B2B 유치원에서 재계약률(retention rate), NPS(Net Promoter Score) 등 교육 서비스 품질 지표 없음. EdTech 투자자들이 중시하는 학습 효과 입증(learning outcome evidence)이 약함. [부분 확인] STEM.org 인증은 커리큘럼 설계 품질 보증이나, 실제 교육 현장에서의 성과 데이터는 별개 이슈. 4,800명 여성 교사 연수 제공은 규모는 확인되나, 교사 역량 향상 측정 결과 부재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-4</span><span class="deep-title">롯데 협력 PoC의 실행 가능성 과대 추정</span><span class="dvtag dv-a">협력 근거 미약</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 5가지 PoC(롯데 멤버십 앱 프로모션, 롯데마트 서가 배치, 롯데리아 해피밀, 롯데몰 AR 키즈존, IP 라이선싱)는 구체적으로 제시됨. [미확인] 롯데 측 사전 니즈 확인, 담당 부서와의 사전 접촉, 파일럿 진행 이력 전무. [미확인] 롯데마트·롯데리아 등 각 계열사의 제품 입점·프로모션 프로세스, 의사결정 기준, 필요 인증(식품, 안전 등) 검토 없음. [미확인] 베트남 롯데 계열사 특성(베트남 내 점포 수, 멤버십 회원 수, IP 라이선싱 선례) 반영 부족. 단순 마케팅 채널 활용 제안 수준이며, 전략적 협력 가치(롯데에게 돌아갈 이익, 차별화된 제휴 모델) 설득력 낮음.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>B2B 유치원 시장에서 19,500명 학생 등록 및 5,000명 교사 연수 실적 확보 [확인]</li>
+<li>2024→2025 연간 매출 2배 성장($125K→$281K) 및 4개 국제 어워드 수상 [확인]</li>
+<li>SDG 4·13 정렬 및 UNDP·AWS 공식 선정으로 ESG 임팩트 검증됨 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>B2C 앱 구독 모델의 단위경제(전환율, churn, ARR) 전혀 미공개로 수익성 검증 불가 [미확인]</li>
+<li>창업팀 구성원 성명·경력·도메인 전문성이 외부 검증 안 됨 [미확인]</li>
+<li>B2B 중심 매출 구조에서 B2C 전환 실행 경험 및 마케팅 역량 입증 부족 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>롯데 유통·F&B 채널을 통한 O2O 확산 가능성(멤버십, 매장망, 해피밀)</li>
+<li>베트남 540만 유치원생 시장 및 파키스탄·나이지리아·가나 해외 확장 잠재력</li>
+<li>AR/AI 기술 기반 화이트라벨 솔루션으로 B2B2C 다각화 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>B2C 앱 구독 시장의 높은 경쟁(국제 에듀테크 플랫폼 및 로컬 경쟁자)</li>
+<li>Freemium 모델의 낮은 유료 전환율 및 높은 churn 리스크</li>
+<li>롯데와의 협력 미확정 상태에서 B2C 확장 지연 가능성</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">19</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">B2B 유치원 시장에서 검증된 실적(19,500명 학생, $281K 매출)을 보유했으나, B2C 앱 구독으로의 전환 가능성이 핵심 미검증 가정이다. Freemium 전환율, 구독 유지율, CAC/LTV 등 단위경제 지표가 전혀 제시되지 않아 B2C 수익성 판단 불가. 롯데와의 5가지 PoC 제안은 구체적이나, 롯데 측 니즈 검증 없이 일방적 제안에 그침. 팀 구성 및 경력이 외부 검증되지 않아 실행 역량에 리스크 존재.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">7 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">19 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>KidsEdu Education Joint Stock Company · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

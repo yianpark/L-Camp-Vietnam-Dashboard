@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cropcom (OVIRO) — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Cropcom (OVIRO)</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam</span>
+          <span class="etag et-ind">E-commerce & Retail</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Cropcom (OVIRO)</div>
+        <div class="hero-sub">설립 2017 · https://www.oviro.vn</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">OVIRO는 베트남 리테일 기업을 위한 통합 커머스 시스템(Unified Commerce System)이다. 여러 브랜드와 판매자가 한 플랫폼에서 온·오프라인 채널을 통합 운영하는 문제를 해결하며, 자체 서버 설치형 SaaS 라이선스 판매 및 커스터마이징 용역으로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          SaaS 고객들이 프라이빗 서버 설치형 모델에 대해 추가 비용과 운영 복잡도를 감수하고서라도 데이터 소유권을 선호한다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">5개 (추정)</div><div class="kpi-desc">The Coffee House, GHN 등 과거 프로젝트 포함 [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">$1M</div><div class="kpi-desc">Seed 라운드 목표 금액 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">2023년 Private Beta</div><div class="kpi-desc">2024년 기능 완성 단계 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">미공개</div><div class="kpi-desc">Has Revenue = Yes이나 구체적 금액 없음 [미확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">타겟 시장(베트남 멀티브랜드 리테일)은 존재하나 구체적 시장 규모, TAM/SAM/SOM 데이터가 전무함 [미확인]. IR Deck에서 'Unified Commerce' 필요성은 설명하나 베트남 내 경쟁사(Haravan, Sapo 등 로컬 SaaS) 대비 차별화 근거가 불명확함 [미확인]. 프라이빗 서버 설치형 모델이 실제로 베트남 중소 리테일 고객에게 선호되는지에 대한 시장 검증 데이터 없음 [미확인]. 확장 가능성은 기술적으로 가능하나 고객 확보 전략과 영업 조직 부재로 실행 가능성 낮음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">문제(여러 SaaS 도구 간 데이터 파편화)와 솔루션(통합 시스템)은 명확하나, 실제 고객이 이 문제에 얼마를 지불할 의사가 있는지 검증되지 않음 [미확인]. 매출 존재 여부는 'Yes'로 표기되었으나 구체적 금액, 고객 수, 계약 유형(라이선스/용역) 일체 미공개 [미확인]. Case study의 The Coffee House, GHN 프로젝트는 2017~2019년 당시 팀의 아웃소싱 수행 건으로, OVIRO 제품의 상용 고객 증거는 아님 [부분 확인]. 투자 적합성: $1M 목표이나 사용 계획, 마일스톤, unit economics 일체 제시 없음 [미확인]. 롯데벤처스 펀드 투자 기준(확장성, 명확한 exit 경로)에 부합하는 근거 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">ESG 임팩트로 '여러 소프트웨어와 시스템 간 연결 단순화'를 제시하나, 이는 운영 효율성 개선일 뿐 명확한 사회적 가치 창출과의 연결고리가 약함 [미확인]. 환경, 사회적 포용, 지속가능성 등 ESG 핵심 요소와의 직접적 연관성이 설명되지 않음. 문제 정의(중소 리테일의 디지털 전환 장벽)는 존재하나, 솔루션이 사회적 약자 지원이나 환경 개선으로 이어지는 경로가 불분명함. 임팩트의 규모·깊이·지속성에 대한 측정 가능한 지표 부재 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">창업자 Võ Duy Tuấn의 기술적 역량은 검증됨 [확인] — VNG Corporation 제품 개발, dienmay.com CTO, 10년+ SaaS 운영 경험(Teamcrop, Basecrop). 도메인 적합성(이커머스/리테일)은 높음 [확인]. 그러나 TEAM RESEARCH 결과 치명적 약점 발견: 공동 창업자 및 핵심 경영진(CTO, 영업/마케팅 책임자) 정보 전무 [미확인]. 지원서에 'Co-founding team'이라 기재했으나 외부 확인 불가 [미확인]. 단독 창업자 구조 가능성 높으며, 영업·재무·제품 관리 등 비기술 기능의 리더십 부재는 scale-up 단계의 중대한 리스크. Key-person dependency 극도로 높음. 이전 벤처(Reader.vn, Moout) 모두 명확한 exit 없이 종료 또는 pivot [부분 확인]. 실사 시 전체 팀 구성, 지분 구조, 각 멤버 배경 필수 확인 사항.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">PoC 아이디어로 'Innovation technology with unified system'이라는 극히 포괄적 문구만 제시 [미확인]. 연계 가능 롯데 계열사를 Retail/Logistics/F&B로 광범위하게 나열했으나 구체적 affiliate 미명시, 협력 방식 불명확 [미확인]. OVIRO의 멀티브랜드 통합 시스템이 롯데의 어느 사업부(백화점? 마트? 면세점?)의 어떤 pain point를 해결하는지 구체적 시나리오 부재. 롯데 인프라(고객 데이터, 물류망, POS)를 실제로 활용하는 방안 없이 일반론적 '시스템 통합' 수준에 그침 [미확인]. Case study의 The Coffee House POS는 단일 브랜드 사례로, 롯데와 같은 대규모 conglomerate의 multi-brand 환경과는 맥락이 다름 [부분 확인]. PoC 실행 가능성 매우 낮음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 2 + D 3 + E 2</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce, Logistics/Supply Chain, F&B/Food</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미명시</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">통합 시스템 기술을 통한 혁신 (구체적 PoC 계획 부재)</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Simplify the connection between many small softwares and systems</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">기술 및 제품 개발 측면에서는 창업자가 강력한 역량을 보유하고 있으나, 공동 창업자나 핵심 경영진에 대한 정보가 확인되지 않음. 영업, 마케팅, 재무 등 비즈니스 핵심 기능을 담당하는 팀원 정보 부재. 이커머스 도메인 전문성은 창업자가 보유하고 있으나, 조직 전체의 기능적 완성도는 불명확</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">불완전한 팀 구조. 공개된 정보로는 창업자 1인만 확인되며, CTO, CPO, 영업/마케팅 책임자 등 핵심 경영진에 대한 정보가 전혀 없음. 웹사이트나 LinkedIn에도 팀 정보가 공개되어 있지 않아 실제 조직 규모와 구성을 파악하기 어려움. 'Co-founding team with experience'라는 자체 보고에도 불구하고 다른 공동 창업자의 존재를 확인할 수 없음. 이는 중대한 위험 신호</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">창업자의 기술적 신뢰성은 높음 - 10년 이상의 검증된 경력, VNG 같은 주요 기업 경험, 다수의 제품 개발 이력, 기술 커뮤니티에서의 인지도 등이 확인됨. 그러나 팀 전체의 신뢰성은 평가 불가. 공동 창업자나 핵심 팀원에 대한 정보 부족은 실사 과정에서 반드시 해결해야 할 critical issue. 이전 벤처들의 성공 규모가 제한적이라는 점도 고려 필요</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">팀 투명성 및 경영진 구성의 심각한 공백. 가장 큰 문제는 공동 창업자 및 핵심 경영진에 대한 정보가 전무하다는 점. 단독 창업자 구조인지, 아니면 정보가 공개되지 않은 것인지 불명확. 영업/마케팅, 재무, 제품 관리 등 비기술 분야의 리더십 부재 확인. 투자자 관점에서 가장 우려되는 부분은 '팀'이 실제로 존재하는지, 그들의 역량은 어떤지에 대한 검증 불가. 실사 시 반드시 전체 팀 구성, 지분 구조, 각 멤버의 배경과 역할을 상세히 확인해야 함. Teamcrop/Basecrop의 기존 고객 기반과 매출 현황도 확인 필요</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Cropcom oviro.vn founder · Võ Duy Tuấn LinkedIn · Võ Duy Tuấn CropCom LinkedIn · Võ Duy Tuấn University Natural Science Vietnam · Võ Duy Tuấn Moout.com founder · Võ Duy Tuấn Reader.vn founder</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Võ Duy Tuấn (Vo Duy Tuan)</div><div class="member-role">CEO/Founder</div></div>
+    <div class="member-meta"><a href="https://www.linkedin.com/in/voduytuan" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-h" style="margin-left:8px;">Domain: High</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 단독 창업자 구조 - 공동 창업자나 핵심 팀원에 대한 정보 부족</span><span class='flag-item'>⑊ 여러 스타트업을 연속적으로 시작했으나 명확한 exit이나 대규모 성공 사례 부재</span><span class='flag-item'>⑊ Reader.vn은 규제 문제로 인해 소셜 네트워크 기능 중단 (2014)</span><span class='flag-item'>⑊ 최근 LinkedIn 정보가 제한적이어서 현재 팀 구성원 확인 어려움</span><span class='flag-item'>⑊ OVIRO 제품에 대한 공개 정보나 미디어 보도 매우 제한적</span><span class='flag-item'>⑊ 투자 유치 이력이 공개적으로 확인되지 않음 (부트스트랩 가능성)</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>학사 (추정)/정보 없음</td><td>University of Natural Science (Vietnam)</td><td>2001-2004 (추정)</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>CropCom Ltd</td><td>CEO/Founder</td><td>2014 - 현재 (약 12년)</td><td style="font-size:11px;">SaaS 및 아웃소싱 회사 설립. 주요 제품으로 Teamcrop (소매 체인 관리 ERP), Basecrop (HR 관리), OVIRO (통합 커머스 시스템) 개발</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Moout Company Limited</td><td>CEO/Founder</td><td>2017 - 2018 (약 2년)</td><td style="font-size:11px;">소프트웨어 개발 및 아웃소싱 서비스 회사. 모바일 아웃소싱 프로젝트 경험 축적</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Reader.vn</td><td>CEO/Founder</td><td>2011 - 2014 (약 3.5년)</td><td style="font-size:11px;">책 애호가를 위한 소셜 네트워크 플랫폼. 40,000명 이상의 회원과 50,000개 이상의 도서 보유. 2014년 이후 재구조화</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>dienmay.com</td><td>Technical Director (CTO)</td><td>2011 - 2013 (추정)</td><td style="font-size:11px;">베트남 전자제품 리테일 기업의 기술 책임자로 근무</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr><tr><td>VNG Corporation (VinaGame)</td><td>Product Executive - Zing Me</td><td>2010년 7월 - 9월 (3개월)</td><td style="font-size:11px;">베트남 최대 기술 기업에서 Zing Me (소셜 네트워크) 웹 기술팀 제품 담당</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Various Companies</td><td>Developer Team Leader</td><td>2004 - 2010</td><td style="font-size:11px;">PHP 강사 및 웹 개발 팀 리더로 활동. 프리랜서로 다수의 웹 및 그래픽 디자인 프로젝트 수행</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 이커머스 및 리테일 분야에서 매우 높은 도메인 적합성을 보유. 10년 이상 SaaS 제품 개발 경험 (Teamcrop, Basecrop). 대형 리테일 회사 (dienmay.com) CTO 경력. 베트남 최대 기술 기업 VNG에서 제품 개발 경험. 마이크로서비스, 클라우드 아키텍처, 대규모 시스템 설계 전문성. PHP, Javascript, 웹 최적화, 데이터 마이닝, 모바일 개발 등 풀스택 기술 역량. 베트남 리테일 및 이커머스 생태계에 대한 깊은 이해. 여러 차례 기술 컨퍼런스 연사로 활동 (Vietnam Web Summit 2016, 2019, Vietnam Mobile Day 2016, 2017)</div><div class="ma-overall"><strong>종합 평가:</strong> 기술적으로 매우 역량 있는 시리얼 앙트러프러너. 10년 이상의 SaaS 제품 개발 및 운영 경험을 보유하고 있으며, 특히 리테일/이커머스 도메인에서 깊은 전문성을 가지고 있음. 베트남 기술 생태계에서 인지도가 있는 인물이며, VNG와 같은 대기업 경험도 보유. 그러나 단독 창업자 구조와 이전 벤처들의 제한적 성공, 그리고 투자 유치 부재는 우려 사항. 기술 실행 능력은 검증되었으나, 비즈니스 확장성과 팀 구축 역량에 대한 추가 검증 필요. OVIRO가 기존 Teamcrop의 진화 버전인지, 완전히 새로운 제품인지 명확하지 않음</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 구성 불투명성</td><td><span class="rpill-sm rp-h">높음</span></td><td>공동 창업자 및 핵심 경영진 정보 미확인. 단독 창업자 구조 가능성 높으며, 영업·마케팅·재무 기능 담당자 부재 [미확인]. 실사 필수.</td></tr>
+<tr><td>매출 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>'Has Revenue = Yes'이나 금액, 고객 수, 계약 유형 일체 미공개 [미확인]. 실제 PMF 달성 여부 판단 불가.</td></tr>
+<tr><td>비즈니스 모델 역방향성</td><td><span class="rpill-sm rp-h">높음</span></td><td>클라우드 SaaS 대신 프라이빗 서버 설치형 모델 채택 — 고객의 운영 부담 증가. 시장 선호도 검증 부재 [미확인].</td></tr>
+<tr><td>롯데 PoC 실행 가능성</td><td><span class="rpill-sm rp-m">중간</span></td><td>PoC 아이디어가 지나치게 포괄적('Innovation technology')이며 구체적 계열사 및 협력 시나리오 부재 [미확인].</td></tr>
+<tr><td>경쟁 우위 불명확</td><td><span class="rpill-sm rp-m">중간</span></td><td>로컬 SaaS(Haravan, Sapo) 대비 차별화 근거 미약. 'Private server'만으로는 중소 고객 설득 어려움 [미확인].</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">SaaS 비즈니스 모델의 적합성 및 Unit Economics</span><span class="dvtag dv-r">수익 모델 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">OVIRO는 'SaaS 라이선스 판매'를 표방하나 실제로는 프라이빗 서버 설치형(On-premise) 모델로, 전형적 SaaS의 반복 매출(MRR/ARR) 구조가 아님 [부분 확인]. 매출 존재 여부만 'Yes'로 표기되었으나 구체적 금액, 고객 수, CAC, LTV, churn rate 등 unit economics 데이터 일체 미공개 [미확인]. 커스터마이징 용역 수익 의존도가 높을 경우 확장성 제약이 크며, 이는 전형적인 서비스 회사 모델로 SaaS 밸류에이션 적용 불가 [미확인]. The Coffee House, GHN 사례는 2017-2019년 아웃소싱 프로젝트로 OVIRO 제품의 상용 고객 증거가 아니며, 현재 paying customer 현황 실사 필수 [부분 확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">제품 차별화 및 기술적 경쟁력</span><span class="dvtag dv-a">차별화 근거 미약</span><span class="deep-arrow">▾</span></div><div class="deep-body">IR Deck에서 'Microservice 아키텍처', '프라이빗 서버 커스터마이징' 등 기술적 특징을 강조하나, 베트남 로컬 경쟁사(Haravan, Sapo, MISA) 대비 명확한 기술적 우위 입증 자료 없음 [미확인]. Multi-brand/Multi-seller 지원은 Shopify Plus, Magento 등 글로벌 솔루션도 제공하는 기능으로 독보적 차별화 요소 아님 [부분 확인]. 'RFID 자체 개발 셀프체크아웃'은 수상 이력이 있으나, 이것이 핵심 제품(Unified Commerce System)에 어떻게 통합되고 상용화되었는지 불명확 [미확인]. On-premise 설치형 모델이 베트남 중소 리테일 고객에게 실제로 선호되는지 시장 검증 데이터 부재 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">Go-to-Market 전략 및 영업 조직</span><span class="dvtag dv-r">실행 역량 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">지원서에 사용자 수 '5'로 기재되어 있어 상용 고객 기반이 극히 제한적임을 시사 [확인]. IR Deck에 구체적인 GTM 전략, 고객 획득 채널, 영업 조직 구성에 대한 언급 전무 [미확인]. 팀 구성 실사 결과 영업/마케팅 책임자 정보 부재로 B2B SaaS에 필수적인 영업 역량 검증 불가 [미확인]. 베트남 리테일 시장 공략을 위한 partnership 전략(대형 유통, SI 파트너 등)도 제시되지 않음 [미확인]. $1M 투자 목표이나 고객 확보 마일스톤, 마케팅 예산 배분 등 사용 계획 일체 미공개로 자금 집행 실행력 의문 [미확인].</div></div>
+<div class="deep-category-label">Category B — 이커머스/리테일</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">시장 기회 및 TAM/SAM 검증</span><span class="dvtag dv-r">시장 근거 불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 멀티브랜드 리테일이라는 타겟 시장은 존재하나 구체적 시장 규모(TAM/SAM/SOM), 성장률, 경쟁 밀도 데이터가 전무함 [미확인]. IR Deck에서 'Unified Commerce' 필요성은 설명하나 베트남 중소 리테일 고객이 실제로 여러 SaaS 도구 통합에 얼마의 비용을 지불할 의사가 있는지 willingness-to-pay 검증 부재 [미확인]. The Coffee House는 베트남 대형 체인으로 OVIRO의 타겟(중소 리테일)과 세그먼트가 불일치하며, 이 사례로 중소 시장 접근성을 입증하기 어려움 [부분 확인]. 베트남 정부의 디지털 전환 정책(예: National Digital Transformation Program)과의 연계성도 언급 없음 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">롯데 계열사 협업 타당성</span><span class="dvtag dv-r">PoC 실행 가능성 낮음</span><span class="deep-arrow">▾</span></div><div class="deep-body">PoC 아이디어로 'Innovation technology with unified system'이라는 극히 포괄적 문구만 제시되어 구체성 전무 [미확인]. 롯데 백화점/마트/면세점 등 어느 사업부의 어떤 pain point를 해결하는지 구체적 시나리오 부재 [미확인]. OVIRO의 multi-brand 시스템이 롯데의 대규모 conglomerate 환경(수십 개 브랜드, 수백 개 매장, 복잡한 레거시 시스템)에 적용 가능한지 기술적 feasibility 검증 안 됨 [미확인]. The Coffee House POS 사례는 단일 브랜드로 롯데의 multi-entity 구조와 맥락이 다르며, 롯데 인프라(고객 데이터, 물류망, POS)를 실제로 활용하는 통합 방안 없이 일반론적 '시스템 통합' 수준 [부분 확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">고객 확보 증거 및 Traction</span><span class="dvtag dv-r">Traction 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">매출 존재 여부 'Yes'이나 구체적 금액, 계약 유형(라이선스/용역), 고객 수, retention rate 일체 미공개 [미확인]. Case study의 The Coffee House, GHN 프로젝트는 2017-2019년 당시 팀의 아웃소싱 수행 건으로 OVIRO 제품의 paying customer 증거 아님 [부분 확인]. 지원서에 사용자 수 '5'로 기재되어 상용 고객 기반이 극히 제한적이며, 이것이 pilot 고객인지 유료 고객인지 불명확 [미확인]. 'Innovation self-checkout with RFID' 수상은 기술 역량 증거이나 상용화 및 매출 기여도 미확인 [부분 확인]. 투자 적합성 판단을 위한 핵심 traction 지표(MRR, logo count, gross retention) 전부 누락 [미확인].</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>창업자의 검증된 기술 역량 — VNG, dienmay.com 경력 및 10년+ SaaS 운영 [확인]</li>
+<li>Microservice 아키텍처 기반 커스터마이징 가능 구조 [확인]</li>
+<li>The Coffee House, GHN 등 브랜드 기업과의 과거 프로젝트 수행 이력 [부분 확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>공동 창업자 및 핵심 경영진 부재 — 극심한 key-person dependency [미확인]</li>
+<li>매출 규모, 고객 수, 계약 구조 일체 미공개 — 비즈니스 검증 불가 [미확인]</li>
+<li>프라이빗 서버 설치형 모델의 시장 선호도 검증 부재 — 운영 복잡도 증가 우려 [미확인]</li>
+<li>롯데 PoC 계획이 포괄적이고 비구체적 — 실행 가능성 낮음 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 리테일의 디지털 전환 가속화 — 통합 시스템 수요 증가 가능성</li>
+<li>롯데 베트남 retail footprint 활용 시 대규모 레퍼런스 확보 가능</li>
+<li>ASEAN 시장 확장 — 유사한 멀티브랜드 리테일 환경 다수</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>Haravan, Sapo 등 베트남 로컬 SaaS 강자들의 시장 선점</li>
+<li>Shopify, Magento 등 글로벌 플랫폼의 베트남 진출 가속화</li>
+<li>프라이빗 서버 모델의 높은 초기 비용이 중소 고객 진입 장벽으로 작용</li>
+<li>단독 창업자 구조로 인한 사업 지속성 리스크 — 팀 이탈 시 회복 불가</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">기술 역량은 검증되었으나 비즈니스 검증이 치명적으로 부족한 사례. 창업자 Võ Duy Tuấn은 10년+ SaaS 개발 경험과 베트남 리테일 도메인 전문성을 보유하나, 팀 구성(공동 창업자 부재), 매출 검증(구체적 금액 미공개), 시장 검증(프라이빗 서버 모델 선호도 미확인), 롯데 PoC 구체성(일반론적 제안) 모두 미확인 상태. 가장 큰 미검증 가정은 베트남 중소 리테일 고객들이 클라우드 SaaS 대신 자체 서버 설치형 모델에 premium을 지불할 의사가 있다는 점으로, 이는 운영 복잡도와 초기 비용 증가를 감수해야 하는 역행적 선택일 수 있음. 현 단계에서는 제품 개발 중심의 기술 벤처로, 시장 진입 전략과 조직 완성도가 투자 단계에 미달.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">2 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Cropcom (OVIRO) · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

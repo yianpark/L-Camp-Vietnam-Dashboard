@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1Hub Holding — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">1Hub Holding</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hanoi, Vietnam</span>
+          <span class="etag et-ind">Ed-Tech/E-commerce/Hospitality/F&B/Smart City</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">1Hub Holding</div>
+        <div class="hero-sub">설립 2025 · uni.1hub.global</div>
+        <span class="hero-stage">Idea</span>
+        <p class="hero-desc">1Hub는 대학생을 대상으로 검증된 디지털 신원 기반 서비스 연결 플랫폼이다. 학생들이 신원 정보를 한 번 인증하면 여러 파트너 서비스(결제·모빌리티·리테일·F&B)에서 동의 기반으로 재사용할 수 있도록 하며, 현재 파일럿 단계로 아직 매출이 없다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          학생들이 신원 정보를 여러 서비스에 반복 제출하는 것을 실제로 불편해하며, 단일 플랫폼 통합 시 파트너 서비스 재사용률이 충분히 높아질 것이다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">11</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">2025</div><div class="kpi-desc">올해 설립된 초기 단계 기업</div></div>
+<div class="kpi"><div class="kpi-val">10~20만</div><div class="kpi-desc">2026년 말 목표, 파트너 네트워크 통해</div></div>
+<div class="kpi"><div class="kpi-val">$100K</div><div class="kpi-desc">현재 Pre-seed 라운드 진행 중</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 지원서는 '디지털 신원 기반 청소년 플랫폼'이라는 광범위한 시장을 제시하나, 베트남 내 TAM/SAM/SOM 세분화가 전혀 없음. 경쟁 분석 부재: 기존 학생 신원 인증 솔루션(대학 자체 시스템, 모바일 eKYC 서비스) 대비 차별점이 구체적으로 제시되지 않음. [미확인] 확장 가능성: 'NDAKeys, HPay, HiHub 생태계와 협력 중'이라 주장하나 계약서·MOU·파트너 확인서 등 검증 자료 없음. 10~20만 사용자 목표는 파트너 네트워크 가정에 기반하나 실제 획득 경로가 불명확함.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 문제(반복적 신원 제출)와 솔루션(검증된 프로필 재사용)의 연결은 논리적이나, 실제 고객이 이 문제를 얼마나 심각하게 느끼는지에 대한 데이터가 전무함. [미확인] 수익 모델: 지원서 어디에도 구체적 수익 구조(B2B SaaS 구독? 거래 수수료? 데이터 활용료?)가 명시되지 않음. 매출 없음, 파일럿만 진행 중. [미확인] 투자 적합성: Pre-seed $100K 목표는 합리적이나, 현재까지 투자 유치 이력·벤처캐피탈 관심 증거 전혀 없음. 롯데벤처스 펀드 투자 적합성은 PoC 검증 이후에나 평가 가능.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 문제 정의(반복적 신원 제출, 데이터 투명성 부족)는 일반론적으로 타당하나, 베트남 청소년·학생이 실제로 이 문제를 얼마나 겪는지에 대한 1차 조사 결과가 없음. [확인] 솔루션 방향(동의 기반 디지털 신원)은 글로벌 트렌드와 부합하며, 학생 대상 디지털 포용성 향상에 기여 가능성은 있음. [미확인] 임팩트 규모·깊이·지속성: 아직 실사용자가 없어 실제 사회적 가치 창출 여부를 검증할 수 없음. 환경 임팩트(종이 양식 절감)는 부수적 효과에 불과함.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 역량에 대한 외부 검증이 전혀 불가능함. 제공된 CMO(Vu Tuan Anh)의 LinkedIn 프로필을 찾을 수 없으며, 회사 웹사이트(uni.1hub.global)에도 팀 정보가 없음. [미확인] 지원서는 '대규모 소비자 제품 경험, 수백만 사용자 대상 플랫폼 경험'을 주장하나 구체적 회사명·프로젝트명·성과 지표가 전혀 없음. [Critical Red Flag] 현대 테크 기업, 특히 다중 산업(EdTech·E-commerce·Hospitality·F&B·Smart City)에 걸친 플랫폼을 구축한다는 기업의 창립팀에 대한 공개 정보가 전무한 것은 매우 비정상적임. 투자 결정 전 반드시 직접 실사 필요.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">4<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[부분 확인] 주요 사업분야(리테일·F&B·호텔·시네마·건설) 모두에 해당하며, PoC 제안은 구조적으로 논리적임(학생 신원 → 할인/쿠폰 → 재사용률 측정). [미확인] 그러나 PoC 아이디어가 지나치게 포괄적임: 백화점·마트·호텔·시네마·모빌리티·F&B를 동시에 테스트하는 것은 3~6개월 PoC로는 실행 불가능함. 특정 계열사(예: 롯데마트 또는 롯데시네마)에 집중하여 단일 유스케이스(예: 학생 할인 쿠폰 자동 검증)를 명확히 하는 것이 필요함. [미확인] 롯데 측 인프라 연동 방식(API, QR, 멤버십 시스템)에 대한 구체적 기술 제안 없음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 1 + C 3 + D 1 + E 4</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">11</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">백화점·마트·호텔·시네마·월드·건설·이노베이트·롯데리아</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">명시되지 않음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">1Hub는 3~6개월 PoC를 제안하며, 대학생·청소년 중심의 검증된 디지털 신원을 롯데 계열사(리테일·F&B·시네마·모빌리티·호텔)에 연결하여 학생 할인·쿠폰·이벤트 참여 등에 활용하는 것을 목표로 함. 사용자는 동의 기반으로 신원 정보를 선택적으로 공유하며, PoC 목표는 가입 전환율, 재사용률, 파트너별 유틸리티 강도를 검증하는 것임.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">1Hub는 디지털 포용, 안전한 신원 인증, 데이터 투명성을 통해 ESG 임팩트를 창출한다고 주장함. 사회적 임팩트: 학생과 청소년이 검증된 디지털 서비스를 더 쉽게 이용하도록 지원하며, 동의 기반 신원 모델로 사용자 데이터 통제권을 강화함. 거버넌스 임팩트: 반복적인 개인정보 제출을 줄이고, 재사용 가능한 검증 프로필을 통해 투명하고 책임 있는 데이터 사용을 지원함. 환경 임팩트: 종이 기반 양식 및 수동 문서 처리를 디지털화하여 환경 부담을 줄임. 롯데와의 PoC는 대규모 소비자 생태계가 책임 있는 디지털 신원을 통해 청소년을 활성화하는 모델을 검증할 수 있음.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">평가 불가능. 팀 구성원에 대한 검증 가능한 정보가 없어 Ed-Tech, E-commerce, Retail, Hospitality, F&B, Smart City 등 주장하는 다양한 산업 분야를 다룰 수 있는 도메인 전문성 보유 여부를 확인할 수 없습니다. 제공된 자체 보고 설명은 일반적이며 구체적인 증거나 검증 가능한 참조가 없습니다.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">평가 불가능. 창립자, CEO, CTO, CFO 등 핵심 경영진에 대한 정보가 전혀 공개되지 않았습니다. CMO만 연락처로 제공되었으나 해당 인물에 대한 검증도 불가능합니다. 완전한 팀 구성을 파악하려면 추가 정보 제공이 필수적입니다.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">현재 공개된 정보 부족으로 인해 신뢰성을 평가할 수 없습니다. 주요 우려 사항: (1) 팀원의 LinkedIn 프로필 부재, (2) 회사 웹사이트의 팀 정보 부재, (3) 언론 보도나 업계 인지도 부재, (4) 투자자나 파트너 정보 부재. 이는 초기 단계 스타트업이거나 스텔스 모드일 수 있으나, 다중 산업에 걸친 대규모 플랫폼을 주장하는 기업으로서는 투명성이 매우 낮습니다. 투자 또는 파트너십 결정 전 반드시 직접 검증이 필요합니다.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 문제는 완전한 투명성 부족입니다. 검증 가능한 팀 정보, 창립자 배경, 이전 성공 사례, 업계 평판 등 기본적인 실사 정보가 전혀 공개되지 않았습니다. Ed-Tech부터 Smart City까지 매우 광범위한 산업을 다룬다고 주장하면서도 구체적인 전문성 증거가 없는 것은 중대한 위험 신호입니다. 추가로 필요한 정보: (1) 전체 창립팀 명단 및 상세 이력, (2) 검증 가능한 LinkedIn 프로필, (3) 이전 회사 및 프로젝트 실적, (4) 투자자 또는 자문단 정보, (5) 제품 개발 현황 및 고객 레퍼런스, (6) 회사 등록 정보 및 법적 구조 확인.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: 1Hub Holding founding team · Vu Tuan Anh CMO 1Hub · uni.1hub.global founders · 1Hub Holding Vietnam · site:linkedin.com 1Hub Holding · Vu Tuan Anh 1Hub LinkedIn</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Vu Tuan Anh</div><div class="member-role">CMO (Chief Marketing Officer) - 주 연락 담당자로 제공됨</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - 현대 기술 기업의 CMO로서는 매우 이례적</span><span class='flag-item'>⑊ 회사 웹사이트(uni.1hub.global)에 팀 정보가 전혀 공개되지 않음</span><span class='flag-item'>⑊ 공개된 언론 보도, 인터뷰, 또는 업계 활동 기록이 없음</span><span class='flag-item'>⑊ 회사명 '1Hub Holding'으로 검색 시 관련 없는 여러 다른 기업들만 검색됨</span></div><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 공개된 정보를 찾을 수 없어 도메인 관련성을 평가할 수 없습니다. 'Vu Tuan Anh'는 베트남에서 매우 흔한 이름이며, LinkedIn에 100명 이상의 동명이인이 존재하지만 1Hub Holding의 CMO로 확인된 프로필은 없습니다. Ed-Tech, E-commerce, Hospitality, F&B, Smart City 등 제시된 산업 분야와의 연관성을 입증할 수 있는 구체적인 경력 정보가 부재합니다.</div><div class="ma-overall"><strong>종합 평가:</strong> 제공된 연락처 정보(Vu Tuan Anh, CMO)에 대해 검증 가능한 공개 정보를 전혀 찾을 수 없었습니다. 이는 심각한 우려 사항입니다. 디지털 인프라 및 다중 산업 플랫폼을 구축한다고 주장하는 기술 기업의 경우, 창립팀에 대한 공개 정보가 전무한 것은 매우 비정상적입니다. 실사(Due Diligence)를 진행하기 전에 회사에 직접 연락하여 검증 가능한 팀 정보, LinkedIn 프로필, 이력서 또는 기타 공식 문서를 요청하는 것을 강력히 권장합니다.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 검증 불가</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 외부 조사 결과, 제공된 CMO 연락처 및 창립팀 정보에 대한 공개 자료(LinkedIn, 회사 웹사이트, 언론 보도)를 전혀 찾을 수 없음. 투자 또는 PoC 진행 전 반드시 직접 실사 필요.</td></tr>
+<tr><td>고객 검증 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 학생들이 '신원 정보 반복 제출'을 실제로 심각한 문제로 인식하는지, 단일 플랫폼 통합 시 파트너 서비스를 재사용할 의향이 있는지에 대한 고객 조사·인터뷰·파일럿 데이터가 전무함.</td></tr>
+<tr><td>수익 모델 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] B2B SaaS 구독인지, 거래 수수료 모델인지, 데이터 활용료인지 전혀 명시되지 않음. 매출 없이 $100K 투자 유치 목표만 제시됨.</td></tr>
+<tr><td>파트너십 검증 불가</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] NDAKeys, HPay, HiHub 생태계와의 협력을 주장하나 MOU·계약서·파트너 확인서 등 증빙 자료 없음. 10~20만 사용자 목표는 이 가정에 의존함.</td></tr>
+<tr><td>PoC 범위 과도</td><td><span class="rpill-sm rp-m">중간</span></td><td>[확인] 제안된 PoC가 리테일·F&B·호텔·시네마·모빌리티 전체를 동시 테스트하는 것은 3~6개월 내 실행 불가능. 단일 계열사·단일 유스케이스로 범위 축소 필요.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — Pre-Revenue 스타트업</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">제품·시장 초기 검증 (Problem-Solution Fit)</span><span class="dvtag dv-r">미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 문제 정의는 논리적이나 베트남 대학생이 반복적 신원 제출을 실제로 불편해하는지에 대한 1차 조사 데이터가 전무함. [미확인] 파일럿 진행 중이라 주장하나 참여 대학명, 사용자 수, 피드백 등 구체적 검증 지표가 없음. [미확인] NDAKeys·HPay·HiHub 등 파트너 협력은 언급되나 MOU·계약서 등 공식 검증 자료가 제시되지 않아 실제 협력 깊이를 확인할 수 없음. 현재 매출 $0, 실사용자 없음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">수익 모델 명확성</span><span class="dvtag dv-r">불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 지원서 전체에서 구체적 수익 구조가 단 한 번도 명시되지 않음. B2B SaaS 구독료인지, 거래당 수수료인지, 데이터 라이선싱인지 판단 불가능함. [미확인] 2026년 10~20만 사용자 목표는 제시되나 이를 통한 매출 예측·단위 경제학(unit economics) 분석이 전혀 없음. [부분 확인] 디지털 신원 플랫폼의 일반적 수익화 경로(파트너사 수수료, 데이터 인사이트 판매)는 존재하나 1Hub의 구체적 모델은 미정립 상태로 보임.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">초기 자본 효율성 및 투자 유치 가능성</span><span class="dvtag dv-a">검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] Pre-seed $100K 목표 규모는 베트남 초기 스타트업으로서 합리적 범위임. [미확인] 그러나 현재까지 외부 투자 유치 이력·엔젤 투자자·VC 관심 증거가 전혀 없음. [미확인] 팀 공개 정보 부재로 인해 투자자 신뢰 확보가 매우 어려운 상황임. [확인] L-Camp 참여 시 롯데 계열사 PoC를 통한 초기 검증 기회는 확보 가능하나, 독립적 투자 유치 준비도는 현저히 낮음.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-4</span><span class="deep-title">창업팀 검증 가능성</span><span class="dvtag dv-r">Critical Red Flag</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 제공된 CMO(Vu Tuan Anh) LinkedIn 프로필을 찾을 수 없으며, 회사 웹사이트(uni.1hub.global)에도 팀 정보가 전무함. [미확인] '수백만 사용자 대상 플랫폼 경험'을 주장하나 구체적 회사명·프로젝트명·성과가 없어 외부 검증 불가능함. [Critical] EdTech·E-commerce·Hospitality·F&B·Smart City 등 5개 산업에 걸친 플랫폼을 구축한다는 기업의 창립팀 정보가 전무한 것은 매우 비정상적이며, 투자 심사 전 반드시 직접 실사와 경력 검증이 필요함.</div></div>
+<div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">시장 크기 및 경쟁 분석</span><span class="dvtag dv-r">불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] '디지털 신원 기반 청소년 플랫폼'이라는 광범위한 시장 개념만 제시하며, 베트남 내 TAM/SAM/SOM 세분화가 전혀 없음. [미확인] 기존 대학 자체 인증 시스템, 모바일 eKYC 서비스(VNPay, Momo 등), 학생 할인 플랫폼 대비 구체적 차별점이 제시되지 않음. [미확인] 10~20만 사용자 확보 경로가 파트너 네트워크 가정에만 의존하며, 실제 획득 전략(마케팅·온보딩·리텐션)이 불명확함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">제품 확장성 및 기술 아키텍처</span><span class="dvtag dv-a">검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 동의 기반 디지털 신원 재사용이라는 컨셉은 글로벌 트렌드(SSI, Self-Sovereign Identity)와 부합하며 기술적으로 가능함. [미확인] 그러나 실제 아키텍처(블록체인 기반인지, 중앙화 DB인지, API 연동 구조)에 대한 설명이 전무함. [미확인] 5개 산업(EdTech·E-commerce·Hospitality·F&B·Smart City)을 동시 공략한다는 전략은 지나치게 산만하며, 초기 스타트업의 리소스로 실행 가능성이 낮음. 단일 버티컬 집중 후 확장 전략이 부재함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">데이터 보안·개인정보보호·규제 대응</span><span class="dvtag dv-a">언급 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 청소년 개인정보를 다루는 플랫폼임에도 베트남 개인정보보호법(PDPA) 준수, GDPR 대응, 데이터 암호화, 동의 관리 체계 등에 대한 언급이 전혀 없음. [미확인] 대학·파트너사와의 데이터 공유 시 법적 책임 소재, 데이터 유출 시 대응 프로토콜 등 리스크 관리 체계가 불명확함. [확인] 디지털 신원 플랫폼의 핵심 가치는 신뢰와 보안인데, 이에 대한 준비도가 전혀 드러나지 않아 B2B 파트너 확보 시 큰 장애 요소가 될 수 있음.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[부분 확인] 청소년 디지털 신원이라는 주제는 글로벌 트렌드와 부합하며, 롯데의 다양한 B2C 접점(리테일·F&B·호텔·시네마)과 연결 가능성이 있음</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[미확인] 수익 모델이 명시되지 않았으며, 매출 없이 파일럿만 진행 중. 고객 획득 비용 대비 수익화 경로가 불투명함</li>
+<li>[Critical] 창립팀에 대한 검증 가능한 정보가 전무하여, 실행 역량을 평가할 수 없음. LinkedIn 프로필·회사 웹사이트·언론 보도 모두 부재</li>
+<li>[미확인] 파트너십(NDAKeys, HPay, HiHub) 주장에 대한 MOU·계약서 등 증빙 자료가 없음. 10~20만 사용자 목표는 파트너 가정에 의존하나 실제 획득 경로 불명확</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>롯데 계열사와의 PoC를 통해 학생 할인·쿠폰 자동 검증 등 특정 유스케이스에서 실제 재사용률을 검증할 기회</li>
+<li>베트남 정부의 디지털 ID 정책(VNeID 등)과 연계 시 제도적 지원 가능성</li>
+<li>성공 시 베트남 외 동남아 국가로 모델 복제 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>대학 자체 학생 인증 시스템 또는 대형 슈퍼앱(Grab, Momo 등)이 동일 기능을 추가할 경우 경쟁력 상실 위험</li>
+<li>동의 기반 데이터 공유 모델의 규제 리스크: 베트남 개인정보보호법 준수 여부 불명확</li>
+<li>파일럿 단계에서 실제 학생 참여율이 낮거나, 파트너 서비스 재사용률이 기대에 미치지 못할 경우 사업 모델 전체가 무효화됨</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">11</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">1Hub는 대학생 대상 검증된 디지털 신원 플랫폼이라는 개념적으로는 타당한 문제를 다루나, 핵심 가정이 전혀 검증되지 않았다. 가장 큰 미검증 가정: '학생들이 신원 정보를 여러 서비스에 반복 제출하는 것을 실제로 불편해하며, 단일 플랫폼 통합 시 파트너 서비스 재사용률이 충분히 높아질 것이다'는 인과관계가 고객 조사나 파일럿 데이터로 입증되지 않음. 추가 Critical 위험: 창립팀에 대한 검증 가능한 공개 정보가 전무하여, 주장하는 대규모 플랫폼 경험·기술 역량을 확인할 방법이 없음. 투자 또는 PoC 진행 전 반드시 팀 실사 및 최소 규모의 고객 검증(LOI, 파일럿 계약, 실사용자 데이터) 확보가 선행되어야 함.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">4 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">11 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>1Hub Holding · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

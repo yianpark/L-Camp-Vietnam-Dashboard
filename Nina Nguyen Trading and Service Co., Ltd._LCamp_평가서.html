@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nina Nguyen Trading and Service Co., Ltd. — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Nina Nguyen Trading and Service Co., Ltd.</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam</span>
+          <span class="etag et-ind">E-commerce & Retail</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Nina Nguyen Trading and Service Co., Ltd.</div>
+        <div class="hero-sub">설립 2023 · ninanguyen.com.vn</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">Nina Ecom Center는 베트남 브랜드를 위한 통합형 소셜커머스 운영 플랫폼이다. 스튜디오 임대·제작·라이브 대행이 분산되어 발생하는 비효율을 해결하며, 라이브커머스 대행 수수료 및 스튜디오 이용료로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          300개 브랜드 파트너십과 700B GMV가 라이브 대행 서비스의 직접 매출인지, 단순 스튜디오 임대 수익인지 구분되지 않아 비즈니스 모델의 실체가 불명확하다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">12</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$1.5M</div><div class="kpi-desc">2024년 매출 (통화·기간 명시, 검증 불가)</div></div>
+<div class="kpi"><div class="kpi-val">700B VND</div><div class="kpi-desc">누적 GMV Delivered (기간·직접 기여분 미명시)</div></div>
+<div class="kpi"><div class="kpi-val">5,000m²</div><div class="kpi-desc">스튜디오 공간 규모 (물리적 자산 확인됨)</div></div>
+<div class="kpi"><div class="kpi-val">300+</div><div class="kpi-desc">파트너 브랜드 수 (계약 유형·매출 기여 불명)</div></div>
+<div class="kpi"><div class="kpi-val">20,000h</div><div class="kpi-desc">누적 라이브 시간 (기간·수익화 여부 불명)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">베트남 소셜커머스 시장은 $32B (2025 추정)로 성장 중이며, 라이브커머스 전환율이 전통 채널 대비 10배 높다는 시장 데이터가 제시됨 [부분 확인 — 출처 미명시]. 그러나 TAM만 제시되고 Nina가 타겟하는 SAM/SOM 세분화가 전혀 없음. 300개 파트너 브랜드를 주장하나 이 중 유료 고객 비중, 연간 계약 규모, 이탈률 등 핵심 지표 부재 [미확인]. 경쟁사 분석이나 차별화 전략(Studio vs Agency vs MCN 통합)의 시장 검증 근거 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">문제(브랜드의 분산 운영 비효율)는 명확하나, 솔루션의 수익 구조가 불명확함. IR에서 'Shop Operations, Livestream, Video Production, Event' 등 8가지 서비스를 나열하나 각 서비스의 단가, 마진, 반복 구매율 등 단위 경제 데이터 전무 [미확인]. $1.5M (2024 매출)이 스튜디오 임대 수익인지, 라이브 대행 수수료인지, 제작 용역 수익인지 구분 불가. 700B GMV는 '전달된' GMV로 Nina의 직접 매출 기여분 불명. 투자 이력 없음 (자금 조달 $4M 목표만 명시). 롯데벤처스 투자 적합성: 단위 경제와 반복 수익 구조 미검증으로 투자 리스크 높음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">신청서의 ESG Impact는 'Creating a comprehensive e-commerce, O2O, and social commerce ecosystem'로 사회문제 정의 자체가 부재함. 소상공인 지원, 크리에이터 경제 활성화 등 간접적 가치는 추론 가능하나 명시되지 않음 [미확인]. 임팩트 측정 지표(예: 소상공인 매출 증가율, 크리에이터 소득 증대) 전무. 사회적 가치보다는 상업적 서비스 제공에 초점이 맞춰진 것으로 판단됨.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 리서치 결과에 따르면, Nina Nguyen(CEO)은 세트 디자이너·아트 디렉터 출신(2018-2022)으로 크리에이티브 제작 분야 전문성은 확인됨 [확인]. 그러나 E-commerce 운영, 데이터 분석, 재무 관리 경험은 전무 [미확인]. 신청서에서 팀을 'Data driven'이라 주장하나 리더십 중 데이터/기술 배경 보유자 없음. Pham Thi Khanh An(BU Head)은 LinkedIn 미확인, 학력·경력 검증 불가 [미확인]. CTO, CFO, E-commerce 전문가 등 핵심 역할 공백. 100명 이상 팀 주장하나 리더십 2명 외 정보 전무. 스튜디오 운영에는 적합하나 확장 가능한 E-commerce 플랫폼 구축에는 역량 불일치.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">롯데 연계 분야는 'Retail/Commerce, AI/IT'로 명시되나 구체적 계열사 미지정. PoC 아이디어는 '고객 기반 확대 및 AI 시스템 구축 협력'으로 극히 포괄적이며 작동 가능한 협력 시나리오 부재 [미확인]. 롯데마트·백화점과의 O2O 라이브 연계, 롯데이노베이트의 AI 인프라 활용 등 구체적 제안 없음. 현재 비즈니스는 스튜디오 대여 중심으로 보이며, 롯데의 유통 데이터·고객 접점·물류망을 활용할 명확한 접점이 제시되지 않음. PoC 실행 가능성 낮음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 2 + C 2 + D 2 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">12</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce (LOTTE Department Store, LOTTE Mall, LOTTE Mart), AI/IT (LOTTE Innovate)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미명시</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">고객 기반 확대 및 기업 관리용 AI 시스템 구축 협력 (신청서 원문 그대로 번역, 구체성 없음)</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Creating a comprehensive e-commerce, O2O, and social commerce ecosystem.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">팀은 크리에이티브 제작 및 이벤트 관리 분야에서 강력한 역량을 보유하고 있지만, E-commerce & Retail 비즈니스에 필요한 핵심 역량에 심각한 격차가 있습니다. 데이터 분석, 디지털 마케팅, E-commerce 플랫폼 관리, 재무 관리, 또는 기술 개발 배경을 가진 공개된 팀원이 없습니다. 회사가 스스로를 '데이터 기반'이라고 설명하지만, 검증된 팀 구성원 중 누구도 데이터 과학, 분석, 또는 관련 기술 분야의 배경을 보여주지 않습니다. 팀은 크리에이티브 서비스 제공에는 탁월할 수 있지만, 확장 가능한 E-commerce 운영에는 제대로 갖춰지지 않은 것으로 보입니다.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">팀이 불완전합니다. 공개적으로 검증 가능한 팀원은 2명뿐이며 둘 다 크리에이티브/제작 배경을 가지고 있습니다. E-commerce 비즈니스에 필요한 중요한 역할이 누락되었습니다: CTO 또는 기술 책임자, CFO 또는 재무 책임자, E-commerce/디지털 마케팅 전문가, 데이터/분석 책임자, 운영/물류 책임자. Pham Thi Khanh An에 대한 독립적인 검증 부족은 추가적인 우려사항입니다. 회사가 100명 이상의 직원을 주장하지만, 주요 리더십 팀 구성원에 대한 공개 정보가 매우 제한적입니다.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">중간 수준의 신뢰성. Nina Nguyen은 권위 있는 상(CafeBiz Top 36 NextGenCEO 2025, L'Officiel WOOT25)을 받았으며 크리에이티브 산업에서 검증 가능한 실적을 보유하고 있습니다. 회사는 실제 물리적 위치(5,000m² 이상의 스튜디오 공간)와 시장에서의 입지를 가지고 있습니다. 그러나 재무 투명성, 제한된 팀 정보, 그리고 주장된 '데이터 기반' 접근 방식과 팀의 실제 역량 간의 불일치가 우려됩니다. Pham Thi Khanh An의 LinkedIn 부재와 제한된 검증 가능한 배경은 전문성 기준에 대한 의문을 제기합니다.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 E-commerce 및 기술 전문성의 완전한 부재입니다. 회사가 'E-commerce & Retail' 산업에 속하고 '데이터 기반'이라고 주장하지만, 리더십 팀은 전적으로 크리에이티브 제작 배경을 가지고 있습니다. E-commerce 플랫폼 개발, 디지털 마케팅, 고객 획득, 물류, 재고 관리, 데이터 분석, 또는 온라인 리테일 운영 경험이 검증된 전문가가 없습니다. 이는 비즈니스 모델과 팀 역량 간의 근본적인 불일치를 나타냅니다. 또한 재무 관리, 규모 확장, 또는 기술 인프라 경험이 입증된 팀원이 부족합니다. 회사가 크리에이티브 제작 서비스를 제공하는 경우, 팀은 적합할 수 있지만, E-commerce 플랫폼 또는 데이터 기반 리테일 비즈니스를 구축하려는 경우 주요 리더십 역할에 심각한 격차가 있습니다.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Nina Nguyen Trading Service company Vietnam · ninanguyen.com.vn company founders · PHAM THI KHANH AN LinkedIn · Nina Nguyen CEO Nina Group LinkedIn · PHAM THI KHANH AN Nina Nguyen LinkedIn · Nina Nguyen founder CEO Vietnam creative industry</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nina Nguyen</div><div class="member-role">Founder & CEO</div></div>
+    <div class="member-meta"><a href="https://www.linkedin.com/in/nina-nguyen-640153367/" target="_blank" class="linkedin-link">LinkedIn ↗</a><span class="sc-grade grade-h" style="margin-left:8px;">Domain: High</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 정규 학위 또는 졸업 연도에 대한 구체적인 정보 부족</span><span class='flag-item'>⑊ 2018년 이전의 경력 이력 정보 없음</span><span class='flag-item'>⑊ 재무 성과 또는 투자 내역에 대한 공개 정보 부족</span><span class='flag-item'>⑊ 기술 또는 데이터 기반 배경 증거 부족 (팀이 'Data driven'이라고 주장하지만)</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>학사 (추정)/정보 없음</td><td>University of Social Sciences and Humanities (Ho Chi Minh City)</td><td>정보 없음</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Nina Group</td><td>Founder & CEO</td><td>2022년 3월 - 현재</td><td style="font-size:11px;">크리에이티브 산업 분야에서 5,000m² 이상의 스튜디오 및 장소 공간 운영. Nina Agency와 Nina Live Hub Company 포함. 100명 이상의 팀 리드.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>프리랜서 (음악 비디오, TV 광고, 패션쇼, 텔레비전)</td><td>Set Designer, Art Director, Stylist</td><td>2018년 - 2022년 3월</td><td style="font-size:11px;">유명 프로젝트에서 세트 디자이너, 아트 디렉터, 스타일리스트로 활동하며 크리에이티브 산업 경력 구축</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 크리에이티브 산업 및 제작 디자인 분야에서 6년 이상의 실무 경험 보유. 세트 디자이너, 아트 디렉터, 스타일리스트로서의 전문 기술을 기반으로 스튜디오 및 이벤트 비즈니스로 성공적으로 확장. E-commerce & Retail 산업의 크리에이티브 및 제작 측면에 직접적으로 관련됨. 100명 이상의 팀을 관리하며 수백 개의 글로벌 브랜드 및 유명인과 파트너십 구축.</div><div class="ma-overall"><strong>종합 평가:</strong> Nina Nguyen은 크리에이티브 산업에서 강력한 실무 배경을 가진 창업자입니다. 4년 만에 프리랜서 크리에이티브에서 5,000m² 이상의 공간을 운영하는 다각화된 그룹으로 성장시킨 것은 인상적입니다. 최근 권위 있는 상을 수상하며 베트남 비즈니스 커뮤니티에서 인정받고 있습니다. 그러나 정규 비즈니스 교육, 재무 관리 경험, 또는 데이터/기술 배경에 대한 증거가 제한적입니다. 회사가 E-commerce & Retail로 분류되고 '데이터 기반'이라고 주장하지만, CEO의 배경은 순수하게 크리에이티브 제작 및 이벤트 관리에 초점을 맞추고 있습니다.</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Pham Thi Khanh An</div><div class="member-role">Head of Nina Agency (BU Head)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - 전문적 존재감 부족</span><span class='flag-item'>⑊ 교육 배경에 대한 정보 없음</span><span class='flag-item'>⑊ Nina Group 이전의 경력 이력 정보 없음</span><span class='flag-item'>⑊ 구체적인 성과 지표 또는 정량적 결과 부족</span><span class='flag-item'>⑊ E-commerce 또는 데이터 기반 비즈니스 경험 증거 없음</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Nina Group</td><td>Head of Nina Agency</td><td>현재 (4년 이상 재직)</td><td style="font-size:11px;">4년 이상 Nina Group에서 근무하며 Nina Studio & Venue를 호찌민시의 최고 브랜드로 성장시키는 데 핵심 역할. 현재 Nina Agency의 전략적 성장 및 일일 운영 책임.</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr><tr><td>Nina Group</td><td>다양한 역할 (추정)</td><td>약 2020-2022년</td><td style="font-size:11px;">Head of Nina Agency로 승진하기 전 Nina Studio & Venue 성장에 기여</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> Nina Group 내에서 4년 이상의 경험을 보유하고 있으며 스튜디오 및 장소 비즈니스를 최고 브랜드로 성장시키는 데 입증된 실적이 있습니다. 운영 및 전략적 성장에 대한 강력한 이해를 보여줍니다. 그러나 Nina Group 외부의 경험, 교육 배경, 또는 이전 산업 경험에 대한 정보가 부족합니다. LinkedIn 프로필을 찾을 수 없어 전문적 배경 확인이 제한적입니다.</div><div class="ma-overall"><strong>종합 평가:</strong> Pham Thi Khanh An은 Nina Group 내에서 충성스러운 내부 리더로 보이며, 조직과 함께 성장했습니다. 스튜디오 및 장소 비즈니스를 성장시킨 실적은 긍정적이지만, 독립적으로 검증 가능한 정보가 심각하게 부족합니다. LinkedIn 존재의 부재는 현대 비즈니스 환경에서 우려사항이며, 특히 'BU Head' 직급을 고려할 때 그렇습니다. 교육 자격, 이전 경력, 또는 외부 산업 경험에 대한 정보 부족으로 외부 검증이 어렵습니다.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>수익 모델 검증 부재</td><td><span class="rpill-sm rp-h">높음</span></td><td>매출 $1.5M의 세부 구성(스튜디오 임대 vs. 라이브 대행 수수료)이 명시되지 않아 사업 모델의 확장성 및 마진 구조 평가 불가 [미확인]</td></tr>
+<tr><td>팀 역량 불일치</td><td><span class="rpill-sm rp-h">높음</span></td><td>E-commerce 플랫폼 주장에 반해 리더십이 모두 크리에이티브 배경. CTO, CFO, E-commerce 전문가 부재로 기술·운영 확장 리스크 [확인]</td></tr>
+<tr><td>고객 락인 및 반복 수익 구조 부재</td><td><span class="rpill-sm rp-m">중간</span></td><td>300개 브랜드의 계약 기간, 갱신율, 이탈률 등 핵심 지표 없음. 스튜디오 대여는 일회성 거래로 전환 가능성 존재 [미확인]</td></tr>
+<tr><td>롯데 PoC 실행 가능성 낮음</td><td><span class="rpill-sm rp-m">중간</span></td><td>PoC 제안이 '고객 확대 및 AI 시스템'으로 극히 포괄적. 롯데 계열사의 인프라·데이터 활용 방안 구체성 전무 [미확인]</td></tr>
+<tr><td>자산 집약형 모델의 CAPEX 부담</td><td><span class="rpill-sm rp-m">중간</span></td><td>5,000m² 스튜디오는 고정비 부담이 크며, 가동률 저하 시 수익성 악화. 신규 투자 $4M의 용도 및 ROI 계획 미제시 [미확인]</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — E-commerce/플랫폼</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">단위경제(Unit Economics) 검증</span><span class="dvtag dv-r">미검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">신청서는 $1.5M (2024), $2.3M (2025 목표)의 매출을 제시하나, 8가지 서비스(Studio, Livestream, Video Production 등)의 개별 단가·마진·재구매율이 전무함 [미확인]. 700B GMV는 '전달된' 거래액으로 Nina의 직접 수익 기여분 불명확함 [미확인]. 스튜디오 임대 수익(고정비 회수형)과 라이브 대행 수수료(변동 수익형)의 비중이 명시되지 않아, 확장 시 단위 경제 악화 리스크를 판단할 수 없음. 300개 파트너 브랜드 중 유료 전환율, 연간 계약 규모(ARPU), 이탈률 등 핵심 지표 부재로 투자 의사결정에 필수적인 경제성 검증 불가능함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">TAM-SAM-SOM 및 경쟁 포지셔닝</span><span class="dvtag dv-a">근거 불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 소셜커머스 시장 $32B (2025)는 제시되나 출처 미명시 [부분 확인]. Nina가 실제 공략 가능한 SAM(예: 라이브커머스 대행·스튜디오 임대 시장 규모)과 SOM(향후 3년 점유율 목표) 세분화가 전무함 [미확인]. IR은 'Studio도 Agency도 아닌 통합 운영 시스템'을 차별점으로 제시하나, MCN·라이브 대행사·스튜디오 3자 통합 모델의 시장 검증 사례나 고객 선호 근거가 없음 [미확인]. 경쟁사(예: TikTok Shop 자체 스튜디오, Shopee Live 제휴 대행사) 대비 Nina만의 방어 가능한 경쟁우위(예: 독점 데이터, 네트워크 효과) 불명확함.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">반복 수익 구조(Recurring Revenue) 설계</span><span class="dvtag dv-r">불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">신청서는 '라이브커머스 대행 수수료 + 스튜디오 임대료'를 수익 모델로 명시하나, 구독형(월정액) vs 건별(프로젝트형) 비중이 불명확함 [미확인]. 300개 파트너 중 장기 계약(12개월 이상) 비중, 월간 반복 수익(MRR) 규모, 이탈률(Churn Rate) 등 SaaS형 지표가 전무하여 수익 예측 가능성을 판단할 수 없음 [미확인]. 5,000m² 스튜디오 가동률(30~40% 주장)이 낮다면 고정비 부담이 크며, 라이브 대행은 노동집약적 용역 모델로 확장성(Scalability)이 제한될 가능성 있음. 반복 수익 기반 플랫폼으로의 전환 전략 부재.</div></div>
+<div class="deep-category-label">Category D — 창업자·팀 역량</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자의 도메인 전문성 및 경험</span><span class="dvtag dv-a">부분 적합</span><span class="deep-arrow">▾</span></div><div class="deep-body">Nina Nguyen(CEO)은 세트 디자이너·아트 디렉터(2018~2022) 출신으로 크리에이티브 제작 및 스튜디오 운영 분야 전문성은 확인됨 [확인]. 그러나 E-commerce 운영, 데이터 분석, 재무 관리, 플랫폼 스케일링 경험은 전무함 [미확인]. IR은 팀을 'Data driven'이라 주장하나 CEO 및 공개된 리더십(Pham Thi Khanh An, BU Head 포함) 중 데이터 사이언스·IT 개발·재무 배경 보유자가 없음 [미확인]. 스튜디오 운영(B2B 서비스 제공)에는 적합하나, 확장 가능한 플랫폼(AI 기반 운영 시스템 구축 목표)을 구축하기 위한 기술·전략 역량 부족 우려.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">팀 구성 완결성</span><span class="dvtag dv-r">핵심 공백</span><span class="deep-arrow">▾</span></div><div class="deep-body">신청서는 '100명 이상 팀'을 주장하나 리더십 정보는 CEO 외 1명(Pham Thi Khanh An, BU Head, LinkedIn 미확인)만 제시됨 [미확인]. CTO, CFO, E-commerce/마케팅 전문가 등 플랫폼 스케일업에 필수적인 역할이 공백 상태임 [미확인]. AI 시스템 구축(PoC 제안)을 목표로 하나 사내 AI·데이터 엔지니어링 역량 보유 여부 불명. 100명 중 운영 인력(스튜디오 스태프, 라이브 운영자) 비중이 높을 경우 기술 조직 부족으로 플랫폼화 전환이 지연될 리스크 존재. 투자 후 핵심 인력 보강 계획 필수.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">과거 실적 및 실행력</span><span class="dvtag dv-a">제한적 검증</span><span class="deep-arrow">▾</span></div><div class="deep-body">2023년 설립 후 5,000m² 스튜디오 구축, 300개 브랜드 파트너 확보, 700B GMV 전달은 빠른 시장 진입력을 시사함 [부분 확인 — 출처 미검증]. 그러나 투자 이력이 전무하며(자금 조달 $4M 목표만 명시), 기존 성장이 자금·전략적 지원 없이 이뤄졌는지 불명확함 [미확인]. 매출 $1.5M(2024) 대비 $4M 투자 유치 목표는 밸류에이션 근거(예: 매출 배수, 성장률 기반 정당화)가 제시되지 않음. 20,000시간 라이브 운영 실적은 있으나, 이 중 재계약률·고객 만족도·ROI 개선 사례 등 질적 지표 부재로 장기 경쟁력 판단 어려움.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>5,000m² 물리적 스튜디오 인프라 보유 (확인됨)</li>
+<li>CEO의 크리에이티브 산업 경력 6년 및 업계 인정 (CafeBiz Top 36 NextGenCEO 2025)</li>
+<li>300개 브랜드와의 파트너십 주장 (단, 계약 유형·매출 기여 미검증)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>수익 구조 불명확 — 매출 $1.5M이 스튜디오 임대인지, 라이브 대행 수수료인지 구분 불가</li>
+<li>E-commerce·데이터·재무 전문가 전무 — 팀이 크리에이티브 중심으로 구성되어 확장 가능한 플랫폼 구축 역량 의문</li>
+<li>핵심 임원 Pham Thi Khanh An의 LinkedIn 부재 및 경력 미검증</li>
+<li>단위 경제(LTV, CAC, churn) 및 반복 수익 구조 미제시</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 소셜커머스 시장의 고성장 (연 35% 증가)</li>
+<li>TikTok Shop, Shopee Live 등 플랫폼의 라이브커머스 수요 확대</li>
+<li>롯데 계열사와의 O2O 연계 가능성 (단, PoC 구체화 필요)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>스튜디오 대여 중심 모델은 자산 고정비가 높고 확장성 제한적</li>
+<li>300개 브랜드 파트너십의 이탈 리스크 — 고객 락인 구조 부재</li>
+<li>경쟁사 대비 기술·데이터 기반 차별화 없음</li>
+<li>투자 유치 실패 시 자산 운영 부담으로 재무 위기 가능성</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">12</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Nina는 5,000m² 스튜디오와 300개 브랜드 파트너십을 보유한 크리에이티브 제작 서비스 회사로 확인되나, E-commerce 플랫폼으로서의 실체는 검증되지 않았다. 가장 큰 미확인 가정은 700B GMV와 300개 브랜드가 실제 반복 수익을 창출하는 유료 고객인지, 단순 스튜디오 이용 고객인지 구분되지 않는다는 점이다. 팀은 크리에이티브 전문가로 구성되어 있으나 E-commerce·데이터·재무 역량은 전무하며, 'Data driven' 주장과 실제 팀 구성 간 불일치가 명확하다. 롯데 PoC는 구체성이 전무해 협력 가능성이 낮다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">12 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Nina Nguyen Trading and Service Co., Ltd. · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

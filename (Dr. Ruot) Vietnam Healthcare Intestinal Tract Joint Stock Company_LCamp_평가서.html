@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Ruot Vietnam Healthcare Intestinal Tract Joint Stock Company — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Dr. Ruot Vietnam Healthcare Intestinal Tract Joint Stock Company</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hanoi</span>
+          <span class="etag et-ind">Healthy Food</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Dr. Ruot Vietnam Healthcare Intestinal Tract Joint Stock Company</div>
+        <div class="hero-sub">설립 2019 · https://suckhoeduongruot.com</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">Dr. Ruot은 유기농 코코넛 넥타, 녹두, 바나나 등 식물 기반 원료로 저항성 전분 타입3(RS3)을 제조하여 장 건강과 혈당 조절을 돕는 분말형 건강 보조식품을 제공한다. 베트남 내 약국·병원 직접 유통과 자사 매장을 통해 연 구독 및 소매 판매로 운영되며, 3건의 제조 특허를 보유하고 있다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          저항성 전분 타입3의 장 건강 및 혈당 조절 효능이 베트남 소비자의 실제 재구매로 이어지며, 현재 매출이 제조 특허와 과학적 근거에 기반한 차별화된 경쟁력에서 비롯된다는 점이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">12</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$45,000</div><div class="kpi-desc">2024년 또는 2025년 추정, 통화·기간 미명시 [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">100,000명</div><div class="kpi-desc">전국 충성 고객 (유료 고객 vs. 누적 사용자 구분 불명) [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">3건</div><div class="kpi-desc">베트남 등록 RS3 제조 특허 보유 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">UNDP Top 10</div><div class="kpi-desc">사회적 영향 비즈니스 상위 10위 (연도 미명시) [부분 확인]</div></div>
+<div class="kpi"><div class="kpi-val">1,500㎡</div><div class="kpi-desc">ISO 22000·Halal GCC 인증 공장 건설 중 [부분 확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">타겟 시장을 '당뇨 환자 및 장 건강 관심층'으로 설정했으나 베트남 시장 규모, SAM/SOM 분석, 경쟁 현황이 전혀 제시되지 않음 [미확인]. IR 자료는 WHO 식습관 통계와 저항성 전분의 일반적 효능만 나열할 뿐, Dr. Ruot의 구체적 시장 포지셔닝이나 확장 전략이 부재. '100,000 고객'이 유료 구매자인지, 누적 체험자인지, 재구매율이 얼마인지 불명확 [부분 확인]. 글로벌 확장 계획(한국 FDA 등록 언급)은 있으나 구체적 진출 국가나 유통 채널 전략 없음 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">$45,000 매출은 통화 단위(USD 추정)와 기간(2024 또는 2025)이 불명확하고, 100,000 고객 대비 극히 낮은 ARPU($0.45)는 사업모델의 지속가능성에 심각한 의문 제기 [부분 확인]. 수익 구조가 '약국·병원 직접 유통 + 자사 매장 소매'로 기술되었으나 각 채널의 매출 비중, 마진율, 단위 경제가 전혀 제시되지 않음 [미확인]. 3건의 제조 특허는 확인되나, 특허가 실제 시장 진입장벽이나 가격 프리미엄으로 전환되는 증거 없음. 투자 유치 이력 없고 현재 자금 조달 계획도 없어 성장 자본 확보 경로 불명 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">당뇨 환자 및 장 건강 문제라는 사회문제 정의는 명확하며, UNDP 사회적 영향 비즈니스 Top 10 수상은 사회적 가치 창출 의지를 뒷받침 [확인]. 뇌성마비 아동 가족 협회와의 협력 활동도 구체적 사회공헌 사례로 확인 [확인]. 그러나 제품이 실제로 당뇨 환자의 혈당 조절에 미치는 임상적 효과나 장 건강 개선 데이터가 제시되지 않아, 솔루션과 사회문제 해결 간 인과관계가 검증되지 않음 [미확인]. 임팩트의 규모(80,000명 소화기계 개선 주장)는 제시되었으나 측정 방법이나 추적 데이터 없음 [부분 확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">CEO는 은행 부총재 출신으로 비즈니스 경험은 있으나 건강식품·영양학·식품과학 도메인 전문성이 전혀 확인되지 않음 [확인]. 3개 회사 및 6개 프로젝트 연속 실패 이력은 실행 능력에 중대한 의문 제기 [확인]. CSO Dinh Thuy Phuong은 LinkedIn, 학력, 연구 경력 등 어떤 정보도 검증 불가능하여, 과학 기반 건강식품 회사의 최고과학책임자로서 자격을 전혀 확인할 수 없음 [미확인]. 자체 설명의 '과학자·사업가·제조업자 팀'이라는 주장을 뒷받침할 공개 정보가 전무하며, R&D 팀, 품질보증 책임자, 제조 전문가 등 핵심 인력 구성이 불명 [미확인]. 과학적 전문성 검증 불가능은 제품 신뢰성에 치명적 리스크.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">PoC 아이디어는 '롯데 식품 제조 계열사에 RS3 원료 공급'으로 제시되었으나, 구체적인 롯데 계열사명(예: 롯데제과, 롯데푸드)이나 제품 카테고리(베이커리, 음료, 스낵 등)가 명시되지 않아 매우 일반적 [미확인]. 롯데가 왜 Dr. Ruot의 RS3를 채택해야 하는지에 대한 차별화 요소(가격 경쟁력, 공급 안정성, 기술적 우위)가 제시되지 않음. 롯데 매장 네트워크를 통한 뇌성마비 캠페인 확장은 사회공헌 측면에서 의미 있으나, PoC의 핵심인 'B2B 원료 공급'과의 연계성이 불명확하고 롯데의 실질적 비즈니스 이익이 보이지 않음 [부분 확인]. 식품 유통(Retail/Commerce) 영역은 명시했으나 제조(Manufacturing) 계열사와의 협력 가능성이 더 핵심임에도 불구하고 이에 대한 구체성 부족.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 4 + D 1 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">12</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce (LOTTE Department Store, LOTTE Mall, LOTTE Mart)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">정보 없음</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 식품 제조 계열사에 프리바이오틱 섬유 원료(저항성 전분 RS3)를 공급하는 신뢰할 수 있는 벤더로 참여. 롯데 오프라인 매장 네트워크를 활용하여 뇌성마비 아동 지원 캠페인의 대중 인식 확대를 글로벌로 확장.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">In terms of social impacts, Dr. Ruot has co-walked with the Cerebral Palsy Family Association Vietnam for years. Thanks to coverage of Lotte physical structures, the campaign to gain more public awareness towards this vulnerable community of Cerebral Palsy Children worldwide will be performed globally.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">매우 불충분. CEO는 은행/금융 배경으로 비즈니스 운영 능력은 있으나 건강식품 도메인 전문성 부족. CSO의 배경이 전혀 확인되지 않아 과학적 역량을 판단할 수 없음. 저항성 전분이라는 과학 기반 제품을 다루는 회사임에도 불구하고 검증 가능한 과학자, 영양학자, 식품 과학자, 제조 전문가가 팀에 있다는 증거가 없음. 자체 설명의 '과학자, 사업가, 제조업자의 다양한 기본 지식을 가진 팀'이라는 주장을 뒷받침할 공개 정보가 없음.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">핵심 역할 미확인. CSO를 포함한 과학/연구개발팀, CTO 또는 제조 책임자, CFO, 품질보증 책임자 등 건강식품 회사에 필요한 핵심 인력에 대한 정보가 전혀 없음. 공개된 팀 정보가 CEO 1명(부분적 정보)과 CSO 1명(정보 없음)뿐이어서 실제 조직 구조와 운영 능력을 파악할 수 없음. ISO 22000과 Halal GCC 인증을 추진 중이라고 하나, 이를 수행할 기술 인력과 품질 관리 시스템 담당자가 누구인지 불명확.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">낮음. 투명성 부족이 가장 큰 문제. 건강식품 회사, 특히 과학 기반 주장(저항성 전분의 장 건강 효능)을 하는 회사로서 팀의 과학적 자격이나 전문성을 공개하지 않는 것은 매우 비정상적임. LinkedIn 프로필 부재, 학력 정보 없음, 연구 배경 미공개 등은 업계 표준에 크게 미달. CEO의 여러 차례 사업 실패 이력(3개 회사, 6개 프로젝트)은 실행 능력에 대한 의문을 제기. 현재 40,000+ 고객 확보는 긍정적 신호이나, 이것만으로는 제품의 과학적 타당성이나 팀의 전문성을 보증하지 못함.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">과학적 전문성 검증 불가능. 저항성 전분이라는 기능성 식품 성분을 다루는 회사임에도 불구하고: 1) 영양학/식품과학 전문가 확인 불가, 2) 연구개발 역량 증거 없음, 3) 과학 자문위원회나 협력 연구기관 정보 없음, 4) CSO의 자격이 전혀 검증되지 않음, 5) 제품 개발 및 임상 연구 경험 불명. 또한 제조 전문성도 불명확 - ISO 22000 공장을 건설 중이라고 하나 제조 기술 팀이나 품질 관리 전문가에 대한 정보 없음. 투명성과 검증 가능성의 근본적 부재가 가장 큰 갭.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Dr. Ruot Vietnam Healthcare Intestinal Tract company founders · Dinh Thuy Phuong CSO Dr. Ruot Vietnam · suckhoeduongruot.com company team · Nguyen Tuan Duong LinkedIn · Dinh Thuy Phuong LinkedIn · Nguyen Tuan Duong Dr. Ruot LinkedIn</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nguyen Tuan Duong</div><div class="member-role">CEO (Founder)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 미확인 - 전문 네트워크 가시성 부족</span><span class='flag-item'>⑊ 학력 정보 전혀 없음 - 교육 배경 불명확</span><span class='flag-item'>⑊ 3개 회사 및 6개 프로젝트 연속 실패 이력 - 실행 능력 의문</span><span class='flag-item'>⑊ 건강식품/영양/과학 분야 전문성 증거 없음</span><span class='flag-item'>⑊ 과학적 자문위원이나 연구개발팀에 대한 정보 없음</span><span class='flag-item'>⑊ 은행원에서 건강식품 CEO로의 급격한 커리어 전환 - 도메인 전문성 갭</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>학위 정보 없음/정보 없음</td><td>정보 없음</td><td>정보 없음</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Lienvietpostbank Commercial Bank</td><td>Assistant General Director (부총재)</td><td>2019년 이전</td><td style="font-size:11px;">안정적인 은행 경력을 포기하고 아들의 소화기 질환 문제 해결을 위해 창업을 결심. 은행 경력에서 축적한 자금을 여러 창업 시도에 투자.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Vietnam Intestinal Health Care Joint Stock Company (Dr. Ruot)</td><td>CEO & Founder</td><td>2019 - 현재</td><td style="font-size:11px;">저항성 전분 기반 장 건강 제품 개발 회사 설립. 이전에 3개 회사와 6개 프로젝트 실패 및 심각한 부채 경험.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 은행 금융 배경으로 비즈니스 및 재무 관리 경험은 있으나, 건강식품/영양학/과학 분야 전문성은 확인되지 않음. 개인적 동기(아들의 소화기 질환)로 장 건강 분야 진출. 호주 방문을 통해 저항성 전분 제품 연구 및 국제 시장 학습. 여러 차례 실패 경험으로 인한 사업 회복력과 끈기는 보유.</div><div class="ma-overall"><strong>종합 평가:</strong> 사업가 정신과 회복력은 입증되었으나 제품 도메인(영양학, 식품과학, 소화기 건강) 전문성은 검증되지 않음. 금융 배경은 비즈니스 운영에 도움이 되나, 과학 기반 건강식품 회사에 필요한 기술적/과학적 리더십이 부족해 보임. 여러 차례 실패 후 성공한 현재 사업(40,000+ 고객)은 긍정적이나, 회사의 과학적 신뢰성과 제품 개발 역량은 CEO 외 다른 팀원들에게 크게 의존할 것으로 판단됨.</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Dinh Thuy Phuong</div><div class="member-role">CSO (Chief Scientific Officer)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ 공개된 정보 전무 - 이름 외 어떤 정보도 확인 불가</span><span class='flag-item'>⑊ LinkedIn 프로필 없음</span><span class='flag-item'>⑊ 학력 배경 정보 없음</span><span class='flag-item'>⑊ 연구 경력이나 출판물 정보 없음</span><span class='flag-item'>⑊ 과학 자격이나 전문성 증거 없음</span><span class='flag-item'>⑊ CSO라는 중요한 직책에도 불구하고 완전한 정보 부재는 심각한 투명성 문제</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>정보 없음/정보 없음</td><td>정보 없음</td><td>정보 없음</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Dr. Ruot Vietnam</td><td>CSO (Chief Scientific Officer)</td><td>정보 없음</td><td style="font-size:11px;">회사 자체 설명에서 CSO로 언급되었으나, 구체적인 배경 정보나 경력 사항 전혀 확인 불가.</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> CSO로서의 역할에도 불구하고 공개된 정보가 전혀 없음. 과학 책임자로서 학력, 연구 경험, 출판물, 영양학/식품과학 자격 등 어떤 정보도 검증할 수 없음. 이는 과학 기반 건강식품 회사의 CSO로서 매우 우려스러운 신호임.</div><div class="ma-overall"><strong>종합 평가:</strong> 최고과학책임자(CSO)임에도 불구하고 검증 가능한 정보가 전혀 없어 심각한 우려 사항. 과학 기반 건강식품 회사에서 CSO는 제품의 과학적 타당성, 연구개발, 품질 보증의 핵심 역할을 담당해야 하는데, 이 인물의 자격이나 전문성을 전혀 확인할 수 없음. 이는 회사의 과학적 신뢰성에 대한 중대한 의문을 제기함.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>수익 모델 지속가능성</td><td><span class="rpill-sm rp-h">높음</span></td><td>100,000 고객에서 연 $45,000 매출은 ARPU $0.45로, 고객당 연 1회 미만 구매를 의미. 재구매율, 고객 생애가치(LTV), 획득비용(CAC) 데이터 전무 [미확인]. 현재 매출 구조로는 성장 불가능.</td></tr>
+<tr><td>과학적 신뢰성</td><td><span class="rpill-sm rp-h">높음</span></td><td>CSO의 학력·경력·연구 배경이 전혀 확인되지 않으며 [미확인], 제품 효능에 대한 임상 데이터나 제3자 검증 자료 부재. 건강 클레임의 과학적 근거가 불명확하면 규제 리스크 및 소비자 신뢰 상실 가능.</td></tr>
+<tr><td>핵심 인력 의존</td><td><span class="rpill-sm rp-h">높음</span></td><td>CEO의 도메인 전문성 부재와 CSO 검증 불가로 인해 실제 제품 개발 및 품질관리 담당자가 불명 [미확인]. 핵심 인력 이탈 시 사업 지속 불가능.</td></tr>
+<tr><td>롯데 PoC 실행 가능성</td><td><span class="rpill-sm rp-m">중간</span></td><td>PoC 아이디어가 '원료 공급'으로 일반적이며, 롯데 식품 계열사의 구체적 니즈나 Dr. Ruot의 차별화 요소가 불명확 [미확인]. B2B 공급 계약 경험이나 레퍼런스도 제시되지 않음.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category C — 식품·음료·생활소비재</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">제조 특허는 있으나 임상 데이터 부재 – 건강 기능성 주장의 신뢰성 검증 필요</span><span class="dvtag dv-r">과학적 근거 불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">3건의 RS3 제조 특허 보유는 [확인]되나, 당뇨 환자 혈당 조절이나 장 건강 개선에 대한 임상시험 데이터나 제3자 검증 결과가 IR 자료에 전혀 제시되지 않음 [미확인]. 건강기능식품의 핵심 차별화 요소는 효능의 과학적 입증인데, WHO 일반 통계와 저항성 전분의 이론적 효과만 나열할 뿐 Dr. Ruot 제품 특유의 임상적 우위를 보여주는 증거 부재 [미확인]. UNDP 사회적 영향 비즈니스 Top 10 수상은 사회공헌 의지를 보여주나 [확인], 제품 효능 자체를 보증하지는 않음. 건강식품 시장에서 기능성 주장 검증 실패는 브랜드 신뢰 붕괴로 직결되는 치명적 리스크.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-2</span><span class="deep-title">극히 낮은 ARPU와 불명확한 수익 구조 – 사업모델의 지속가능성 의문</span><span class="dvtag dv-r">단위 경제 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">$45,000 매출(통화·기간 불명확 [부분 확인])을 100,000 고객으로 나누면 ARPU $0.45로, 이는 제조·유통·마케팅 비용을 감안할 때 구조적 적자가 불가피함 [부분 확인]. '약국·병원 직접 유통 + 자사 매장'이라는 채널 믹스는 언급되었으나, 각 채널의 매출 비중·마진율·고객 획득 비용(CAC)·LTV 등 단위 경제 핵심 지표가 전혀 공개되지 않음 [미확인]. 100,000이 누적 체험자인지 유료 구독자인지, 재구매율이 몇 %인지도 불명확하여 실질 고객 기반 검증 불가 [미확인]. 연 구독 모델을 표방하나 LTV를 산출할 데이터가 없어, 롯데와의 B2B 원료 공급 전환이 현재 소매 중심 모델의 한계를 타개할 수 있을지 미지수.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-3</span><span class="deep-title">CSO 신원 미확인 및 도메인 전문성 부재 – 제품 개발 역량의 근본적 의문</span><span class="dvtag dv-r">핵심 인력 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">CEO는 은행 부총재 출신으로 비즈니스 경험은 있으나 [확인], 식품과학·영양학·장내미생물 분야 전문성이 전혀 확인되지 않음 [미확인]. CSO Dinh Thuy Phuong은 LinkedIn, 학력, 연구 경력 등 어떤 공개 정보도 검증 불가능하여, 과학 기반 건강식품 회사의 최고과학책임자로서 자격을 전혀 확인할 수 없음 [미확인]. IR 자료의 '과학자·사업가·제조업자 팀' 주장을 뒷받침할 R&D 팀 구성, 품질보증(QA) 책임자, 제조 전문가 등 핵심 인력 정보가 전무 [미확인]. CEO의 3개 회사 및 6개 프로젝트 연속 실패 이력 [확인]과 결합하여, 건강식품 도메인에서 신뢰할 만한 제품 개발·품질 관리 역량이 실재하는지 근본적 의문.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-4</span><span class="deep-title">베트남 시장 포지셔닝 불명확 및 글로벌 확장 전략 부재</span><span class="dvtag dv-a">시장 전략 미수립</span><span class="deep-arrow">▾</span></div><div class="deep-body">타겟을 '당뇨 환자 및 장 건강 관심층'으로 설정했으나 [부분 확인], 베트남 내 시장 규모(TAM), 경쟁사(예: Vinamilk, TH True Milk 등 기능성 식품 라인), 가격 포지셀링, SAM/SOM 분석이 전혀 제시되지 않아 시장 진입 전략 검증 불가 [미확인]. 한국 FDA 등록을 언급하며 글로벌 확장 의지를 표명했으나, 구체적 진출 국가·유통 파트너·규제 대응 계획 없음 [미확인]. 롯데 식품 계열사 공급 제안도 구체적 계열사명(롯데제과, 롯데푸드 등)이나 제품 카테고리(베이커리, 음료, 스낵)가 명시되지 않아 매우 일반적 [미확인]. PoC가 성공하더라도 베트남 소매 기반을 넘어 동남아·동아시아 확장으로 연결될 구체적 경로가 보이지 않음.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>3건의 베트남 등록 RS3 제조 특허 보유 — 기술적 독점성 일부 확보 [확인]</li>
+<li>UNDP 사회적 영향 비즈니스 Top 10 수상 — 사회적 가치 인정 [확인]</li>
+<li>약국·병원 직접 유통 채널과 자사 매장 운영 — 다채널 접근 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>100,000 고객 대비 $45,000 매출 — ARPU $0.45로 수익성 극히 낮음 [확인]</li>
+<li>CSO 및 과학팀 전문성 전혀 검증 불가 — 제품 신뢰성 근본적 의문 [미확인]</li>
+<li>CEO의 3개 회사 연속 실패 이력 — 실행 능력 우려 [확인]</li>
+<li>시장 규모, 경쟁 분석, 확장 전략 전무 — 성장 경로 불명 [미확인]</li>
+<li>투자 유치 이력 없고 자금 조달 계획 없음 — 성장 자본 확보 불가 [확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>당뇨 인구 증가 및 장 건강 관심 상승 — 글로벌 웰니스 트렌드</li>
+<li>롯데 식품 제조 계열사 원료 공급 가능성 — B2B 확장 기회</li>
+<li>한국 FDA 등록 완료 — 한국 시장 진출 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>글로벌 프리바이오틱 시장의 치열한 경쟁 — 대기업 진입장벽 낮음</li>
+<li>과학적 근거 부족 시 소비자 신뢰 상실 — 건강 클레임 규제 강화 리스크</li>
+<li>핵심 인력(CSO) 검증 불가로 인한 조직 신뢰성 저하 — 파트너십 장애 가능성</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">12</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">Dr. Ruot은 저항성 전분 타입3 제조 특허와 UNDP 사회적 영향 인정이라는 강점을 보유하나, 100,000 고객 대비 $45,000 매출이라는 극히 낮은 ARPU는 비즈니스 모델의 지속가능성에 심각한 의문을 제기한다 [확인]. 가장 치명적인 약점은 과학 기반 건강식품 회사임에도 불구하고 CSO를 포함한 과학·연구개발 팀의 전문성을 전혀 검증할 수 없다는 점이다 [미확인]. CEO의 연속된 사업 실패 이력과 도메인 전문성 부재, 시장 분석 및 경쟁 전략 결여, 롯데 PoC의 일반성 등을 종합할 때, 현재 매출이 제품의 과학적 우수성이 아닌 일시적 마케팅 효과에 기인할 가능성을 배제할 수 없다. 투자 적합성은 매우 낮음.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">12 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Dr. Ruot Vietnam Healthcare Intestinal Tract Joint Stock Company · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-15 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emmay and Colleagues Joint Stock Company — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Emmay and Colleagues Joint Stock Company</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Ho Chi Minh City, Vietnam</span>
+          <span class="etag et-ind">Food Tech / Alternative Protein (Mycoprotein)</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Emmay and Colleagues Joint Stock Company</div>
+        <div class="hero-sub">설립 2017 · www.namtuoicuoi.vn</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">Emmay는 베트남 소비자를 위한 균사체(mycoprotein) 기반 냉동·상온 대체육 제품(소시지, 육포, 스낵 등 20개 SKU)을 생산·판매한다. 베트남 내 식물성 단백질 수요 증가와 탄소저감 니즈를 겨냥하며, B2B2C 유통(Big C, Aeon 등 대형마트 500개 판매점) 및 B2B OEM/ODM 방식으로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          균사체 기반 제품의 맛·식감이 소비자 재구매를 유도할 만큼 우수하다는 가정이 장기 매출 지속성을 좌우하나, 이탈률·재구매율 데이터가 제시되지 않아 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">19</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$570K</div><div class="kpi-desc">2024년 대비 27% 성장 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">500개</div><div class="kpi-desc">베트남 내 판매처 (대형마트 5개 체인 포함) [확인]</div></div>
+<div class="kpi"><div class="kpi-val">350만 개</div><div class="kpi-desc">2017년 이후 누적 제품 판매 개수 [부분 확인: 기간·검증 방법 불명]</div></div>
+<div class="kpi"><div class="kpi-val">$5M</div><div class="kpi-desc">Series A 라운드 목표 금액 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">7.2만 톤</div><div class="kpi-desc">자체 측정 CO2 감축량 [미확인: 측정 방법·제3자 검증 부재]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">APAC 식물성 단백질 시장 규모($7.3B, 2030) 및 베트남 GDP 성장률(연평균 6~7%) 데이터는 [확인]되나, Emmay의 TAM/SAM/SOM 구체적 산출 부재. 경쟁 분석은 가격 및 SKU 수 비교에 그치며, 소비자 선호도·이탈률·재구매율 등 실질 수요 검증 데이터 [미확인]. 균사체 기술의 차별성(맛·식감·영양)은 주장되나 블라인드 테스트 결과나 제3자 관능평가 없음 [미확인]. 시장 확장 가능성은 있으나 경쟁 우위 지속 근거 부족.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">매출 $450K(2024) → $570K(2025) 성장 [확인], 500개 판매처 확보 [확인]는 초기 견인력 존재 증거. 그러나 B2B2C/OEM/ODM 복합 모델에서 각 채널별 기여도·마진율·CAC 데이터 [미확인]. 재고 회전율, 유통 마진 구조, 단위 경제 정보 부재. 투자 이력(Unilever Foundry 멘토십 $16K 그랜트) 확인되나 기관 투자 유치 이력 없음 [미확인]. $5M 목표는 밸류에이션·딜 구조·리드 투자자 없이 제시되어 투자 적합성 구체성 낮음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">축산업 대비 90% 탄소 저감 주장은 LCA 문헌(ResearchGate, RSC Journal) 인용으로 [확인]. IIX Impact Score 8.8/10 획득 [확인], 3,000명 취약 계층 고용 및 530명 농가 지원 주장 [부분 확인: 구체적 고용 형태·기간 불명]. 사회적 가치 창출 의도와 규모·지속성은 인정되나, 임팩트 측정 방법론(IRIS+, SDG Impact 준수 여부) 세부 검증 자료 부재. ISO 22000, HACCP 인증 보유 주장 [부분 확인: 인증서 번호·갱신일 미제시].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 심층 조사 미수행으로 CTO/CEO 학력·경력 외부 검증 불가 [미확인]. 자기 보고 배경(생명공학 전공 CTO, F&B 영업 경험 CEO)은 구체적 재직 이력·논문·특허 없이 제시됨. 핵심 인력 의존도 및 도메인 적합성 평가 불가. 팀 구성 완성도(CFO, 법무, 품질관리 전담 인력 유무) 불명. 8년 운영 경험은 인정되나 팀 전문성 검증 부재로 실행 기반 취약.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">7<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">롯데마트·롯데리아·롯데호텔·롯데글로벌로지스틱스 등 다수 계열사 명시 및 식품·유통·물류 사업 영역 부합 [확인]. PoC 아이디어는 제품 입점·메뉴 통합·냉장 유통망 검증 등 구체적 협력 방안 포함 [부분 확인]. 그러나 롯데 측 기존 대체육 정책·메뉴 구성·물류 표준과의 정합성 검토 부재, 파일럿 규모·기간·KPI 미명시. 베트남 롯데마트 매장 수·고객 층 데이터 없이 '즉각적 매출 증대' 주장 [미확인]. 장기 공급 계약 전환 경로 언급되나 구체적 조건·협상 진행 상황 없음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 4 + D 2 + E 7</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">19</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce (LOTTE Mart, LOTTE Department Store), F&B (LOTTERIA), Hospitality (LOTTE Hotel), Logistics (LOTTE Global Logistics), International markets</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">LOTTE Mart, LOTTERIA, LOTTE Hotel, LOTTE Global Logistics</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데마트 내 균사체 기반 대체육 20개 SKU 파일럿 판매 및 롯데리아 메뉴 통합, 롯데글로벌로지스틱스와 냉장 유통망 검증, 롯데호텔 레스토랑 메뉴 공동 개발을 통해 즉각적 매출 증대 및 베트남 시장 내 브랜드 침투도 강화를 목표로 함. 장기적으로는 롯데 계열사와의 대량 공급 계약 및 국제 시장 확장 기반 마련.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">1. What Environmental, Social, and Governance (ESG) Impact Does Our Solution Address?Our fungi-mycelium technology not only demonstrates a clear superiority over current plant-based solutions on the market by naturally mimicking the fibrous texture of animal meat without heavy ultra-processing or chemical binders, but it also outperforms them in nutritional density and resource efficiency. Validating this claim, comprehensive life-cycle assessments (LCA) indicate that the greenhouse gas emissions (GHGe) of raw mycelium production (approx. 0.73kg CO2 eq/kg)  are significantly lower than those of soy protein (1.21kg CO2 eq/kg) and pea protein (1.91kg CO2 eq/kg) (see the systematic review on : https://www.researchgate.net/publication/386295883_The_environmental_impact_of_mycoprotein-based_meat_alternatives_compared_to_plant-based_meat_alternatives_A_systematic_review). Furthermore, from a health perspective, mycoprotein boasts a Protein Digestibility-Corrected Amino Acid Score (PDCAAS) of 96%–97%, outperforming soy (91%), and naturally contains high-fiber structures that aid in cholesterol regulation—benefits that conventional plant-based items struggle to offer simultaneously (see the medical synthesis at the National Institutes of Health - PMC: https://pmc.ncbi.nlm.nih.gov/articles/PMC11743834/).  Beyond these technical advantages, our solution directly addresses the critical conflict between growing food demand and environmental degradation by providing a scalable, sustainable, and healthier alternative protein.
+Environmental (E)Massive Carbon Reduction: Our mycelium-based protein has a carbon footprint 90% to 98% lower than traditional beef. To date, by our directly and indirectly measuring, our solution has successfully reduced 72 million metric tons of CO2 gas emissions. Resource Efficiency: Our proprietary fungal strains can grow 100 times within just 10 days, requiring significantly less land, water, and time compared to traditional livestock farming. This resource optimization is backed by international scientific consensus showing that filamentous fungi cultivation requires at least 10 times less land and water than animal meat (read the scientific report in the Royal Society of Chemistry Journal: https://pubs.rsc.org/en/content/articlelanding/2024/fb/d3fb00169e). This directly mitigates global land exploitation, deforestation, and habitat loss.  Zero-Waste & Clean Food: Our production process completely eliminates the risk of antibiotic resistance common in animal agriculture and champions eco-friendly food tech innovation. Social (S)Our commitment to social impact is strictly validated by international standards, achieving an outstanding Overall Impact Score of 8.8 out of 10 verified by the Impact Investment Exchange (IIX):  Inclusivity & Employment: We have directly and indirectly created sustainable jobs and increased income for over 3,000 disabled individuals, vulnerable women, and unprivileged communities.  Farmer Support: We actively integrate and support more than 530 local farmers in the agricultural mushroom supply chain.  Community Education & Welfare: We have trained and coached over 1,000 students and suppliers on green business, farming, and climate change. Additionally, our philanthropic initiatives have supported 3,000 homeless individuals/children and helped over 2,000 highland minority children access education.  
+Governance (G)Our solution operates under strict transparency, compliant with global sustainability frameworks including IRIS+, SDG Impact, and the Impact Management Project (IMP).  We maintain high-standard management systems certified by ISO 22000:2005 and HACCP, ensuring robust food safety governance and ethical corporate compliance.  
+2. How Could a PoC Collaboration with LOTTE Help Create That Impact?A Proof of Concept (PoC) collaboration with LOTTE—a global retail, hospitality, and food giant—serves as a powerful catalyst to scale this verified impact from localized success to regional market disruption: 
+Commercial Scaling via LOTTE’s Mega Retail NetworkEmmay currently manages 500 points of sale in Vietnam and aims to expand to 5,000 by 2030. Partnering with LOTTE allows us to pilot our diversified portfolio of 20+ SKUs (ranging from mycelium sausages, jerky, and floss to plant-based snacks and convenient foods) directly within LOTTE Marts and LOTTE Lotteria fast-food chains. This immediate market validation will significantly drive down consumer carbon footprints at scale.  
+HORECA Integration & Menu GreenovationBy integrating Emmay’s versatile mycelium ingredients into LOTTE Hotels & Resorts, we can co-create premium, sustainable, eco-friendly menus tailored to both Western and Eastern culinary palettes. This demonstrates the operational viability of mycelium-tech in the high-end food service sector.  
+Co-Branding for the Conscious Consumer LOTTE is deeply committed to corporate sustainability. By backing an award-winning startup recognized by the Vietnamese Ministry of Industry and Trade, Singapore Government, and Dubai Gov, LOTTE can actively fulfill its ESG mandates. Simultaneously, this partnership captures the rapidly growing, high-margin market of Millennials, Gen Z, and flexitarian consumers in the Asia-Pacific region (APAC plant-based market projected to hit $7.3 Billion by 2030 with a 12% CAGR). Notably, unlike expensive plant-based alternatives, current mycelium innovations are rapidly optimizing raw material costs at industrial scale to directly compete on price with traditional retail beef (as analyzed by food-tech industry experts on Food Dive), ensuring a highly attractive profit margin for LOTTE's retail and F&B business uni mpact Report and corporate portfolio can be shared upon request.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>제품 경쟁력 장기 지속성</td><td><span class="rpill-sm rp-h">높음</span></td><td>소비자 재구매율·이탈률 데이터 전무. 맛·식감 우수성 주장이 블라인드 테스트나 제3자 평가 없이 제시됨 [미확인]. 매출 성장이 신규 유통처 확대에 의한 것인지 기존 고객 재구매에 의한 것인지 불명.</td></tr>
+<tr><td>팀 전문성 및 핵심 인력 의존도</td><td><span class="rpill-sm rp-h">높음</span></td><td>CTO/CEO 배경 외부 검증 불가 [미확인]. 8년 운영 경험은 인정되나 학력·경력·도메인 적합성 확인 불가. 핵심 인력 이탈 시 기술 및 영업 연속성 불확실.</td></tr>
+<tr><td>단위 경제 및 수익성</td><td><span class="rpill-sm rp-m">중간</span></td><td>B2B2C/OEM/ODM 복합 모델에서 채널별 마진율·CAC·유통 수수료 정보 부재 [미확인]. 매출 성장세는 확인되나 단위당 수익성 및 확장 비용 구조 불명확.</td></tr>
+<tr><td>냉장 유통망 의존 및 재고 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>냉동·냉장 제품 비중 높아 물류 비용 및 재고 회전율 관리 중요. 롯데글로벌로지스틱스 연계 시 비용 절감 가능하나 PoC 파일럿 규모·기간 미명시로 실행 가능성 [부분 확인].</td></tr>
+<tr><td>기관 투자 유치 이력 부재</td><td><span class="rpill-sm rp-m">중간</span></td><td>Unilever 멘토십 $16K 그랜트 외 기관 투자 이력 없음 [미확인]. $5M 목표는 밸류에이션·리드 투자자 정보 없이 제시되어 투자 적합성 구체성 낮음.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — Food Tech / Alternative Protein</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">균사체 기술 차별성 및 소비자 수용도 검증</span><span class="dvtag dv-a">검증 불충분</span><span class="deep-arrow">▾</span></div><div class="deep-body">Emmay는 균사체(mycoprotein) 기반 기술로 식물성 단백질 대비 우수한 맛·식감·영양을 주장하나, 블라인드 테스트, 제3자 관능평가, 재구매율 데이터가 [미확인]이다. 30만 최종 소비자 확보는 [확인]되나, 채널별 이탈률·리텐션·NPS 등 실질적 제품 경쟁력 지표 부재로 소비자 선호도의 지속 가능성을 판단하기 어렵다. 베트남 시장 내 경쟁사(Vbites, Green Rebel, Karana) 대비 가격 경쟁력과 SKU 수는 언급되나, 시장점유율·브랜드 인지도·소비자 전환 비용 분석 [미확인]이다. 기술적 우위가 실제 시장 우위로 전환되는 메커니즘에 대한 구체적 검증 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">TAM/SAM/SOM 산출 근거 및 시장 확장 전략</span><span class="dvtag dv-r">근거 미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">APAC 식물성 단백질 시장 규모 $7.3B(2030) [확인] 및 베트남 GDP 성장률 6~7% [확인]는 거시 환경의 우호성을 시사하나, Emmay의 구체적 TAM/SAM/SOM 산출이 부재하다. 현재 매출 $570K(2025)에서 $5M 투자 유치 목표로의 도약 근거(성장 배수, 시장 침투율 가정, 유통 확대 시나리오)가 [미확인]이다. B2B2C(500개 판매점)와 B2B OEM/ODM 복합 모델의 각 채널별 기여도·마진율·CAC가 명시되지 않아 수익 확장 경로의 구체성이 낮다. 베트남 내 대형마트 총 매장 수 대비 현재 입점률, 카테고리 내 SKU 점유율 등 정량적 시장 포지셔닝 데이터 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">생산 스케일업 및 공급망 안정성</span><span class="dvtag dv-a">리스크 존재</span><span class="deep-arrow">▾</span></div><div class="deep-body">20개 SKU를 냉동·상온 형태로 500개 판매점에 공급 중인 점은 [확인]되나, 생산 시설 규모·캐파시티·COGS 구조·재고 회전율이 [미확인]이다. 균사체 발효 기술의 배치 사이클, 원료 조달 안정성(균주, 배지 성분), 품질 편차 관리 시스템이 명시되지 않아 대량 주문 시 공급 리스크 존재. ISO 22000, HACCP 인증 보유 주장은 [부분 확인: 인증서 번호·갱신일 미제시]이며, LOTTE Mart·LOTTERIA와의 대규모 PoC 시 요구되는 연속 공급·콜드체인·품질 보증 역량 검증 필요. 530명 농가 지원 주장 [부분 확인]은 원료 공급망 다각화 가능성을 시사하나, 계약 조건·물량·가격 변동성 관리 방안 부재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">규제 준수 및 식품 안전 리스크</span><span class="dvtag dv-a">부분 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 식품 안전 규제(Circular 24/2019/TT-BYT) 및 대체 단백질 라벨링 요구사항 준수 여부가 [미확인]이다. ISO 22000, HACCP 인증 보유는 [부분 확인]되나, 인증 범위(제품군, 생산 공정), 갱신 주기, 제3자 감사 이력이 명시되지 않았다. 균사체 단백질의 알레르기 유발 가능성, 영양 표시 정확성, 원료 추적성(traceability) 시스템 구축 수준이 [미확인]이며, LOTTE 계열사와의 협력 시 요구될 식품 안전 기준(예: GFSI 인증, 제3자 QA 검증) 충족 가능성 불명확. 리콜 이력·소비자 불만 처리 프로세스 등 운영 안정성 지표 필요.</div></div>
+<div class="deep-category-label">Category B — 사회적 가치 / 임팩트 비즈니스</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">임팩트 측정 방법론 및 지속 가능성</span><span class="dvtag dv-a">방법론 검증 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">IIX Impact Score 8.8/10 획득 [확인] 및 축산업 대비 90% 탄소 저감 주장은 LCA 문헌(ResearchGate, RSC Journal) 인용으로 [확인]되나, Emmay 자체 제품의 LCA 수행 여부·제3자 검증 이력은 [미확인]이다. 3,000명 취약 계층 고용 및 530명 농가 지원 주장은 [부분 확인: 구체적 고용 형태·계약 기간·임금 수준·지역 분포 불명]이다. IRIS+ 지표 준수, SDG Impact Standards 적용 여부가 명시되지 않아 임팩트 측정의 국제적 비교 가능성·신뢰성이 낮다. 장기적 임팩트(고용 유지율, 농가 소득 증가율, 탄소 감축량 누적치) 추적 시스템 부재로, 투자자의 임팩트 리포팅 요구 충족 가능성 불확실.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">ESG 거버넌스 및 이해관계자 참여</span><span class="dvtag dv-r">구조 미비</span><span class="deep-arrow">▾</span></div><div class="deep-body">사회적 가치 창출 의도는 확인되나, 이사회 내 ESG 위원회·임팩트 자문단 구성, 취약 계층 고용 정책, 공급망 내 인권·환경 실사(due diligence) 절차가 [미확인]이다. 농가 지원 프로그램의 계약 공정성, 분쟁 해결 메커니즘, 이해관계자 피드백 수렴 채널이 명시되지 않았다. B Corp 인증, 사회적 기업 지정(베트남 MOLISA), 탄소 중립 커미트먼트 등 외부 검증 받은 ESG 프레임워크 부재. LOTTE 그룹의 ESG 요구사항(공급망 투명성, 지속 가능성 보고서 제출 등) 충족 가능성 불명확하며, PoC 단계에서 ESG 성과 측정·보고 체계 구축 필요.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">단위 경제 및 임팩트 비용 효율성</span><span class="dvtag dv-r">데이터 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">사회적 가치 창출 활동(취약 계층 고용, 농가 지원)의 비용 구조, ROI, 단위당 임팩트(예: 고용 1명당 투입 비용, 탄소 감축 1톤당 비용)가 [미확인]이다. 매출 $570K(2025) 대비 임팩트 활동 비용 비중, 수익성과 임팩트의 트레이드오프 관리 방식이 명시되지 않아, 영리·비영리 경계에서의 지속 가능성 판단 불가. B2B2C/OEM 복합 모델에서 각 채널별 임팩트 기여도(예: 대형마트 판매 1건당 탄소 감축량, OEM 주문 1건당 고용 창출 수) 정량화 부재. $5M 투자금 중 임팩트 확대 용도 배분(예: 농가 교육, 친환경 포장재 전환) 및 예상 임팩트 증가량이 [미확인]이다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>균사체 기반 대체육 기술 보유 및 20개 SKU 다각화 (냉동·상온·간식) [확인]</li>
+<li>베트남 주요 유통망 500개 판매처 확보 (Big C, Aeon, Coopmart 등) [확인]</li>
+<li>IIX Impact Score 8.8/10, 다수 스타트업 대회 수상 이력으로 사회적 신뢰도 확보 [확인]</li>
+<li>축산 대비 90% 탄소 저감 LCA 데이터 및 ISO 22000·HACCP 인증 보유 주장 [부분 확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>팀 배경 외부 검증 전무 — CTO/CEO 학력·경력 확인 불가 [미확인]</li>
+<li>소비자 재구매율·이탈률·관능평가 데이터 부재로 제품 경쟁력 장기 지속성 불명 [미확인]</li>
+<li>단위 경제(마진율, CAC, 유통 수수료)·채널별 기여도 정보 부재 [미확인]</li>
+<li>기관 투자 유치 이력 없고 $5M 목표의 밸류에이션·리드 투자자 정보 부재 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>APAC 식물성 단백질 시장 연평균 12% 성장 및 베트남 중산층 확대 추세</li>
+<li>롯데 계열사(마트·리아·호텔·물류)와의 대규모 유통·메뉴 통합 PoC 가능성</li>
+<li>ESG 트렌드 강화로 대기업 협력 및 임팩트 투자 유치 기회 확대</li>
+<li>OEM/ODM 모델 활용 시 브랜드 확장 없이 B2B 매출 다각화 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>균사체 식품에 대한 소비자 인식 부족 및 전통 식물성 단백질(두부·콩) 대비 가격 경쟁력 한계</li>
+<li>Beyond Meat, Impossible Foods 등 글로벌 대체육 브랜드의 베트남 진출 가속화</li>
+<li>냉장 유통망 의존도 높아 물류 비용 상승 및 재고 관리 리스크</li>
+<li>정부 규제 변화(식품 첨가물, 라벨링) 시 인증 재취득 및 제품 재설계 부담</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">19</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">Emmay는 균사체 기반 대체육 기술과 베트남 유통망(500개 판매처, Big C·Aeon 등)을 보유하고 매출 성장세($450K→$570K)를 보이며, IIX 8.8점의 사회적 가치를 인정받았다. 그러나 가장 큰 미검증 가정은 균사체 제품의 맛·식감이 장기 재구매를 유도할 만큼 우수하다는 점으로, 소비자 이탈률·재구매율·블라인드 테스트 결과가 전혀 제시되지 않아 매출 지속성이 불확실하다. 팀 배경은 외부 검증이 이루어지지 않았고, 단위 경제·마진 구조·기관 투자 이력이 부재하여 $5M 유치 적합성이 불분명하다. 롯데 PoC는 다수 계열사 연계 가능성을 제시하나 파일럿 규모·기간·롯데 측 정책 정합성 검토 없이 '즉각적 매출 증대'를 주장하여 실행 구체성이 낮다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">7 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">19 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Emmay and Colleagues Joint Stock Company · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

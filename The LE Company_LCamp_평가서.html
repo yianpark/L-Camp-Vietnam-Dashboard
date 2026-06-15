@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The LE Company — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">The LE Company</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam</span>
+          <span class="etag et-ind">E-commerce & Agricultural</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">The LE Company</div>
+        <div class="hero-sub">설립 2019 · https://lecompany.co</div>
+        <span class="hero-stage">Idea</span>
+        <p class="hero-desc">The LE Company는 양식장 운영자를 위한 자율형 다영양단계 양식 시스템(AIMTAS)이다. 베트남 양식 농가가 겪는 수질 관리 및 안정적 생산의 어려움을 해결하며, 농산물 전자상거래 플랫폼(nongtrang.vn)을 통한 직접 판매로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          AIMTAS 시스템이 베트남 양식 농가에게 경제적으로 실현 가능하며, 상업적 규모로 확장 가능하다는 전제가 전혀 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">10</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">무</div><div class="kpi-desc">2024-2025년 매출 없음, 프로토타입 단계</div></div>
+<div class="kpi"><div class="kpi-val">무</div><div class="kpi-desc">현재 투자 유치 진행 중 아님</div></div>
+<div class="kpi"><div class="kpi-val">942㎥</div><div class="kpi-desc">IR 상 계획된 RAS 시스템 용량</div></div>
+<div class="kpi"><div class="kpi-val">175톤</div><div class="kpi-desc">어류 85톤+채소 24톤+스피룰리나 6톤+부산물 60톤(미확인 예측치)</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">타겟 시장(베트남 양식업)은 존재하나 시장 규모, SAM/SOM 세분화 없음 [미확인]. IR에서 '베트남 농업 디지털 전환의 기반'이라는 비전을 제시하나, 경쟁 현황(기존 RAS 공급업체, 스마트팜 솔루션 업체 등)에 대한 분석 전무 [미확인]. 확장 전략은 nongtrang.vn을 통해 2027년까지 1,000개 공급업체를 확보한다는 계획뿐이며, 현재 플랫폼 사용자 수나 GMV 데이터 부재 [미확인]. 시장 매력도를 정량적으로 입증할 근거 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">문제(양식장 수질 관리 어려움)와 솔루션(AIMTAS) 개념은 제시되나, 실제 고객 검증 없음 [미확인]. 수익 구조는 IR 상 연간 $421,700 예측이나 이는 단일 AIMTAS 농장 가정치이며 실제 판매 실적 전무 [미확인]. 투자 유치 이력 없고, 현재 자금 조달 계획도 없음 [확인]. 롯데벤처스 펀드 투자 적합성: 펀드 투자가 아닌 PoC만 원한다고 명시하여 투자 적합성 낮음 [확인]. 총 투자비 $1.09M 대비 ROI 4.5년 주장은 시장 검증 없는 재무 모델일 뿐 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">사회문제(양식 폐기물, 식량 안보, 농장 안전) 정의는 명확하며 [확인], 솔루션(순환형 다영양단계 시스템, 자동화)이 ESG의 E와 S에 직접 기여한다는 논리는 타당함 [부분 확인]. 그러나 실제 임팩트 규모·깊이·지속성을 입증할 데이터(예: 폐기물 감축량 실측치, 고용 개선 사례, 지역 식량 공급 기여도) 없음 [미확인]. 친환경 양식이라는 방향성은 좋으나, 아직 운영 중인 농장이 없어 사회적 가치 창출이 검증되지 않음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 리서치 결과에 따르면 창업자 Le Trung Thang의 LinkedIn 프로필, 교육 배경, 경력 정보를 전혀 찾을 수 없음 [미확인]. 자칭 '산업 경험이 있는 엔지니어팀'이라고만 기재되었으나, 구체적 인물·역할·전문성 검증 불가 [미확인]. 2019년 설립 이후 6년간 운영 중이나, 핵심 팀원(CTO, 제품 책임자 등)에 대한 공개 정보 전무 [미확인]. IoT, AI, 양식 분야 전문성을 입증할 이전 경력이나 성과 부재 [미확인]. 팀 투명성 부족은 실사 관점에서 치명적 리스크임.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">3<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-l">하</div>
+      <div class="sc-comment">주요 사업분야(식품·유통·AI/첨단산업)와의 연관성은 부분적으로 있음 [부분 확인]. 그러나 PoC 제안이 매우 일반적: '6개월 실증으로 기술 검증'만 언급하고, 구체적으로 어느 롯데 계열사(마트·GRS·이노베이트 등)의 어떤 인프라(물류망, 매장, 데이터 등)를 활용할지 불명확 [미확인]. '100% 기술 공유'는 롯데 입장에서 명확한 이익 구조가 아니며, 상호 협력 방식이 모호함 [미확인]. 롯데 계열사와의 실질적 연계 가능성 낮음.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 1 + C 3 + D 1 + E 3</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">10</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통/커머스(롯데백화점, 롯데마트 등), AI/IT(롯데이노베이트)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">미명시</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">AIMTAS(자율형 다영양단계 양식 시스템)를 6개월간 실증하여 기술을 검증하고자 함. PoC 단계에서 100% 기술 및 노하우를 공유하겠다고 제안하나, 구체적인 롯데 계열사 인프라 활용 방식이나 상호 이득 구조는 불명확함.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">AIMTAS는 순환형 다영양단계 생태계를 통해 양식 폐기물을 제거하고(환경), 자동화로 농장 안전성과 지역 식량 안보를 개선(사회)함으로써 ESG의 E와 S를 다룸. 롯데와의 PoC 협력을 통해 유통/식품 공급망 인프라 내에서 지속가능성 지표를 검증하고, 친환경 양식을 확장 가능한 상업적 현실로 전환하고자 함.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">회사 웹사이트에서는 NEON IoT 플랫폼, 스마트 농업 및 스마트 팩토리 솔루션을 개발한다고 명시하고 있으나, 이러한 기술 영역을 담당할 팀 구성원에 대한 정보가 전혀 없음. 회사 규모는 1-10명의 소규모 팀으로 추정되나, 엔지니어링, 농업, 전자상거래 전문가의 존재 여부를 확인할 수 없음. 도메인 커버리지를 평가하기에 정보가 극도로 부족함</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">팀 완성도를 평가할 수 없음. 창업자 외 다른 핵심 팀 구성원에 대한 정보가 없으며, CTO, 제품 책임자, 영업/마케팅 리더 등 주요 역할 담당자의 존재 여부를 확인할 수 없음. IoT 플랫폼과 농업 전자상거래라는 복합적인 비즈니스 모델을 실행하기 위해서는 다양한 전문성이 필요하나, 현재로서는 팀 구성을 전혀 파악할 수 없음</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">신뢰성 평가: 매우 낮음. 회사는 2019년부터 운영 중이며 웹사이트와 LinkedIn 회사 페이지가 존재하나, 창업팀에 대한 투명한 정보 공개가 전혀 없음. 일반적인 스타트업의 경우 창업자 및 핵심 팀원의 배경을 적극적으로 홍보하는 것과 대조적임. 특허 출원 중이라고 주장하는 UHES 프로토콜 및 NEON IoT 플랫폼 기술의 실제 개발 역량을 검증할 방법이 없음. 투자자 관점에서 이는 중대한 위험 신호임</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 팀 정보의 완전한 부재임. 투자 실사의 가장 중요한 요소 중 하나인 '사람(팀)'에 대한 평가가 불가능한 상태. 구체적으로: (1) 창업자의 신원 및 배경 미확인, (2) LinkedIn을 포함한 전문적 온라인 프레즌스 부재, (3) 핵심 팀 구성원 정보 없음, (4) IoT 및 농업 분야 전문성 검증 불가, (5) 이전 창업 경험이나 관련 산업 경력 확인 불가. 이러한 투명성 부족은 투자 진행 전 반드시 해결되어야 할 치명적 격차임</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Le Trung Thang LinkedIn · Le Trung Thang LE Company LinkedIn · The LE Company lecompany.co founders · Le Trung Thang founder lecompany.co Vietnam · "The LE Company" Vietnam IoT team members · Le Trung Thang engineer Vietnam IoT</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Le Trung Thang</div><div class="member-role">Founder</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-l" style="margin-left:8px;">Domain: Low</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - 전문적인 온라인 존재감 부족</span><span class='flag-item'>⑊ 공개된 교육 배경이나 경력 정보 없음</span><span class='flag-item'>⑊ 창업자의 신원 및 자격에 대한 검증 불가</span><span class='flag-item'>⑊ 팀 구성원에 대한 공개 정보 전무</span></div><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 공개된 정보 부족으로 도메인 관련성을 평가할 수 없음. 회사는 IoT 플랫폼 및 스마트 농업 분야에서 활동하고 있으나, 창업자의 관련 배경이나 경험에 대한 검증 가능한 정보를 찾을 수 없음</div><div class="ma-overall"><strong>종합 평가:</strong> 창업자 Le Trung Thang에 대한 검증 가능한 정보를 찾을 수 없어 심각한 우려 사항임. LinkedIn 프로필, 교육 배경, 이전 경력, 또는 도메인 전문성을 확인할 수 없음. 이는 투명성 부족을 나타내며 실사 관점에서 중대한 리스크 요인임. 회사는 2019년 설립되어 IoT 및 농업 전자상거래 플랫폼을 개발하고 있으나, 팀의 기술적 역량이나 산업 경험을 검증할 방법이 없음</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 검증 불가 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>창업자 및 핵심 팀원의 신원·배경·전문성을 전혀 확인할 수 없어, 기술 개발 역량 및 사업 실행 능력 평가 불가. 투자 실사의 가장 기본 요건 미충족 [미확인].</td></tr>
+<tr><td>시장 가설 미검증 리스크</td><td><span class="rpill-sm rp-h">높음</span></td><td>6년 운영에도 매출·고객·파일럿 농장 실적 전무. AIMTAS가 실제 베트남 양식업자에게 경제적 가치를 제공하는지 전혀 검증되지 않음 [미확인].</td></tr>
+<tr><td>자금 조달 경로 불명확</td><td><span class="rpill-sm rp-h">높음</span></td><td>총 투자비 $1.09M 필요하나 현재 투자 유치 계획 없음. PoC만 희망하며 자금 확보 전략 부재. 사업 지속 가능성 의문 [확인].</td></tr>
+<tr><td>PoC 협력 실익 불명확</td><td><span class="rpill-sm rp-m">중간</span></td><td>롯데 계열사별 구체적 인프라 활용 방식 없음. '기술 100% 공유' 제안은 롯데 입장에서 명확한 이익 구조 아님 [미확인].</td></tr>
+<tr><td>기술 상용화 리스크</td><td><span class="rpill-sm rp-m">중간</span></td><td>AIMTAS 시스템이 실제 운영 중인지, 프로토타입 단계인지 불명확. IR 상 95% 생존율 등 성과 지표는 실측 데이터인지 시뮬레이션인지 구분 불가 [미확인].</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge active">✓ 기술 기반</span>
+<span class="biz-badge active">✓ 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">제품 차별성 & 기술 우위</span><span class="dvtag dv-r">기술 콘셉트는 명확하나 실증 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">AIMTAS는 순환형 양식(RAS + 아쿠아포닉스 + 스피룰리나)에 AI 예측과 IoT 모니터링을 결합한 구조로 [확인], 이론적 차별성은 존재한다. 그러나 IR에 제시된 Telua IoT 플랫폼, Thần Nông AI, nongtrang.vn이 실제 운영 중인 농장에서 검증되었다는 증거가 전무하며 [미확인], 경쟁사(기존 RAS 공급업체, 스마트팜 솔루션 제공자) 대비 기술적·경제적 우위를 입증할 데이터가 없다 [미확인]. 6년간 운영했음에도 단 한 건의 실증 사례나 파일럿 농장 데이터가 부재한 점은 치명적이다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">고객 검증 & Product-Market Fit</span><span class="dvtag dv-r">타겟은 명확하나 PMF 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">베트남 양식 농가의 수질 관리 및 안정적 생산 문제는 실제 pain point이나 [확인], 고객 인터뷰, 사전 주문, 파일럿 계약 등 어떠한 형태의 고객 검증도 이루어지지 않았다 [미확인]. 2019년 설립 이후 6년간 매출 0원이며 [확인], 제안서에서 'PoC 단계'라고 명시한 것은 사실상 제품이 아직 상용화 이전 단계임을 시인하는 것이다 [확인]. nongtrang.vn을 통한 판매 계획은 있으나 현재 플랫폼 사용자 수, GMV, 공급업체 수 등 운영 지표가 전혀 공개되지 않았다 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">경쟁 환경 & 진입 장벽</span><span class="dvtag dv-r">경쟁 분석 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">IR 및 신청서 전체에서 경쟁사, 대체재, 기존 솔루션에 대한 언급이 단 한 건도 없다 [미확인]. 베트남에는 이미 전통 RAS 장비 공급업체, IoT 기반 스마트팜 솔루션 제공자, 정부 주도 농업 디지털화 프로젝트 등이 존재하며, 이들과의 차별점이나 기술적 해자(moat)를 전혀 설명하지 못했다 [미확인]. '베트남 농업 디지털 전환의 기반'이라는 비전은 제시했으나 실행 가능성을 뒷받침할 경쟁 우위 분석이 부재하다 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">확장성(Scalability)</span><span class="dvtag dv-a">확장 계획 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">2027년까지 nongtrang.vn을 통해 1,000개 공급업체 확보라는 목표는 제시되었으나 [확인], 이를 달성하기 위한 구체적 마케팅 전략, 파트너십 확보 계획, 물류 인프라 구축 방안이 부재하다 [미확인]. 단일 AIMTAS 농장 연 매출 $421,700 예측은 있으나 [확인], 이는 검증되지 않은 재무 모델일 뿐이며 다수 농장 동시 운영 시의 unit economics, 운영 복잡성, 지역 확장 전략 등이 전혀 논의되지 않았다 [미확인].</div></div>
+<div class="deep-category-label">Category G — DeepTech/하드웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">G-1</span><span class="deep-title">핵심 IP & 기술 보호</span><span class="dvtag dv-r">IP 전략 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">AIMTAS의 핵심 기술(순환형 다영양단계 시스템 설계, AI 예측 알고리즘, IoT 센서 통합)에 대한 특허 출원, 영업비밀 보호, 기술 라이선스 전략이 전혀 언급되지 않았다 [미확인]. PoC 제안에서 '100% 기술 공유'를 명시한 것은 [확인], IP 보호 의식이 부족함을 시사하며 장기적으로 기술 유출 리스크가 크다. DeepTech 스타트업에서 IP는 핵심 자산인데, 이를 무상 공유하겠다는 제안은 전략적으로 매우 위험하다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">G-2</span><span class="deep-title">하드웨어 프로토타입 & 실증</span><span class="dvtag dv-r">프로토타입 검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">IR에서 AIMTAS 시스템 구성도(RAS + Aquaponics + Algae)는 제시되었으나 [확인], 실제 구축된 프로토타입, 시험 운영 데이터, 성능 지표(수질 개선율, 생산성 증대율, 에너지 효율 등)가 전혀 공개되지 않았다 [미확인]. '6개월 PoC 필요'라고 명시한 것은 아직 제품이 실증 단계에도 진입하지 못했음을 의미한다 [확인]. 2019년 설립 후 6년간 단 한 건의 파일럿도 없다는 점은 기술 개발 역량에 대한 심각한 의문을 제기한다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">G-3</span><span class="deep-title">제조/양산 가능성</span><span class="dvtag dv-r">양산 계획 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">AIMTAS는 하드웨어(센서, 제어기, 배관, 수조 등)와 소프트웨어(IoT, AI)의 복합 시스템인데, 제조 파트너, 공급망, 품질 관리, 유지보수 체계에 대한 언급이 전무하다 [미확인]. 총 투자비 $1.09M, ROI 4.5년이라는 재무 모델은 [확인], 단일 농장 가정치일 뿐 양산 시 unit cost 절감, 규모의 경제, 설치/AS 네트워크 구축 계획이 없다 [미확인]. 하드웨어 스타트업의 핵심인 '어떻게 만들고 배포할 것인가'에 대한 전략이 완전히 빠져 있다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>친환경 순환형 양식이라는 ESG 정합성 (개념 수준)</li>
+<li>Solar 자가발전 50% + 수자원 90% 재활용 설계 (IR 상 계획)</li>
+<li>다중 상품 포트폴리오(어류·채소·스피룰리나)로 매출 다각화 가능성 (미검증)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>팀 정보 전무 — 창업자·CTO·핵심 인력 배경 검증 불가 (치명적)</li>
+<li>매출·고객·시장 검증 전무 — 6년 운영에도 상업 실적 없음</li>
+<li>총 투자비 $1.09M 대비 ROI 4.5년 주장은 시장 미검증 재무 모델</li>
+<li>경쟁사 분석 없음 — 베트남 내 기존 RAS/스마트팜 업체 대비 차별점 불명확</li>
+<li>PoC 제안이 일반적 — 롯데 계열사별 구체적 협력 방식 부재</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 정부의 친환경 양식 정책 강화 가능성</li>
+<li>식량 안보·ESG 투자 증가 추세와 부합</li>
+<li>롯데 유통망 연계 시 B2C 직판 채널 확보 가능</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>팀 투명성 부족으로 인한 신뢰도 하락 — 투자자·파트너 유치 난항</li>
+<li>CAPEX $1.09M의 초기 투자 부담을 감당할 자금 조달 경로 불명확</li>
+<li>기술 실증 실패 시 사업 지속 불가능</li>
+<li>베트남 내 대형 농업·양식 기업의 시장 진입 가능성</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">10</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">The LE Company는 친환경 양식이라는 사회적 가치 방향성은 타당하나, 핵심 가정인 'AIMTAS가 베트남 양식 시장에서 상업적으로 성공할 수 있다'는 전제가 전혀 검증되지 않았다 [미확인]. 실제 운영 농장 부재, 매출 없음, 고객 검증 없음, 팀 전문성 불투명 등 모든 요소가 미검증 상태다. 특히 창업자 및 팀에 대한 공개 정보가 전무하여 실사 진행 자체가 불가능하다 [미확인]. PoC 제안도 롯데 계열사 인프라 활용 방식이 구체적이지 않아 협력 실익이 불명확하다 [미확인]. 투자 적합성은 매우 낮으며, PoC 협력 전에 팀 검증 및 시장 가설 검증이 선행되어야 한다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">3 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">10 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>The LE Company · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

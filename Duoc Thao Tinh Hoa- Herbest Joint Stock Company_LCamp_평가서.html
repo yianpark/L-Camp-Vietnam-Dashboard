@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tachay Food (Duoc Thao Tinh Hoa - Herbest JSC) — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">Tachay Food (Duoc Thao Tinh Hoa - Herbest JSC)</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hà Nội, Việt Nam</span>
+          <span class="etag et-ind">Healthy Food / Plant-based Food</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">Tachay Food (Duoc Thao Tinh Hoa - Herbest JSC)</div>
+        <div class="hero-sub">설립 2020 (Herbest) / 2024.11 (Tachay Food 법인) · tachayfood.vn</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">Tachay Food는 베트남 도시 가정과 채식 식당을 위한 냉동 완제품 식물성 식품이다. 어린 잭프루트(mít non)를 단백질 대체재로 사용해 비건 햄·패티·스프링롤 등 6개 SKU를 생산하며, D2C 소셜 판매와 30개 오프라인 매장을 통해 20,000명 고객 기반을 확보했고, 연 구독 없이 단품 판매 구조로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          어린 잭프루트 제품이 베트남 대형 유통(롯데마트) 냉동식품 진열대에서 주당 30% 이상 판매율을 기록하며 대중 시장에서 지속 구매로 이어질 것이라는 가정이 아직 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">18</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$300K (2025 전망)</div><div class="kpi-desc">[부분 확인] 2024년 $100K 확인, 2025년은 전망치</div></div>
+<div class="kpi"><div class="kpi-val">20,000명</div><div class="kpi-desc">[미확인] D2C 소셜 채널 누적 고객 주장, 구체적 거래 데이터 없음</div></div>
+<div class="kpi"><div class="kpi-val">30개 매장</div><div class="kpi-desc">[부분 확인] 독립 판매점·웰니스 클럽 포함, 매장명 미공개</div></div>
+<div class="kpi"><div class="kpi-val">$250K</div><div class="kpi-desc">Seed 라운드 목표 금액</div></div>
+<div class="kpi"><div class="kpi-val">6개 주력</div><div class="kpi-desc">비건 햄·패티·파테·스프링롤·전통 조림 잭프루트 등</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">베트남 채식 시장 규모 ~$1B, 연 10~15% 성장 주장 [부분 확인 — TAM 수치는 일반적이나 SAM/SOM 구체화 없음]. 냉동식품 시장 CAGR 7.2% [확인 가능한 거시 트렌드]. 그러나 타겟 세그먼트(불교 가정 10~14M, 도시 헬스 소비자 3~5M) 수치는 출처 없이 주장됨 [미확인]. 경쟁 분석 부재 — 기존 어린 잭프루트 제품 시장이 '파편화되어 있어 전국 브랜드가 없다'는 주장은 시장 진입 용이성을 암시하나, 왜 경쟁자가 부재한지(진입장벽 vs 수요 부족) 설명 없음. 확장 전략은 롯데 채널 진입 후 대량 유통 계획이나, 단위경제·재고 리스크·냉장 물류 비용 구조 언급 없음.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">문제-솔루션-고객-수익 구조 설명 [부분 확인]. 문제 정의: 베트남 채식 식품은 신선식품 위주로 편의성 낮음 → 솔루션: 냉동 완제품 제공 → 고객: D2C + 30개 매장 [미확인 — 매장명·거래액 미공개] → 수익 구조: 단품 판매 [부분 확인, 마진율·평균 객단가 언급 없음]. 2024년 매출 $100K [확인], 2025년 $300K [미확인 전망치]. 투자 유치 이력 없음, $250K 목표 제시 [확인]. 롯데벤처스 펀드 적합성: 식품 섹터 부합하나 exit 경로 불명확 — 롯데 계열사 인수 시나리오인지, 독립 성장 후 전략적 매각인지 언급 없음. 사업모델 기본 골격은 있으나 단위경제·CAC·LTV·재구매율 등 투자 판단 핵심 지표 부재.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score h">4<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-h">상</div><div class="sc-comment">문제 정의 명확 [확인]: 축산업 온실가스 배출 14.5%, 식물 기반 식단으로 kg당 최대 27kg CO2 감축 가능. 솔루션과의 연결성 구체적: 로컬 어린 잭프루트 사용 → 수입 의존 제로 + 농업 부산물 업사이클링 [확인 — 논리적 타당성 높음]. 임팩트 측정 가능성 제시: 롯데마트 POS 데이터로 판매량 → CO2 감축량 환산 [확인 — MRV 구조 명확]. 사회적 가치: 남부 잭프루트 소농 안정 수요 창출 [부분 확인 — 계약재배 여부·농가 수·거래 조건 미공개]. ESG 거버넌스 측면: 롯데 공급망 기준 충족으로 Halal 인증·품질 표준화 달성 계획 [부분 확인 — 현재 인증 보유 여부 불명]. 전체적으로 사회문제-솔루션-측정 체계가 논리적으로 연결되어 있으나, 실제 계약 농가 수·현재 CO2 감축 실적 등 정량 데이터 부재.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 검증 결과 심각한 신뢰성 문제 확인 [미확인 다수]. CEO 도티마이주옌: 10년 이상 기업 운영 경력 주장하나 실제 확인된 것은 2021년 HerBest 설립뿐 [부분 확인]. LinkedIn 없음 [미확인 — 전문가 프로필 부재]. Tachay Food 법인은 2024년 11월 설립, 자본금 1억원(~$100K) [확인 — 매우 낮음]. 쩐반지엡(마크로바이오틱 전문가): 30년 경력·일본 오사와 수료·프랑스/태국/한국/독일 근무·베트남 5성급 호텔 컨설팅 주장 [완전 미확인 — LinkedIn 없음, 온라인 흔적 전무, 베트남 유명 셰프 리스트에 미등장]. 30년 경력 전문가가 디지털 발자국이 전혀 없다는 것은 매우 비정상적 [Red Flag]. 핵심 팀원(생산·QA/QC·마케팅·SCM) 정보 없음. 회사명 혼선(Herbest vs Tachay) 미해소. 팀 구성의 진실성을 확인할 수 없으며, 실행 기반이 매우 취약.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score m">6<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">주요 사업분야(식품·유통) 부합 [확인]. 롯데마트·롯데리아 명시 [확인]. PoC 아이디어 구체성 [부분 확인]: 프로젝트 1(롯데마트 3~5개 매장, 6개 SKU, 주당 30% 판매율 목표) — 실행 가능하나 '왜 30%인가' 근거 없음 [미확인]. 냉장 인프라·물류 활용 계획 명확 [확인]. 프로젝트 2(롯데리아 5~10개 매장, 잭프루트 파테 샌드위치) — 중앙주방 연계 계획 타당 [확인], 그러나 롯데리아 메뉴 개발 프로세스·승인 절차·시범 기간 언급 없음 [미확인]. KPI 설정(판매율·추가 주문률) 합리적이나 벤치마크 부재. 가장 큰 약점: PoC 성공 시 본계약 조건·물량·롯데 측 투자 또는 인수 가능성 등 후속 협력 구조 불명확 [미확인]. 롯데 입장에서 PoC는 저위험이나, Tachay 입장에서 PoC 이후 확장 경로가 불분명해 전략적 가치 제한적.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 3 + C 4 + D 2 + E 6</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">18</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">유통/커머스(롯데마트), F&B(롯데리아)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">롯데마트, 롯데리아</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">프로젝트 1 — 롯데마트 유통: 호찌민 3~5개 롯데마트 매장에 냉동 완제품 6개 SKU 입점, 주당 30% 이상 판매율 목표. 롯데 냉장 인프라·물류망 활용해 대중 시장 진입 검증.
+프로젝트 2 — 롯데리아 메뉴 통합: 호찌민 중심부 5~10개 매장에서 어린 잭프루트 파테를 샌드위치 충전재로 시범 도입, 비채식 고객의 추가 주문률 측정. 롯데리아 중앙주방·유통망 활용해 생산 확장 없이 제품 적합성 검증.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">E — Environmental impact: A Small Meal, A Global Impact
+The global livestock industry is responsible for approximately 14.5% of greenhouse gas emissions—surpassing the footprint of the entire transportation sector. Tachay Food addresses this environmental challenge not through complex technologies or policies, but through a simple, highly practical approach: offering a more delicious, greener alternative directly to consumers for their daily meals. By utilizing young jackfruit—a native, locally-sourced ingredient—we eliminate the carbon footprint of transnational imports and deep cold-storage logistics. Crucially, it functions as an agricultural by-product that is traditionally left unused at farms. Tachay Food upcycles this raw material into high-value food products, closing the circular economy loop directly at the source. Every kilogram of young jackfruit consumed in place of an equivalent amount of beef mitigates nearly 27kg of CO2 emissions—a verifiable metric. Once the PoC with LOTTE is implemented, this environmental impact can be measured at a commercial scale: LOTTE Mart’s POS data will track exactly how many plant-based meals are sold, converting directly into quantifiable CO2 offset metrics. This transforms our environmental promise from a paper-based green commitment into a data-driven, auditable sustainability report.
+S — Social Impact: Behavioral Change Through Strategic Placement
+Consumer behavior research indicates that individuals rarely change their dietary habits through persuasion alone; rather, they adapt when alternative choices emerge naturally and frictionlessly within familiar, accessible environments. This is precisely what Tachay Food aims to achieve through our partnership with LOTTE. By securing shelf space at LOTTE Mart and integrating into the Lotteria menu, we position our plant-based products directly within the daily shopping routines of thousands of urban consumers—including those who have never considered a plant-based diet. This approach eliminates the need for awareness campaigns or predefined mindset shifts. Instead, it relies on being at the right place at the right time. We view this as the most efficient catalyst for behavioral change at a community scale. Furthermore, the social impact extends far beyond the end consumer. A stable, predictable demand driven by the LOTTE retail ecosystem empowers Tachay Food to scale its raw material sourcing. This directly creates sustainable, resilient livelihoods for smallholder jackfruit farmers in Southern Vietnam, who traditionally navigate highly volatile agricultural markets. An eco-conscious food brand optimizing the commercial front-end while securing stable income streams at the agricultural back-end—this represents genuine, systemic social impact.
+G — Governance: LOTTE's Operational Rigor Is the Ultimate Catalyst for Tachay
+The majority of Vietnamese food startups spend years struggling with foundational questions: which standards to adopt, which compliance protocols to implement, and what documentation is required? This is rarely due to a lack of capability, but rather the absence of a large-scale partner to impose rigorous requirements and drive accountability. By integrating into the LOTTE ecosystem, Tachay Food is compelled to institutionalize and standardize our entire workflow—from product documentation and quality assurance to traceability, packaging standards, and compliance pathways toward Halal certification. We do not view this as a regulatory burden; it is an institutional push for governance excellence that no traditional training program could replicate. Once Tachay meets LOTTE's stringent benchmarks, we are naturally ready for the global modern trade channel, both domestically and internationally. Furthermore, the empirical data generated from this PoC—encompassing sales volume, consumer behavior, and repeat purchase rates—serves as live, quantitative validation. Both parties can confidently utilize this data to report tangible ESG milestones to shareholders and strategic partners. This is not a vague manifesto or a future roadmap. This is verifiable performance.
+Conclusion
+The PoC with LOTTE serves as the launchpad where the three ESG pillars transition into measurable, real-world execution at Tachay Foods. For Tachay, this is a defining milestone of institutional maturity. For LOTTE, this is an opportunity to spearhead a sustainable consumer movement that is redefining the entire food industry—driven by concrete, daily actions executed on every retail shelf and in every single meal.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">Về mặt lý thuyết, team có sự kết hợp tốt giữa kỹ năng quản trị kinh doanh (CEO) và chuyên môn ẩm thực macrobiotic (Chef). Tuy nhiên, mức độ tin cậy của thông tin rất thấp. CEO có một số bằng chứng về kinh nghiệm kinh doanh trong lĩnh vực liên quan (HerBest) nhưng thiếu kinh nghiệm sâu về thực phẩm chay. Chuyên gia macrobiotic hoàn toàn không thể xác minh được thông tin.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">Team chỉ có 2 người được công bố. Thiếu các vị trí quan trọng khác như: (1) Giám đốc sản xuất/vận hành, (2) Chuyên gia an toàn thực phẩm/QA/QC, (3) Giám đốc marketing/bán hàng, (4) Chuyên gia chuỗi cung ứng. Đối với công ty sản xuất thực phẩm, đây là những vị trí cốt lõi. Công ty mới 7 tháng tuổi với vốn điều lệ chỉ 1 tỷ VND, có thể chưa có đủ nguồn lực xây dựng team đầy đủ.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">THẤP. CEO có thể xác minh một phần qua công ty HerBest trước đó, nhưng thiếu minh chứng cho phần lớn tuyên bố về kinh nghiệm. Chuyên gia macrobiotic hoàn toàn không thể xác minh - đây là vấn đề nghiêm trọng vì đây được tuyên bố là thế mạnh cốt lõi của công ty. Không có LinkedIn cho cả hai thành viên làm tăng nghi ngờ. Công ty Tachay Food quá mới (11/2024) để có track record. Có sự mâu thuẫn về tên công ty (Herbest vs Tachay Food) cần làm rõ.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">Thiếu khả năng xác minh thông tin về team là vấn đề lớn nhất. Cụ thể: (1) Hoàn toàn không tìm thấy hồ sơ chuyên nghiệp trực tuyến của Trần Văn Điệp - không thể xác nhận 30 năm kinh nghiệm và đào tạo tại Nhật Bản, (2) Kinh nghiệm 10 năm của CEO chỉ xác minh được từ 2021, (3) Team thiếu các chức danh then chốt cho sản xuất thực phẩm (QA/QC, vận hành nhà máy, R&D), (4) Công ty quá non trẻ (7 tháng) với vốn thấp (1 tỷ VND), (5) Không rõ mối quan hệ giữa 'Herbest Joint Stock Company' trong thông tin ban đầu và 'Tachay Food' trong hồ sơ đăng ký công ty. Khuyến nghị: Yêu cầu phỏng vấn trực tiếp, xem chứng chỉ đào tạo, xác minh tham chiếu từ khách sạn/nhà tuyển dụng trước, và làm rõ cấu trúc công ty thực tế.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Đỗ Thị Mai Duyên LinkedIn · Do Thi Mai Duyen Tachay Food LinkedIn · Tran Van Diep LinkedIn · Trần Văn Điệp Tachay Food LinkedIn · Đỗ Thị Mai Duyên CEO Tachay Food · Trần Văn Điệp macrobiotic chef Vietnam</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Đỗ Thị Mai Duyên (Do Thi Mai Duyen)</div><div class="member-role">CEO & Giám Đốc (Director)</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ Không tìm thấy hồ sơ LinkedIn công khai - khó xác minh lý lịch chuyên môn đầy đủ</span><span class='flag-item'>⑊ Thiếu thông tin cụ thể về trình độ học vấn (đại học, chuyên ngành)</span><span class='flag-item'>⑊ Không có bằng chứng về kinh nghiệm 10 năm được tuyên bố - chỉ xác minh được từ 2021</span><span class='flag-item'>⑊ Công ty Tachay Food mới thành lập 11/2024 (chỉ 7 tháng tuổi) - công ty rất non trẻ</span><span class='flag-item'>⑊ Vốn điều lệ chỉ 1 tỷ VND - khá thấp cho ngành sản xuất thực phẩm</span><span class='flag-item'>⑊ Không tìm thấy thông tin về mối liên hệ giữa 'Duoc Thao Tinh Hoa - Herbest Joint Stock Company' và 'Tachay Food' - có thể là hai công ty khác nhau</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Công ty Cổ phần Dược thảo tinh hoa - HerBest</td><td>Giám đốc (Director)</td><td>Không xác định</td><td style="font-size:11px;">Chị Mai Duyên có kinh nghiệm điều hành kinh doanh cho nhiều doanh nghiệp, đã lãnh đạo công ty HerBest trong lĩnh vực sản phẩm thảo dược từ năm 2021. Công ty tập trung phát triển các sản phẩm dinh dưỡng y học tự nhiên.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr><tr><td>Công ty TNHH Một Thành Viên Tachay Food</td><td>Giám Đốc & Đại diện pháp luật</td><td>11/2024 - hiện tại</td><td style="font-size:11px;">Thành lập công ty tháng 11/2024, mã số thuế 0110884792. Vốn điều lệ: 1 tỷ đồng. Công ty hoạt động trong lĩnh vực bán lẻ và bán buôn thực phẩm chay dưỡng sinh.</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> Có kinh nghiệm trên 10 năm trong quản trị doanh nghiệp và vận hành kinh doanh. Đã có kinh nghiệm xây dựng thương hiệu HerBest trong lĩnh vực thảo dược và thực phẩm chức năng, liên quan trực tiếp đến ngành thực phẩm lành mạnh. Tuy nhiên, thiếu bằng chứng cụ thể về kinh nghiệm chuyên sâu trong sản xuất thực phẩm chay hoặc ẩm thực macrobiotic. Kinh nghiệm chủ yếu tập trung vào quản trị và phát triển thương hiệu thay vì sản xuất thực phẩm.</div><div class="ma-overall"><strong>종합 평가:</strong> CEO có kinh nghiệm trong quản trị doanh nghiệp và phát triển thương hiệu trong lĩnh vực thảo dược/thực phẩm chức năng, nhưng thiếu minh chứng cụ thể về kinh nghiệm 10 năm được tuyên bố. Công ty Tachay Food rất mới (11/2024), tạo rủi ro cao. Không tìm thấy LinkedIn hoặc hồ sơ công khai để xác minh đầy đủ lý lịch. Kinh nghiệm liên quan đến ngành healthy food nhưng chưa đủ chuyên sâu cho mảng thực phẩm chay macrobiotic.</div></div></div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Trần Văn Điệp (Tran Van Diep)</div><div class="member-role">Chuyên gia Macrobiotic / Đầu bếp</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-h" style="margin-left:8px;">Domain: High</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ KHÔNG tìm thấy bất kỳ hồ sơ LinkedIn nào</span><span class='flag-item'>⑊ KHÔNG tìm thấy bằng chứng nào về 30 năm kinh nghiệm ẩm thực</span><span class='flag-item'>⑊ KHÔNG có bằng chứng về đào tạo macrobiotic tại Nhật Bản</span><span class='flag-item'>⑊ KHÔNG có thông tin cụ thể về khách sạn 5 sao nào đã làm việc</span><span class='flag-item'>⑊ KHÔNG có bằng chứng về kinh nghiệm làm việc tại Pháp, Thái Lan, Hàn Quốc, Đức</span><span class='flag-item'>⑊ KHÔNG xuất hiện trong bất kỳ danh sách đầu bếp nổi tiếng Việt Nam nào</span><span class='flag-item'>⑊ Tìm thấy một video Facebook về 'Chef Trần Văn Điệp' nhưng không thể truy cập nội dung để xác minh</span><span class='flag-item'>⑊ Hoàn toàn thiếu vắng trên các nền tảng chuyên nghiệp - rất bất thường cho một chuyên gia 30 năm kinh nghiệm</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>Đào tạo phương pháp macrobiotic Ohsawa/Ẩm thực macrobiotic</td><td>Nhật Bản (theo tuyên bố)</td><td>Không xác định</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Khách sạn 5 sao tại Việt Nam</td><td>Thiết lập vận hành và đào tạo ẩm thực</td><td>Gần 30 năm kinh nghiệm (theo tuyên bố)</td><td style="font-size:11px;">Theo mô tả tự khai: có kinh nghiệm thiết lập vận hành và đào tạo ẩm thực cho khách sạn 5 sao trên toàn quốc</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr><tr><td>Kinh nghiệm quốc tế</td><td>Đầu bếp/Chuyên gia ẩm thực</td><td>Không xác định</td><td style="font-size:11px;">Theo tuyên bố: có kinh nghiệm làm việc tại Pháp, Thái Lan, Hàn Quốc và Đức. Chuyên về ẩm thực châu Á và châu Âu</td><td style="font-size:10px;color:var(--ink3);">[Unverified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> Nếu thông tin tự khai là chính xác, ông có trình độ chuyên môn rất phù hợp: gần 30 năm kinh nghiệm ẩm thực, đào tạo phương pháp macrobiotic tại Nhật Bản, kinh nghiệm quốc tế và làm việc với khách sạn cao cấp. Đây chính xác là profile phù hợp cho việc phát triển sản phẩm thực phẩm chay macrobiotic chất lượng cao. Tuy nhiên, không có bất kỳ bằng chứng nào có thể xác minh được.</div><div class="ma-overall"><strong>종합 평가:</strong> Hồ sơ được mô tả rất ấn tượng nhưng HOÀN TOÀN KHÔNG THỂ XÁC MINH. Không có dấu vết trực tuyến, không có LinkedIn, không xuất hiện trong cộng đồng ẩm thực chuyên nghiệp, không có giải thưởng hay công nhận nào. Đây là cờ đỏ nghiêm trọng - một chuyên gia có 30 năm kinh nghiệm trong ngành ẩm thực, làm việc cho khách sạn 5 sao và có kinh nghiệm quốc tế thường sẽ có dấu vết công khai. Khả năng cao thông tin bị phóng đại hoặc không chính xác.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 핵심 인력 이력 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 30년 경력 셰프 쩐반지엡의 온라인 흔적 전무. LinkedIn·수상 이력·언론 노출 없음. 이력 허위 시 제품 개발 역량 전면 재평가 필요.</td></tr>
+<tr><td>회사 법인 실체 불일치</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 법인 등록 2024.11이나 2024년 매출 $100K 주장. Herbest JSC와 Tachay Food 간 관계 불명확. 재무제표 검증 필수.</td></tr>
+<tr><td>고객·유통망 데이터 신뢰성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 20,000명 고객·30개 매장 주장에 대한 POS 데이터·계약서 없음. 실제 거래 규모 과장 가능성.</td></tr>
+<tr><td>롯데 PoC 이후 확장 경로 불명확</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] PoC 성공 기준·본계약 조건·롯데 측 투자 의향 등 후속 협력 구조 부재. PoC만으로는 Exit 경로 불충분.</td></tr>
+<tr><td>단위경제 미공개</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] COGS·마진율·CAC·LTV·재구매율 전무. 대형 유통 진입 시 수익성 악화 가능성 평가 불가.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category D — 팀 및 실행력</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창업자 및 핵심 인력 검증 가능성</span><span class="dvtag dv-r">심각한 신뢰성 문제</span><span class="deep-arrow">▾</span></div><div class="deep-body">CEO 도티마이주옌의 '10년 이상 기업 운영 경력' 주장은 실제로는 2021년 HerBest 설립만 확인됨 [부분 확인]. LinkedIn 등 전문가 프로필 전무 [미확인]. 가장 심각한 것은 쩐반지엡 셰프의 '30년 경력·일본 오사와 수료·유럽/아시아 5성급 호텔 경력' 주장이 온라인상 어떠한 흔적도 없다는 점 [완전 미확인]. 30년 경력 국제 셰프가 디지털 발자국이 전혀 없다는 것은 극히 비정상적이며, 베트남 유명 셰프 데이터베이스에도 미등장. 핵심 팀원(생산·QA/QC·마케팅·SCM) 정보 부재로 실행 조직 검증 불가능.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">법인 구조 및 운영 연속성</span><span class="dvtag dv-r">회사명 혼선 및 신규 법인</span><span class="deep-arrow">▾</span></div><div class="deep-body">신청서는 'Duoc Thao Tinh Hoa - Herbest JSC'로 제출되었으나, 제품 브랜드는 'Tachay Food', 웹사이트는 tachayfood.vn, 설립연도는 2020년(HerBest) vs 2024년 11월(Tachay Food 법인) 등 여러 혼선 존재 [미확인]. 실제 Tachay Food 법인은 2024년 11월 설립되어 운영 이력 1년 미만이며, 자본금 1억원(~$100K)은 식품 제조업 규모로 매우 낮음 [확인]. '2년간 시장 진입'이라는 주장과 법인 설립 시점 불일치. 회사 정체성과 법적 구조가 명확하지 않아 투자 계약 대상 불분명.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">운영 실적 및 실행 증거</span><span class="dvtag dv-a">주장 vs 검증 격차 큼</span><span class="deep-arrow">▾</span></div><div class="deep-body">20,000명 고객 기반과 30개 오프라인 매장 주장 [미확인 — 매장명·거래 규모·재고 데이터 없음]. 2024년 매출 $100K는 확인 가능하나, 2025년 $300K·2026년 1~5월 $160K 전망은 근거 없음 [미확인]. D2C 소셜 판매 채널의 구체적 마케팅 비용·CAC·재구매율·고객 리텐션 데이터 전무. 생산시설 규모·냉동 저장 용량·계약 농가 수·품질인증 현황(Halal/ISO) 등 실행 인프라 정보 부재. 주장된 트랙션과 실제 검증 가능한 증거 간 격차가 매우 큼.</div></div>
+<div class="deep-category-label">Category B — 수익 모델 및 투자 적합성</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">단위경제 및 수익성 구조</span><span class="dvtag dv-r">핵심 지표 전면 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">6개 SKU 단품 판매 구조는 확인되나, 제품별 마진율·평균 객단가·SKU별 판매 비중 등 기본 수익 구조 정보 없음 [미확인]. 냉동 완제품 특성상 원가(원재료·가공·냉동 포장·물류)가 높을 것으로 예상되나 원가율·공헌이익률 언급 없음. D2C vs B2B(30개 매장) 채널별 마진 차이, 재고회전율, 유통기한 관리 비용 등 식품 사업 필수 지표 부재. $100K 매출 기준 월 평균 ~$8K인데, 팀 급여·생산 시설 운영비 감안 시 현금흐름 지속가능성 의문 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">고객 획득 및 리텐션 경제성</span><span class="dvtag dv-r">CAC/LTV 데이터 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">D2C 소셜 판매가 주요 채널이나 마케팅 비용·CAC(고객획득비용)·LTV(고객생애가치) 데이터 전무 [미확인]. 20,000명 고객 기반 주장에도 불구하고 재구매율·월 평균 주문 빈도·고객당 연간 지출액 등 정보 없음. 구독 모델 없이 단품 판매 구조는 예측 가능한 현금흐름 확보 어려움. 베트남 채식 식품 시장이 '신선식품 위주로 편의성 낮음'이라는 문제 정의는 있으나, Tachay의 냉동 제품이 실제로 고객 행동을 전환시켰는지 증거 없음 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">Exit 전략 및 롯데 전략적 가치</span><span class="dvtag dv-a">출구 시나리오 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">롯데벤처스 펀드 지원 시 기대되는 exit 경로가 명시되지 않음 [미확인]. 롯데 계열사(롯데마트·롯데리아) 공급 확대 후 롯데푸드/롯데웰푸드 인수 시나리오인지, 독립 성장 후 전략적 매각인지 불분명. 베트남 식품 시장에서 로컬 플레이어의 M&A 사례가 제한적이며, 현재 기업가치($100K 자본금, $100K 매출)로는 기관 투자 유치도 어려움. $250K 목표 투자금의 사용처(생산 확대·채널 확장·팀 보강)와 이를 통한 밸류에이션 상승 로직 부재.</div></div>
+<div class="deep-category-label">Category E — 롯데 전략 및 PoC 적합성</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">PoC 실행 계획의 구체성</span><span class="dvtag dv-a">기본 골격은 있으나 디테일 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">프로젝트 1(롯데마트 3~5개 매장, 6개 SKU, 주당 30% 판매율 목표)은 실행 가능한 구조이나 [부분 확인], '30% 판매율'의 산출 근거·벤치마크 부재 [미확인]. 냉장 인프라 활용 계획은 타당하나 롯데마트 냉동식품 카테고리 진입 조건(슬롯 피, 프로모션 비용, 반품 정책) 언급 없음. 프로젝트 2(롯데리아 샌드위치 메뉴)는 중앙주방 연계 아이디어는 좋으나, 롯데리아 메뉴 개발 프로세스·테스트 기간·승인 권한자·원가 목표가 등 실제 실행 단계 정보 전무 [미확인]. KPI(판매율·추가 주문률)는 합리적이나 달성 시 본계약 조건 불명확.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">PoC 이후 확장 경로</span><span class="dvtag dv-a">후속 협력 구조 미흡</span><span class="deep-arrow">▾</span></div><div class="deep-body">PoC 성공 시 롯데마트 전국 확대 또는 롯데리아 정규 메뉴 편입 조건이 명시되지 않음 [미확인]. 물량 확대 시 생산 캐파시티(현재 월 생산량·확장 가능 규모)와 품질 일관성 유지 방안 부재. 롯데 측의 투자·계약 재배·공동 브랜딩 등 전략적 파트너십 가능성 언급 없음. 롯데 입장에서 PoC는 저위험 테스트이나, Tachay 입장에서는 단순 납품업체로 머물 위험. PoC를 통한 시장 검증 후 롯데푸드 인수 또는 장기 공급 계약 등 명확한 win-win 구조 필요.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>로컬 원재료(어린 잭프루트) 기반으로 수입 의존도 제로 + 농업 부산물 업사이클링 구조 [확인 — 환경 임팩트 명확]</li>
+<li>명확한 ESG 측정 가능성(POS 데이터 → CO2 감축 환산) [확인 — MRV 프레임워크 우수]</li>
+<li>롯데마트·롯데리아 양 채널 PoC 계획 구체적(매장 수·SKU·KPI 명시) [부분 확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>팀 핵심 인력(셰프) 이력 완전 미검증 — 30년 경력 주장 불가 신뢰 [미확인, Red Flag]</li>
+<li>회사 법인 실체(2024.11 설립)와 매출 주장(2024년 $100K) 간 시간적 불일치</li>
+<li>고객 기반 20,000명·매장 30개 주장에 대한 구체적 거래 증빙 전무 [미확인]</li>
+<li>단위경제·재구매율·마진율·CAC 등 핵심 사업 지표 완전 부재</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 냉동식품 시장 CAGR 7.2%, 채식 트렌드 연 10~15% 성장 [거시 트렌드 확인]</li>
+<li>롯데 PoC 성공 시 전국 매장 확장 + 롯데 물류·냉장 인프라 활용 가능</li>
+<li>Halal 인증 획득 시 동남아 무슬림 시장 진출 가능(인도네시아·말레이시아)</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>대형 유통 진입 시 높은 마진 압력 + 판촉비·반품 리스크(냉동식품 특성)</li>
+<li>소규모 자본($100K)으로 롯데 요구 물량·품질 기준 충족 가능 여부 불확실</li>
+<li>경쟁 부재 주장이 실제로는 시장 수요 부족 신호일 가능성</li>
+<li>팀 Key Person(셰프) 이력 허위 시 제품 R&D·품질 신뢰도 전면 붕괴</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">18</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">Tachay Food는 베트남 로컬 원재료(어린 잭프루트) 기반 냉동 완제품 비건 식품으로 명확한 ESG 임팩트와 롯데 유통 채널 적합성을 보유하고 있으나, 핵심 가정 검증 부족과 팀 신뢰성 문제가 치명적이다. 가장 큰 미검증 가정: 소셜 D2C에서 성공한 제품이 롯데마트 냉동식품 진열대에서 주류 소비자에게 지속 구매로 이어질 것인가? 현재 20,000명 고객 기반과 30개 매장 주장은 구체적 거래 데이터 없이 제시됨. 더 심각한 것은 팀 역량 — 30년 경력 마크로바이오틱 전문가 쩐반지엡의 이력이 전혀 검증 불가하며, 회사 법인 실체(2024.11 설립, 자본금 $100K)와 신청서상 2020년 설립·$100K 매출 주장 간 불일치. 롯데 PoC 아이디어는 구체적이나, PoC 성공 후 대량 공급 능력·재무 건전성·팀 실행력 모두 불확실. 조건부 진행 시 실사 필수.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">4 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">6 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">18 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>Tachay Food (Duoc Thao Tinh Hoa - Herbest JSC) · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

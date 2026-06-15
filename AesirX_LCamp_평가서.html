@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AesirX — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">AesirX</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Vietnam HCMC</span>
+          <span class="etag et-ind">Tech</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">AesirX</div>
+        <div class="hero-sub">설립 2022 · https://aesirx.io</div>
+        <span class="hero-stage">Seed</span>
+        <p class="hero-desc">AesirX는 베트남 개인정보보호법(PDPL 2025)과 데이터법(Data Law 60/2024)에 특화된 자체 호스팅 GRC(거버넌스, 리스크, 컴플라이언스) 플랫폼 ComplianceOne을 제공하는 B2B SaaS이다. 은행, 통신사 등 규제 대상 기업들이 겪는 컴플라이언스 증빙 요구, 제3자 데이터 처리 리스크, 감사 추적 부재 문제를 해결하며, 프리미엄 CMP 3,000건 설치 및 유료 라이선스 500+ 도메인 실적을 보유하고 연 구독 SaaS 및 서비스 계약으로 운영된다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          베트남 PDPL 2025 시행에 따른 컴플라이언스 증빙 요구가 실제 은행·통신사의 GRC 플랫폼 구매로 전환되며, 현재 웹 기반 CMP 고객이 엔터프라이즈 ComplianceOne으로 업셀될 것이라는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">13</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$37K, 2025</div><div class="kpi-desc">[확인] 2023 $69K → 2024 $17K → 2025 $37K, 큰 변동성</div></div>
+<div class="kpi"><div class="kpi-val">3,000+</div><div class="kpi-desc">[부분 확인] 무료 버전 설치, 유료 전환율 미공개</div></div>
+<div class="kpi"><div class="kpi-val">500+ 도메인</div><div class="kpi-desc">[부분 확인] 도메인 수, 실제 ARR·계약 형태 미명시</div></div>
+<div class="kpi"><div class="kpi-val">Seed · $2M</div><div class="kpi-desc">[확인] 현재 조달 중, 라운드 진행 상태</div></div>
+<div class="kpi"><div class="kpi-val">MyData Award 2025</div><div class="kpi-desc">[확인] 비즈니스·기술 부문 수상, CEO 기술 부문 수상</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[부분 확인] 베트남 PDPL 2025 및 데이터법 시행은 명확한 시장 기회이며, 은행·통신사 등 규제 대상 기업이 컴플라이언스 증빙 요구에 직면한다는 타이밍 논리는 타당하다. 그러나 타겟 시장 규모(베트남 엔터프라이즈 GRC SaaS 시장 SAM/SOM)가 구체적으로 제시되지 않았고, 글로벌 GRC 플랫폼(OneTrust, TrustArc 등)과의 경쟁 분석이 '베트남 특화'와 '자체 호스팅' 외에 명확하지 않다. [미확인] ComplianceOne의 실제 유료 고객 수, 계약 규모, 엔터프라이즈 세일즈 파이프라인이 공개되지 않아 시장 검증 수준이 불분명하다.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[확인] 문제(규제 증빙 요구, 제3자 리스크)와 솔루션(자체 호스팅 GRC 플랫폼)의 연결은 명확하나, 비즈니스 모델의 단위 경제가 검증되지 않았다. 매출이 2023년 $69K에서 2024년 $17K로 급감 후 2025년 $37K로 회복했으나, 이는 극심한 변동성을 보여주며 안정적 수익 구조를 입증하지 못한다. [미확인] 500+ 유료 라이선스 도메인이 실제 ARR로 얼마인지, 고객당 계약 규모(ACV)가 얼마인지, 엔터프라이즈 세일즈 사이클이 얼마나 긴지가 공개되지 않았다. [미확인] ComplianceOne의 GTM이 '방금 시작'이라는 표현은 엔터프라이즈 제품의 시장 검증이 초기 단계임을 시사하며, 투자 적합성 판단에 필요한 성장 경로가 불명확하다. $2M 조달 목표 대비 현재 매출 수준($37K)은 상당한 밸류에이션 갭을 암시한다.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[확인] ESG의 Governance 축에서 프라이버시 퍼스트 데이터 거버넌스와 제3자 추적 의존도 감소는 사회적 가치 창출에 기여한다. MyData Award 2025 수상은 윤리적 데이터 실천에 대한 외부 인정을 보여준다. [부분 확인] 그러나 실제 임팩트 규모(몇 개 기업이 AesirX 도입 후 컴플라이언스 리스크를 얼마나 줄였는지, 사용자 프라이버시가 구체적으로 어떻게 개선되었는지)가 정량적으로 제시되지 않았다. 사회문제(데이터 프라이버시 침해, 규제 미준수)와 솔루션의 연결은 명확하나, 임팩트의 깊이와 지속성을 입증할 케이스 스터디나 측정 지표가 부족하다.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 팀 딥 리서치가 수행되지 않아(research_performed: false) 자가 보고된 배경을 외부적으로 검증할 수 없다. CEO의 '25년 오픈소스 경력'과 'X-BoD Open Source Matters Inc.' 역할, Legal Head의 GDPR 전문성, Country Manager의 금융 15년 경력, COO의 25년 관리 경력 모두 구체적 직무 이력, 교육 배경, 도메인 연관성이 확인되지 않았다. [미확인] 특히 엔터프라이즈 GRC SaaS 영역에서 성공적인 제품 출시·세일즈 경험이 팀에 있는지, 베트남 규제 환경에 대한 실무적 이해(예: PDPL 2025 시행 경험, 규제 당국과의 관계)가 있는지가 불명확하다. 팀 구성은 컴플라이언스·법률·리스크 백그라운드를 갖추고 있으나, 외부 검증 부재로 실제 실행 역량을 평가할 수 없어 점수를 낮게 부여한다.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">4<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[부분 확인] 롯데이노베이트와의 PoC 제안은 AI/IT 사업 영역에 명확히 부합하며, ComplianceOne과 Forseti AI를 활용한 대기업 컴플라이언스 자동화라는 목표는 구체적이다. 그러나 PoC 아이디어가 롯데이노베이트의 실제 인프라, 데이터, 고객 기반을 어떻게 활용할지에 대한 운영적 세부사항이 부족하다. 예를 들어, 롯데 계열사 중 어느 특정 사업부(GRS, 백화점, 건설 등)의 컴플라이언스 데이터를 연동할 것인지, 롯데의 기존 ERP·감사 시스템과 어떻게 통합할 것인지가 명시되지 않았다. [미확인] 롯데이노베이트가 실제로 GRC 플랫폼 PoC에 관심을 보였는지, 사전 논의가 있었는지가 확인되지 않아 협력 가능성의 현실성이 불분명하다. PoC 제안은 구조적이지만, 롯데 특화성이 다소 일반적이다.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 3 + B 2 + C 3 + D 1 + E 4</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">13</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">AI/IT(LOTTE Innovate)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">LOTTE Innovate</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">AesirX는 롯데이노베이트와 3~6개월 PoC를 제안하며, ComplianceOne과 Forseti AI를 활용해 대규모 기업 환경에서 거버넌스, 리스크, 컴플라이언스, 감사 운영을 자동화하는 방안을 평가한다. 주요 목표는 컴플라이언스 워크플로우·증빙 수집 자동화, AI 기반 규제 해석·리스크 평가·감사 준비 지원, 정책·절차·규제 의무·감사 기록을 통합한 중앙집중식 지식 계층 구축, 시스템 통합을 통한 워크플로우 자동화 평가, 수작업 컴플라이언스 관리 부담 감소, 추적 가능하고 승인 이력이 있는 감사 가능한 결과물 생성이다. 결과적으로 대기업이 운영 효율성 개선, 관리 부담 감소, 인간 감독과 감사 가능성을 유지하며 거버넌스 프로세스를 강화할 수 있는 AI 지원 거버넌스 플랫폼을 검증하는 것이다.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">AesirX addresses the Governance pillar of ESG through an integrated ecosystem that combines AI-assisted governance, privacy-first consent management, and first-party analytics. Organizations can begin with freemium solutions such as AesirX CMP and Analytics to improve transparency, user consent management, and responsible data practices. As governance requirements mature, ComplianceOne provides centralized oversight for compliance, risk, audit, vendor management, and regulatory operations.
+
+A collaboration with LOTTE Innovate would demonstrate how enterprises and their supplier ecosystems can adopt a scalable governance framework, from privacy-first digital operations to AI-assisted compliance management. This approach helps reduce reliance on third-party tracking, improves accountability, strengthens data governance, and creates auditable processes that support responsible business practices.
+
+The broader ESG impact is the creation of a digital trust ecosystem where organizations of all sizes can improve transparency, accountability, and responsible use of data while maintaining operational efficiency and human oversight.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-research-notice">⚠️ 자동 팀 리서치가 수행되지 않았습니다.</div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>매출 변동성 및 단위 경제 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] 2023~2025 매출 변동성이 크며, ComplianceOne의 ACV·CAC·LTV가 공개되지 않아 엔터프라이즈 모델의 경제성이 불명확함</td></tr>
+<tr><td>엔터프라이즈 제품 시장 검증 초기 단계</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] ComplianceOne GTM이 '방금 시작'이며 유료 엔터프라이즈 고객 수·계약 규모가 공개되지 않아 제품-시장 적합성(PMF) 불명확</td></tr>
+<tr><td>팀 역량 외부 검증 부재</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] 자가 보고된 경력이 외부적으로 검증되지 않아 엔터프라이즈 GRC SaaS 실행 경험 및 베트남 규제 실무 이해도가 불분명</td></tr>
+<tr><td>글로벌 GRC 플랫폼과의 경쟁</td><td><span class="rpill-sm rp-m">중간</span></td><td>[부분 확인] '베트남 특화'와 '자체 호스팅' 차별화는 있으나, 글로벌 플랫폼의 기능 우위·브랜드 신뢰도·영업력 대비 방어 가능성 불명확</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge inactive">– 제조/하드웨어</span>
+<span class="biz-badge active">✓ SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category A — SaaS/소프트웨어</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-1</span><span class="deep-title">ARR 및 단위경제 — 유료 라이선스 500+ 도메인의 실제 경제적 가치</span><span class="dvtag dv-r">미검증 수익 모델</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 500+ 유료 라이선스 도메인을 보유했으나, 실제 ARR(Annual Recurring Revenue)이 2025년 $37K에 불과해 도메인당 평균 $74/년($6/월)에 그친다. 이는 엔터프라이즈 GRC SaaS의 일반적 ACV($10K~$100K)에 크게 못 미친다. [미확인] 매출이 2023년 $69K → 2024년 $17K(-75%) → 2025년 $37K(+118%)로 극심한 변동성을 보이며, 안정적 구독 모델이 확립되지 않았음을 시사한다. [미확인] ComplianceOne의 엔터프라이즈 GTM이 '방금 시작'이라는 표현은 핵심 제품의 시장 검증이 초기 단계임을 의미하며, $2M 조달 목표 대비 현재 매출 수준은 10배 이상 성장 가설을 요구하나 그 경로가 제시되지 않았다. 투자 위험도가 매우 높은 단계이다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-2</span><span class="deep-title">시장 포지셔닝 — 베트남 GRC 시장에서의 경쟁 우위 검증</span><span class="dvtag dv-a">경쟁 우위 불명확</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 베트남 PDPL 2025 및 Data Law 60/2024 시행은 명확한 시장 기회이며, 자체 호스팅(self-hosted) 아키텍처는 데이터 주권을 중시하는 은행·통신사에 매력적일 수 있다. [미확인] 그러나 글로벌 GRC 플랫폼(OneTrust, TrustArc, ServiceNow GRC)이 베트남 시장에 진입하거나 로컬 파트너를 통해 대응할 경우, AesirX의 '베트남 법률 특화' 이점이 지속 가능한 해자(moat)인지 불분명하다. [미확인] SAM/SOM 규모, 타겟 고객 수(베트남 내 규제 대상 기업), 경쟁사 대비 가격·기능 벤치마크가 제시되지 않아 시장 포지셔닝의 현실성을 평가하기 어렵다. 베트남 특화는 초기 진입장벽일 수 있으나, 장기 경쟁력 확보 증거가 부족하다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-3</span><span class="deep-title">제품 성숙도 — ComplianceOne의 엔터프라이즈 준비도</span><span class="dvtag dv-a">초기 단계 제품</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] ComplianceOne의 GTM이 '방금 시작'이라는 언급은 핵심 B2B 제품이 아직 초기 시장 검증 단계임을 의미한다. 엔터프라이즈 GRC 플랫폼은 통상 SSO, RBAC, API 통합, 감사 로그, SLA 보장 등 높은 기술적 요구사항을 충족해야 하나, 이러한 기능의 완성도가 확인되지 않았다. [미확인] Forseti AI(컴플라이언스 어시스턴트)의 실제 성능, 정확도, 규제 해석 신뢰성이 고객사 환경에서 검증되었는지 불명확하다. [부분 확인] 3,000건 프리미엄 CMP 설치는 초기 시장 관심을 보여주나, 이것이 ComplianceOne의 엔터프라이즈 준비도를 직접 입증하지는 않는다. 제품-시장 적합성(PMF)이 초기 단계이며, 대규모 엔터프라이즈 배포 경험이 필요하다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">A-4</span><span class="deep-title">고객 획득 — 엔터프라이즈 세일즈 파이프라인 및 CAC 효율성</span><span class="dvtag dv-r">세일즈 검증 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 은행·통신사 등 엔터프라이즈 타겟이 명확하나, 실제 유료 고객 리스트, 계약 규모(ACV), 세일즈 사이클 길이, 파이프라인 가치가 공개되지 않았다. 엔터프라이즈 GRC SaaS는 통상 6~18개월의 긴 세일즈 사이클과 높은 CAC를 요구하는데, 현재 매출 수준($37K)은 이 모델이 아직 작동하지 않음을 시사한다. [미확인] Country Manager가 금융 15년 경력을 보유했다고 하나, 실제 베트남 은행·통신사와의 관계망, PoC 진행 사례, 계약 성사 경험이 확인되지 않았다. [미확인] CAC 대비 LTV, 고객 유지율(retention rate), 업셀 가능성이 제시되지 않아 세일즈 효율성을 판단할 수 없다. 엔터프라이즈 GTM이 초기 단계이며, 투자 시점 대비 성장 가시성이 낮다.</div></div>
+<div class="deep-category-label">Category E — 대기업 협력(롯데이노베이트 PoC)</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">PoC 구체성 — 롯데 계열사 특화 실행 계획</span><span class="dvtag dv-a">일반적 제안</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] ComplianceOne과 Forseti AI를 활용한 엔터프라이즈 컴플라이언스 자동화라는 PoC 목표는 롯데이노베이트의 AI/IT 영역에 부합한다. [미확인] 그러나 롯데 계열사 중 어느 특정 사업부(예: 롯데카드의 금융 컴플라이언스, 롯데쇼핑의 개인정보보호, 롯데건설의 안전 규제)를 타겟하는지, 각 사업부의 기존 ERP·감사 시스템(SAP, Oracle 등)과 어떻게 통합할지가 구체적으로 제시되지 않았다. [미확인] '대규모 엔터프라이즈 환경'이라는 표현은 일반적이며, 롯데 특유의 계열사 간 데이터 거버넌스 복잡성, 한국 규제(개인정보보호법, 신용정보법) 요구사항이 반영되지 않았다. PoC 제안이 구조적이지만, 롯데 특화성이 부족해 실행 가능성이 불명확하다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">사전 협의 — 롯데이노베이트와의 관계 및 PoC 관심도</span><span class="dvtag dv-r">관계 미확인</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] PoC 제안서가 상세하나, 롯데이노베이트와 사전에 논의가 있었는지, 실무진이 AesirX의 솔루션에 관심을 표명했는지가 확인되지 않았다. 대기업 PoC는 통상 사전 관계 구축, 문제 정의 공유, 내부 챔피언 확보가 필수인데, 이러한 준비 상태가 불명확하다. [미확인] 롯데이노베이트의 현재 컴플라이언스 인프라, 데이터 거버넌스 우선순위, IT 로드맵과 AesirX 제안의 정합성이 검증되지 않았다. [미확인] PoC 결과가 실제 계약(paid pilot, commercial deal)으로 전환될 가능성, 예상 계약 규모, 의사결정 타임라인이 제시되지 않아 협력 기회의 현실성을 평가하기 어렵다. L-Camp 지원이 PoC 진입 기회를 제공할 수 있으나, 현재로선 일방적 제안에 가깝다.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">한국 시장 적합성 — 베트남 법률 특화 솔루션의 한국 적용 가능성</span><span class="dvtag dv-a">현지화 필요</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] ComplianceOne이 베트남 PDPL 2025/Data Law 60에 특화되어 있으나, 한국 규제(개인정보보호법, 신용정보법, 정보통신망법)와의 차이가 크다. PoC 제안에서 한국 법률 대응 능력이 언급되지 않았다. [미확인] Forseti AI가 한국어 규제 문서를 해석하고, 한국 특유의 개인정보 영향평가(PIA), 정보보호관리체계(ISMS-P) 요구사항을 지원할 수 있는지 불명확하다. [미확인] 롯데 계열사가 요구하는 한국 규제 컴플라이언스 자동화를 위해 AesirX가 얼마나 추가 개발·현지화 투자를 해야 하는지, 그 실행 가능성이 제시되지 않았다. 베트남 시장 검증이 한국 시장 성공을 보장하지 않으며, PoC 성공을 위해서는 상당한 현지화 노력이 필요할 것으로 보인다.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[확인] 베트남 PDPL 2025 및 데이터법 시행이라는 명확한 규제 타이밍에 맞춘 시장 진입</li>
+<li>[확인] MyData Award 2025 수상으로 윤리적 데이터 실천에 대한 외부 인정 확보</li>
+<li>[부분 확인] 자체 호스팅 아키텍처로 데이터 주권 및 크로스보더 리스크 감소 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[확인] 매출 변동성 극심 (2023 $69K → 2024 $17K → 2025 $37K) — 안정적 수익 모델 미확립</li>
+<li>[미확인] ComplianceOne의 실제 유료 고객 수, ACV, 엔터프라이즈 세일즈 파이프라인 공개되지 않음</li>
+<li>[미확인] 팀 배경이 자가 보고 기반이며 외부 검증 부재 — 실제 실행 역량 불명확</li>
+<li>[미확인] 500+ 유료 라이선스 도메인의 실제 ARR 및 고객 리텐션율 미공개</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 규제 강화에 따른 은행·통신사·대기업의 컴플라이언스 증빙 수요 증가</li>
+<li>APAC 지역 데이터 주권 요구 증가 시 자체 호스팅 GRC 플랫폼 수요 확대 가능성</li>
+<li>롯데이노베이트와의 PoC 성공 시 롯데 계열사 전체로 확산 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>글로벌 GRC 플랫폼(OneTrust, TrustArc, ServiceNow GRC 등)의 베트남 시장 진입 가능성</li>
+<li>엔터프라이즈 세일즈 사이클이 길어 매출 성장 지연 리스크</li>
+<li>현재 웹 CMP 고객이 엔터프라이즈 GRC 플랫폼으로 업셀되지 않을 경우 성장 경로 단절 가능성</li>
+<li>베트남 PDPL 2025 시행 지연 또는 집행 완화 시 시장 수요 감소 리스크</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">13</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">AesirX는 베트남 PDPL 2025 시행이라는 명확한 규제 타이밍과 자체 호스팅 GRC 플랫폼이라는 차별화 포인트를 갖추고 있으나, 엔터프라이즈 제품 ComplianceOne의 시장 검증이 초기 단계('방금 GTM 시작')이며 매출 변동성($69K→$17K→$37K)이 크다. 가장 큰 검증되지 않은 가정은 현재 웹 기반 CMP 사용자(3,000+ 프리미엄 설치)가 고가의 엔터프라이즈 GRC 플랫폼으로 업셀될 것이며, 베트남 은행·통신사가 글로벌 GRC 플랫폼 대신 AesirX를 선택할 것이라는 점이다. 팀 역량은 자가 보고 기반으로만 평가 가능하며 외부 검증이 부재하다. 롯데이노베이트 PoC는 방향성은 명확하나 롯데 특화 운영 계획이 구체적이지 않다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">4 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">13 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>AesirX · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

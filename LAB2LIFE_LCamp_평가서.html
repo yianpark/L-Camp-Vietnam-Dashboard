@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAB2LIFE — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">LAB2LIFE</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hochiminh</span>
+          <span class="etag et-ind">AI / Biotechnology / Climate Tech</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">LAB2LIFE</div>
+        <div class="hero-sub">설립 2024 · www.lab2life.tech</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">LAB2LIFE-LATOR는 농업 및 유기 폐기물을 바이오 비료, 효소 등 바이오 소재로 전환하는 모듈형 발효 플랫폼이다. 기존 화학 소포제 없이 2단 사이클론 분리 기술(2CyS®)과 AI/IoT 모니터링을 결합해 고밀도 미생물·효소 생산을 가능케 하며, 장비 판매·라이선싱·위탁 생산으로 수익화한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          모듈형 발효 장비가 실제 고객 현장에서 안정적으로 운영되며 지속적인 유지보수 없이도 일관된 품질의 미생물 제품을 생산할 수 있다는 가정이 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-mid">▲ 중</span>
+          <span class="rpill rpill-ir-ok">📄 IR Deck 반영됨</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">13</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$0</div><div class="kpi-desc">2024년 매출 없음, 2025년 $300K 목표</div></div>
+<div class="kpi"><div class="kpi-val">$10M</div><div class="kpi-desc">시드/초기 단계 대규모 목표액</div></div>
+<div class="kpi"><div class="kpi-val">+450% 미생물 밀도</div><div class="kpi-desc">자체 실험 데이터, 고객 검증 미확인</div></div>
+<div class="kpi"><div class="kpi-val">CFA Vietnam 2026</div><div class="kpi-desc">기후금융 액셀러레이터 선정</div></div>
+<div class="kpi"><div class="kpi-val">$3.25M</div><div class="kpi-desc">산업 바이오매스 전환 프로젝트 제안 단계</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">중</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[부분 확인] 글로벌 농업 바이오테크 시장 $300B+ (2030) 및 아시아태평양 +15% CAGR 주장은 TAM 수준이며, 베트남 구체적 SAM/SOM은 ASEAN $5~8B, 3년 SOM $1~1.5B로 제시되었으나 산출 근거 없음. [미확인] 경쟁 분석에서 Eppendorf, Sartorius 등 글로벌 대기업 대비 60~75% 저렴하다 주장하나 실제 고객 검증 사례·가격 비교 데이터 없음. [미확인] 시장 확장 전략은 ASEAN 유통 파트너, 협동조합 컨테이너 배치 등 언급되나 구체적 파트너십·계약·LOI 전무. 시장 가능성 자체는 존재하나 구체적 고객 검증 및 시장 진입 실적이 전혀 없어 확장 가능성 불분명.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[미확인] 비즈니스 모델은 B2B 장비 판매 + 라이선싱 + 위탁 생산 + SaaS로 설명되나, 2024년 매출 $0이며 2025년 $300K는 순수 목표치로 계약·고객 근거 없음. [미확인] 투자 유치 실적 전무 — 신청서에 'Currently Raising: Yes'이나 기 투자 금액·투자자 정보 없음. $10M 목표는 검증된 PMF 및 트랙션 없이 과도하게 높음. [부분 확인] CFA Vietnam 2026 선정 및 UNIDO A2D $3.25M 제안은 외부 검증 신호이나, 선정 ≠ 자금 확정이며 실제 계약 여부 불명. [미확인] 롯데벤처스 펀드 투자 적합성은 PoC 아이디어로만 제시되었으며 롯데 내부 협의·사전 관심 표명 등 근거 없음. 사업모델 개념은 명확하나 실행 및 수익화 검증 전무.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">[확인] 문제 정의는 명확 — 화학 비료·농약 의존(전 세계 온실가스 30%), 토양 열화, 기존 미생물 대체재의 높은 가격·불안정성. [확인] 솔루션은 화학 소포제 없는 발효 기술로 바이오 비료·효소 생산, 탄소 감축 + 순환경제 구현으로 직접 연결됨. [부분 확인] PoC에서 20~50톤 폐기물 전환, 10~30 tCO₂e 감축 목표는 시뮬레이션 수준이며 실제 파일럿 결과 아님. 임팩트 규모는 단일 파일럿 기준으로 작으나, 롯데 전역 확산 시 규모 확대 가능성 있음. 사회적 가치 방향성은 타당하나 실제 임팩트 실적이 아직 부재.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">[확인] CEO Dr. Nguyen Quynh Anh는 Chonnam National University 연구 교수, 유전공학 미생물학·재조합 효소 전공으로 기술 도메인 전문성 높음. [미확인] 팀 구성원 정보 전무 — 신청서에 '생명공학·제조·AI/MRV·기후기술·벤처 개발 전문성' 보유 주장하나 실제 팀원 이름·경력 공개 안 됨. 외부 리서치 결과 CEO 외 검증 가능 인원 없음. [미확인] CEO의 LinkedIn 프로필 부재로 경력 검증 제한적. [미확인] 상업화 실적·이전 스타트업 경험 공개 정보 없음. [확인] CFA Vietnam 2026 선정은 외부 검증이나 팀 실행력 증명 아님. 핵심 인물 의존도 매우 높으며, 비즈니스 개발·재무·운영 역량 보유 인력 미확인. 초기 단계 연구 중심 팀으로 보이며 상업적 실행 기반 매우 취약.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">4<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">[확인] 주요 사업분야 중 '식품·유통·건설·AI/첨단산업'에 해당 — 순환경제·폐기물 전환·AI 모니터링 적용 가능. [부분 확인] PoC 아이디어는 롯데마트·롯데몰·롯데호텔·롯데리아 등 구체적 계열사 명시했으나, 실제 사전 협의·관심 표명·MOU 등 확인 안 됨. [부분 확인] PoC 내용은 3~6개월 파일럿, AI/MRV 기반 폐기물 전환·탄소 감축 측정으로 구조화되어 있으나, 롯데 인프라·데이터·고객 베이스를 특정적으로 활용하는 부분은 약함 (범용적 폐기물 처리 솔루션에 가까움). [미확인] 롯데 측의 실제 관심도·예산 확보·파일럿 승인 여부 전무. PoC 방향성은 타당하나 롯데 계열사와의 실질적 협력 가능성은 아직 검증 안 됨.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 2 + E 4</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">13</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-mid">중</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Smart City/PropTech (LOTTE E&C), AI/IT (LOTTE Innovate)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val">Not specified</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데 그룹 유통·호텔·식음료 시설(롯데마트, 롯데몰, 롯데호텔, 롯데리아 등)에서 발생하는 식품·유기 폐기물을 3~6개월간 모듈형 바이오 플랫폼으로 바이오 비료 및 토양 개선제로 전환. AI 기반 모니터링 및 MRV 시스템을 통해 폐기물 매립 감소, 처리 비용 절감, 탄소 배출 저감 효과를 정량화하며, 롯데 전역 확장 가능성을 평가.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Environmental (E)
+20–50 tons of organic waste diverted from landfill
+10–30 tCO₂e greenhouse gas emissions avoided
+5–15 tons of bio-based products generated (biofertilizers, compost enhancers, microbial products, etc.)
+50–80% reduction in organic waste sent for disposal at selected pilot sites
+
+Social (S)
+1–3 pilot sites deployed within LOTTE operations
+10–30 operational staff trained on circular waste management and ESG practices
+Demonstration of a replicable circular economy model for wider adoption across LOTTE facilities
+
+Governance (G)
+100% traceability of waste input and bio-based product output
+AI-enabled ESG dashboard established for pilot operations
+Monthly ESG performance reports generated
+MRV framework validated for waste reduction and carbon impact measurement
+
+Business Impact
+10–30% reduction in organic waste management costs
+Technical and economic feasibility validated
+Scalability roadmap prepared for deployment across LOTTE retail, hospitality, and F&B operations
+Business case developed for regional expansion</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">기술적/과학적 전문성은 강력하지만 불완전함. Dr. Nguyen은 생명공학, 미생물학, 효소 기술에 대한 깊은 전문 지식을 제공하지만, 확인된 팀원이 한 명뿐이므로 주요 역량 공백이 존재함: (1) 비즈니스 개발 및 상업화 전문성 불명확, (2) 산업 규모 제조 및 운영 경험 검증 필요, (3) 재무 관리 역량 미확인, (4) 마케팅 및 영업 리더십 부재, (5) MRV(측정, 보고, 검증) 시스템 및 기후 기술 전문 지식 자기 보고에만 의존. 완전한 경영진 팀 구조가 명확하지 않음.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">매우 불완전함. 공개된 정보로는 CEO/창업자만 확인 가능. 완전히 기능하는 스타트업에 필요한 핵심 역할이 누락됨: CTO/기술 책임자, CFO/재무 책임자, COO/운영 책임자, 비즈니스 개발 책임자, 영업/마케팅 책임자. 조직 구조, 팀 규모, 고문 또는 이사회 구성원에 대한 정보 없음. 이는 초기 단계 벤처이거나 팀 정보가 의도적으로 비공개되었음을 시사함. 두 경우 모두 투자자에게 우려사항임.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">혼합형 평가. 긍정적 신호: (1) PhD 학위 및 Chonnam National University 연구 교수직은 학문적 신뢰성 제공, (2) CFA Vietnam 2026 선정은 외부 검증(81개 지원 중 13개 선정), (3) 지속 가능한 농업에서의 생명공학 응용은 베트남의 국가 우선순위 및 글로벌 기후 목표와 일치. 우려사항: (1) 온라인 전문가 입지 매우 제한적(LinkedIn 없음), (2) 공개적으로 검증 가능한 실적이나 사업 성과 없음, (3) 제3자 보증이나 인용 부재, (4) 회사 역사 및 이정표 불투명, (5) 팀 구성 검증 불가. 전반적인 신뢰성은 CFA 선정에 크게 의존하지만 독립적인 검증은 제한적임.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 공백은 팀 정보의 투명성 및 완전성 부족임. 단 한 명의 팀원만 확인 가능하며(CEO), 공개된 LinkedIn 프로필도 없어 배경 검증이 불가능함. 이는 여러 중대한 위험을 초래함: (1) 단일 핵심 인물 의존도 - CEO가 없으면 회사 운영 불가능, (2) 비즈니스 실행 역량 검증 불가 - 과학적 전문성은 명확하지만 상업적 성공 실적은 불분명, (3) 자금 조달 준비도 의문 - 전문적인 온라인 입지와 팀 투명성은 투자자 실사에 표준 요구사항, (4) 확장 가능성 우려 - 완전한 경영진 팀 없이 산업 규모 운영 달성 어려움, (5) 거버넌스 및 의사결정 구조 불명확. 투자 진행 전에 직접 팀 실사, 전체 조직도, 모든 핵심 팀원의 검증된 자격 증명이 필수적으로 필요함.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: LAB2LIFE lab2life.tech founding team · NGUYỄN QUỲNH ANH CEO LAB2LIFE · LAB2LIFE biotech Vietnam climate · Nguyen Quynh Anh Chonnam National University LinkedIn · LAB2LIFE Vietnam sustainable agriculture biotechnology team · "LAB2LIFE" "Nguyen Quynh Anh" CEO founder</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">NGUYỄN QUỲNH ANH (Dr. Nguyen Quynh Anh)</div><div class="member-role">CEO / Founder</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-h" style="margin-left:8px;">Domain: High</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필을 찾을 수 없음 - 국제 투자자 및 파트너와의 네트워킹 제한 가능성 [LinkedIn profile not found - potential limitation for networking with international investors and partners]</span><span class='flag-item'>⑊ 이전 스타트업 경험이나 상업화 실적에 대한 공개 정보 부족 [Limited public information about previous startup experience or commercialization track record]</span><span class='flag-item'>⑊ 공동 창업자나 핵심 팀원에 대한 정보 부재 - 단일 인물 의존도 위험 [No information about co-founders or key team members - single-person dependency risk]</span><span class='flag-item'>⑊ 회사 설립 연도 및 운영 기간 불명 [Company founding year and operational history unclear]</span><span class='flag-item'>⑊ 검증 가능한 고객 기반이나 매출 실적에 대한 공개 정보 없음 [No publicly available information about verifiable customer base or revenue traction]</span></div><div class="member-section-title">학력</div><table class="member-table"><thead><tr><th>학위/전공</th><th>기관</th><th>연도</th><th>검증</th></tr></thead><tbody><tr><td>PhD/생명공학 (Biotechnology) / 유전공학 미생물학 및 재조합 효소 (Genetically Engineered Microbiology and Recombinant Enzymes)</td><td>Chonnam National University (전남대학교)</td><td>추정 2010년대 (Estimated 2010s)</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>Chonnam National University</td><td>Research Professor (연구 교수)</td><td>알 수 없음 (Unknown)</td><td style="font-size:11px;">유전공학 미생물학 및 재조합 효소 전문. LAB2LIFE 웹사이트에서 교육 과정 강사로 명시됨. [Specialized in genetically engineered microbiology and recombinant enzymes. Listed as course instructor on LAB2LIFE website.]</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr><tr><td>LAB2LIFE</td><td>CEO / Founder</td><td>설립일 불명 - 현재 (Foundation date unknown - Present)</td><td style="font-size:11px;">응용 생명공학 회사, 유익균 균주 개발 및 효소 생산 전문. CFA Vietnam 2026 코호트 선정. [Applied biotechnology company specializing in probiotic strain development and enzyme production. Selected for CFA Vietnam 2026 cohort.]</td><td style="font-size:10px;color:var(--ink3);">[Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 박사 학위 보유자로 유전공학 미생물학 및 재조합 효소 분야 전문가. Chonnam National University 연구 교수로서의 학계 경력은 LAB2LIFE의 핵심 기술인 미생물 균주 개발, 효소 생산, 산업 규모 발효 기술과 직접적으로 연관됨. 지속 가능한 농업 및 기후 기술 분야에 생명공학을 적용하는 것은 그녀의 전문 지식과 완벽하게 일치함. 그러나 상업화 및 스타트업 운영 경험에 대한 정보는 제한적임.</div><div class="ma-overall"><strong>종합 평가:</strong> Dr. Nguyen Quynh Anh는 유전공학 미생물학 및 재조합 효소 분야에서 강력한 학문적 배경을 보유하고 있으며, 이는 LAB2LIFE의 기술 기반에 직접적으로 관련됨. Chonnam National University에서의 연구 교수 경력은 과학적 신뢰성을 제공하며, CFA Vietnam 2026 선정은 사업 아이디어의 잠재력을 검증함. 그러나 공개 정보의 제한성이 주요 우려사항임. LinkedIn 프로필 부재, 팀 구성원 정보 미공개, 이전 상업화 경험 부족은 투자자 실사에 있어 투명성 문제를 제기함. 회사가 학계에서 시장으로의 전환 초기 단계에 있을 가능성이 있으며, 이는 높은 기술적 역량과 제한된 비즈니스 실행 실적의 조합을 의미함. 추가 실사가 강력히 권장됨: 직접 인터뷰, 팀 구성 검증, 재무 실적 확인, 고객/파트너 참조 확인 등.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>기술의 현장 적용 안정성 미검증</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] IR 자료의 +450% 미생물 밀도, -94% 소포 감소 등은 실험실 데이터이며, 실제 고객 현장(농장, 공장, 폐기물 처리 시설 등)에서의 장기 운영 안정성·품질 일관성 검증 사례 없음. 현장 변수(온도, 습도, 원료 품질 편차)에 대한 강건성 불명.</td></tr>
+<tr><td>팀 완성도 및 핵심 인물 의존도</td><td><span class="rpill-sm rp-h">높음</span></td><td>[확인] CEO 외 팀 구성원 정보 전무. 상업화·재무·운영·마케팅 역량 보유 인력 미확인. CEO 부재 시 사업 지속 불가능.</td></tr>
+<tr><td>수익화 모델의 실행 가능성</td><td><span class="rpill-sm rp-h">높음</span></td><td>[미확인] 장비 판매·라이선싱·위탁 생산·SaaS 등 다양한 수익 모델 제시되나, 2024년 매출 $0이며 실제 고객 계약·파일럿 수익 사례 없음. 고객 획득 비용·판매 사이클·단위 경제 전혀 검증 안 됨.</td></tr>
+<tr><td>과도한 자금 조달 목표</td><td><span class="rpill-sm rp-m">중간</span></td><td>[확인] $10M 투자 목표는 현 단계(Pre-seed, 매출 $0, 팀 불완전) 대비 과도함. 기관 투자자는 검증된 PMF·트랙션·완성된 팀을 요구하는데 이 모두 부재. 목표 미달 시 사업 진행 불가.</td></tr>
+<tr><td>롯데 PoC 협력 가능성</td><td><span class="rpill-sm rp-m">중간</span></td><td>[미확인] PoC 아이디어는 구체적이나 롯데 측 사전 협의·관심 표명·MOU 없음. 롯데 계열사가 파일럿 예산·인력을 투입할 인센티브 및 내부 의사결정 경로 불명.</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge active">✓ 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge inactive">– 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category C — 하드웨어 / 제조 / 딥테크</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-1</span><span class="deep-title">기술 완성도 & 성능 검증</span><span class="dvtag dv-r">기술 원리는 명확하나 실제 성능 검증 부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] 2단 사이클론 분리 기술(2CyS®) 및 화학 소포제 無 고밀도 발효는 차별화된 기술 원리로 제시되었으나, 실제 파일럿 데이터·성능 비교 결과 전무. [미확인] 신청서 및 외부 자료에서 실제 장비 운영 사례, 미생물·효소 생산 수율, 타 기술 대비 정량적 우위 입증 없음. [미확인] PoC 목표인 20~50톤 폐기물 전환, 10~30 tCO₂e 감축은 시뮬레이션 수준이며 실제 운영 결과 아님. 기술 개념은 타당하나 상용화 단계 검증 전혀 안 됨.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-2</span><span class="deep-title">제조·공급망 준비도</span><span class="dvtag dv-r">파트너사 나열만 있고 실제 생산 인프라 불명</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] TNT Hightech Manufacture 등 제조 파트너사 명시되었으나, 실제 계약·공장 보유 여부·생산 능력 전무 공개. [미확인] 모듈형 발효 플랫폼의 실제 제조 단가, 생산 리드타임, 품질 관리 체계 언급 없음. [미확인] 컨테이너 기반 분산 배치 전략 제시되었으나 물류·설치·유지보수 체계 구체화 안 됨. 파트너십 존재만으로는 실제 스케일업 가능성 검증 불가.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-3</span><span class="deep-title">IP 보유 현황 및 보호 전략</span><span class="dvtag dv-r">IP 전무, 기술 방어력 매우 취약</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 2CyS® 기술 및 AI/IoT 모니터링 시스템에 대한 특허 출원·등록 정보 전무. [미확인] 신청서 및 외부 검색 결과 IP 보유 현황, 출원 계획, 기술 방어 전략 언급 없음. [미확인] 경쟁사 대비 기술 우위 주장하나 법적 보호장치 부재로 복제 위험 높음. 딥테크 스타트업으로서 IP 전략 부재는 치명적 약점.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">C-7</span><span class="deep-title">초기 시장 실증 (Pilot/PoC 성과)</span><span class="dvtag dv-r">파일럿 제안만 있고 실제 실행 사례 全無</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] UNIDO A2D $3.25M 제안 및 CFA Vietnam 2026 선정은 외부 검증이나, 실제 자금 확정·파일럿 실행 여부 불명. [미확인] 롯데 계열사 대상 PoC는 아이디어 단계이며, 사전 협의·MOU·예산 승인 등 구체적 근거 없음. [미확인] 베트남 또는 타 지역에서 실제 고객과의 파일럿 운영 사례, 데이터 수집 결과 전무. 제안서만 존재하고 실제 실증 단계 진입 안 됨.</div></div>
+<div class="deep-category-label">Category E — 기후테크 / 친환경 / ESG</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-1</span><span class="deep-title">탄소 감축 효과 측정 가능성</span><span class="dvtag dv-a">MRV 시스템 언급하나 실제 측정 결과 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">[부분 확인] AI/MRV(Measurement, Reporting, Verification) 기반 탄소 감축 모니터링 시스템 제시되었으나, 실제 측정 프로토콜·데이터·검증 기관 승인 전무. [미확인] 10~30 tCO₂e 감축 목표는 단일 파일럿 시뮬레이션이며, 실제 LCA(Life Cycle Assessment) 결과 또는 제3자 검증 없음. [부분 확인] 폐기물→바이오 비료 전환을 통한 화학 비료 대체 논리는 타당하나, 실제 현장 적용 시 탄소 저감 효과 정량화 필요. 방법론은 있으나 실측 데이터 부재.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-2</span><span class="deep-title">규제 대응 & 친환경 인증 확보</span><span class="dvtag dv-r">친환경 인증·규제 대응 전무</span><span class="deep-arrow">▾</span></div><div class="deep-body">[미확인] 바이오 비료·효소 생산 관련 베트남 또는 국제 규제(유기농 인증, 안전성 승인 등) 대응 계획 언급 없음. [미확인] EU 탄소국경조정제도(CBAM), 탄소 크레딧 등록 등 기후테크 인센티브 활용 전략 부재. [미확인] 제품 안전성·환경영향 평가 결과, 제3자 인증(ISO, GMP 등) 확보 현황 전무. 규제 리스크 높은 바이오·농업 분야에서 인증 전략 부재는 시장 진입 장벽.</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">E-3</span><span class="deep-title">순환경제 모델 실현 가능성</span><span class="dvtag dv-a">개념은 명확하나 수익성 검증 없음</span><span class="deep-arrow">▾</span></div><div class="deep-body">[확인] 농업·유기 폐기물 → 바이오 비료·효소 전환 구조는 순환경제 모델에 부합. [미확인] 폐기물 수거·전처리·발효·판매 전 과정의 단위경제학(Unit Economics) 검증 전무. [미확인] 바이오 비료·효소의 실제 판매가, 고객 지불 의향, 화학 비료 대비 가격 경쟁력 데이터 없음. [부분 확인] 장비 판매·라이선싱·위탁 생산 모델 제시되었으나, 실제 고객 계약 및 매출 실적 $0. 순환경제 방향은 옳으나 비즈니스 모델 수익성 미입증.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>[확인] 화학 소포제 제거 + 2단 사이클론 분리(2CyS®) 기술은 특허 출원 완료(IR 자료 기준)로 기술적 차별성 확보</li>
+<li>[확인] CFA Vietnam 2026 선정 및 UNIDO A2D $3.25M 프로젝트 제안은 외부 검증 신호</li>
+<li>[확인] 기후·순환경제 메가트렌드와 정합성 높고, 정부 정책(화학 비료 규제) 및 ESG 수요 증가에 부합</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>[확인] 2024년 매출 $0, 투자 유치 실적 전무 — PMF 검증 단계 도달 안 됨</li>
+<li>[미확인] CEO 외 팀 구성원 정보 전무, 상업화·재무·운영 역량 보유 인력 확인 불가 — 핵심 인물 의존도 매우 높음</li>
+<li>[미확인] 고객 검증 사례, 파일럿 운영 실적, LOI 등 실질적 트랙션 전무 — 기술 검증 데이터는 자체 실험실 수준</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>베트남 및 ASEAN 농업·폐기물 처리 시장에서 정부 주도 녹색 전환 정책 확대</li>
+<li>롯데 그룹 유통·호텔·식음료 계열사의 ESG 목표 달성을 위한 순환경제 솔루션 수요</li>
+<li>글로벌 기후 펀드(GCF, UNIDO 등) 및 ESG 투자 확대로 기후테크 자금 조달 환경 개선</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>글로벌 발효 장비 대기업(Eppendorf, Sartorius 등)의 가격 경쟁력 강화 및 시장 지배력</li>
+<li>모듈형 장비의 현장 안정성·유지보수 부담이 고객 채택을 저해할 위험 — 특히 SME·협동조합 대상</li>
+<li>$10M 투자 목표 달성 실패 시 제품 양산·시장 확장 불가 — 고정비 부담 및 캐시플로우 위기 가능성</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">13</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">중</div>
+      <p class="vc-text">LAB2LIFE는 화학 소포제 없는 2단 사이클론 분리 발효 기술(2CyS®)과 AI/IoT 모니터링을 결합한 모듈형 바이오 제조 플랫폼으로, 기후·순환경제 문제 정의와 기술적 차별성은 명확하다. 그러나 2024년 매출 $0, 투자 유치 실적 없음, CEO 외 팀 구성원 미공개, 고객 검증 사례 전무 등 실행 기반이 매우 취약하다. CFA Vietnam 2026 선정 및 UNIDO 제안은 외부 관심을 받았다는 신호이나, 실제 수익화·고객 확보·팀 완성도는 검증되지 않았다. 가장 큰 미검증 가정은 '모듈형 발효 장비가 고객 현장에서 안정적으로 운영되어 일관된 품질의 제품을 지속 생산할 수 있다'는 점으로, 이것이 무너지면 사업모델 전체가 무효화된다. 롯데 PoC 방향성은 타당하나 사전 협의 없이 제안만 존재하며, $10M 투자 목표는 현 단계 대비 과도하다.</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">4 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">13 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>LAB2LIFE · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>

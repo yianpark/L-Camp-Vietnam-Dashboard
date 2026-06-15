@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VN9 IMEX COMPANY LIMITED — L-Camp Vietnam 2026 평가 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ef; --card: #fff; --ink: #1c1c1c; --ink2: #444; --ink3: #888;
+    --border: #e4e2db; --green: #2d7a5f; --green-bg: #eaf4ef;
+    --amber: #b86b00; --amber-bg: #fef3e2; --red: #b83232; --red-bg: #fdecea;
+    --blue: #2563a8; --blue-bg: #eaf0fb; --lotte: #e60012; --lotte-bg: #fdecea;
+    --radius: 10px; --shadow: 0 1px 6px rgba(0,0,0,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+  /* TOPBAR */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-back { font-size: 12px; color: var(--ink3); cursor: pointer; }
+  .topbar-sep { color: var(--border); }
+  .topbar-title { font-size: 13px; font-weight: 600; }
+  .topbar-right { display: flex; gap: 10px; }
+  .btn { font-size: 12px; font-family: 'IBM Plex Mono', monospace; padding: 6px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--ink2); cursor: pointer; }
+  .btn:hover { background: var(--bg); }
+  .btn-lotte { background: var(--lotte); color: #fff; border-color: var(--lotte); }
+  .btn-lotte:hover { background: #c4000f; }
+
+  /* HERO */
+  .hero { background: var(--card); border-bottom: 1px solid var(--border); padding: 36px 40px 0; }
+  .hero-inner { max-width: 960px; margin: 0 auto; }
+  .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-left { flex: 1; min-width: 260px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .etag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+  .et-loc { background: var(--blue-bg); color: var(--blue); }
+  .et-ind { background: var(--amber-bg); color: var(--amber); }
+  .et-lotte { background: var(--lotte-bg); color: var(--lotte); }
+  .hero-name { font-size: 28px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+  .hero-stage { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; background: #f0f0ee; color: #666; margin-bottom: 14px; }
+  .hero-desc { font-size: 13.5px; line-height: 1.75; color: var(--ink2); max-width: 560px; border-left: 3px solid var(--lotte); padding-left: 14px; }
+  .hero-assumption { margin-top: 14px; background: #fffbeb; border: 1px solid #f5e09a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92600a; max-width: 560px; }
+  .hero-assumption-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #b86b00; display: block; margin-bottom: 3px; }
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .result-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .rpill { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.5px; }
+  .rpill-top { background: var(--lotte); color: #fff; }
+  .rpill-mid { background: var(--amber-bg); color: var(--amber); }
+  .rpill-out { background: #f0f0ee; color: #999; }
+  .rpill-ir-ok      { background: #eaf4ef; color: #2d7a5f; cursor: default; }
+  .rpill-ir-partial { background: #fef3e2; color: #b86b00; cursor: default; }
+  .rpill-ir-fail    { background: #f0f0ee; color: #999;    cursor: default; }
+  .rpill-ir-none    { background: #f0f0ee; color: #bbb;    cursor: default; }
+  .score-display { text-align: right; }
+  .score-big { font-family: 'IBM Plex Mono', monospace; font-size: 52px; font-weight: 600; color: var(--lotte); line-height: 1; }
+  .score-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: var(--ink3); }
+  .score-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+  .hero-kpis { display: flex; gap: 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 140px; padding: 16px 20px; border-right: 1px solid var(--border); }
+  .kpi:last-child { border-right: none; }
+  .kpi-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .kpi-val { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; color: var(--ink); line-height: 1.1; }
+  .kpi-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .sec { display: flex; align-items: center; gap: 12px; margin: 40px 0 16px; }
+  .sec-num { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; background: var(--ink); color: #fff; padding: 3px 9px; border-radius: 4px; letter-spacing: 1px; }
+  .sec-title { font-size: 15px; font-weight: 700; }
+  .sec-badge { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; }
+  .sb-lotte { background: var(--lotte-bg); color: var(--lotte); }
+
+  /* SCORECARD */
+  .sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sc-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .sc-card.highlight { border-color: var(--lotte); border-width: 2px; }
+  .sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .sc-label { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); margin-bottom: 4px; }
+  .sc-name { font-size: 14px; font-weight: 700; }
+  .sc-name.lotte-name { color: var(--lotte); }
+  .sc-score { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; line-height: 1; }
+  .sc-score.h { color: var(--green); }
+  .sc-score.m { color: var(--amber); }
+  .sc-score.l { color: var(--red); }
+  .sc-grade { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .grade-h { background: var(--green-bg); color: var(--green); }
+  .grade-m { background: var(--amber-bg); color: var(--amber); }
+  .grade-l { background: var(--red-bg); color: var(--red); }
+  .sc-comment { font-size: 12.5px; color: var(--ink2); line-height: 1.7; }
+  .sc-full { grid-column: 1 / -1; }
+  .sc-summary { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; box-shadow: var(--shadow); }
+  .ss-label { font-size: 13px; font-weight: 600; }
+  .ss-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .ss-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .ss-score { font-family: 'IBM Plex Mono', monospace; font-size: 32px; font-weight: 600; color: var(--lotte); }
+  .ss-denom { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--ink3); }
+  .ss-verdict { font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .sv-top { background: var(--lotte); color: #fff; }
+  .sv-mid { background: var(--amber-bg); color: var(--amber); }
+  .sv-out { background: #f0f0ee; color: #999; }
+
+  /* LOTTE PoC BOX */
+  .poc-box { background: var(--card); border: 2px solid var(--lotte); border-radius: var(--radius); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 10px; }
+  .poc-box-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--lotte); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .poc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .poc-item .poc-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--ink3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .poc-item .poc-val { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+  .poc-full { grid-column: 1 / -1; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .swot-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .swot-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .swot-title.s { color: var(--green); } .swot-title.w { color: var(--amber); }
+  .swot-title.o { color: var(--blue); } .swot-title.t { color: var(--red); }
+  .swot-list { list-style: none; padding: 0; }
+  .swot-list li { font-size: 12.5px; color: var(--ink2); padding: 5px 0 5px 18px; position: relative; line-height: 1.6; border-bottom: 1px solid var(--border); }
+  .swot-list li:last-child { border-bottom: none; }
+  .swot-list li::before { position: absolute; left: 0; font-weight: 700; }
+  .swot-list.s li::before { content: '✓'; color: var(--green); }
+  .swot-list.w li::before { content: '–'; color: var(--amber); }
+  .swot-list.o li::before { content: '↗'; color: var(--blue); }
+  .swot-list.t li::before { content: '!'; color: var(--red); }
+
+  /* RISK TABLE */
+  .risk-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .risk-table th { background: #fafaf7; padding: 10px 16px; text-align: left; font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .risk-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--ink2); }
+  .risk-table tr:last-child td { border-bottom: none; }
+  .rpill-sm { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; letter-spacing: 0.5px; }
+  .rp-h { background: var(--red-bg); color: var(--red); }
+  .rp-m { background: var(--amber-bg); color: var(--amber); }
+  .rp-l { background: var(--green-bg); color: var(--green); }
+
+  /* DEEP DIVE */
+  .biz-type-badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .biz-badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; }
+  .biz-badge.active { background: var(--green-bg); color: var(--green); }
+  .biz-badge.inactive { background: #f0f0ee; color: #999; }
+  .deep-category-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); padding: 10px 0 8px; border-bottom: 2px solid var(--green); margin-bottom: 12px; }
+  .deep-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden; }
+  .deep-hd { padding: 14px 20px; background: #fafaf7; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .deep-hd:hover { background: #f2f1ec; }
+  .deep-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+  .deep-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dvtag { font-size: 11px; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 3px 10px; border-radius: 4px; letter-spacing: 0.5px; }
+  .dv-g { background: var(--green-bg); color: var(--green); }
+  .dv-a { background: var(--amber-bg); color: var(--amber); }
+  .dv-r { background: var(--red-bg); color: var(--red); }
+  .deep-arrow { font-size: 12px; color: var(--ink3); transition: transform 0.2s; }
+  .deep-body { padding: 16px 20px; font-size: 12.5px; line-height: 1.8; color: var(--ink2); display: none; }
+  .deep-body.open { display: block; }
+
+  /* VERDICT */
+  .verdict-card { background: var(--lotte); color: #fff; border-radius: var(--radius); padding: 28px 32px; margin-top: 4px; display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .vc-left { flex: 1; min-width: 260px; }
+  .vc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+  .vc-score-line { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+  .vc-score { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 600; line-height: 1; }
+  .vc-denom { font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: rgba(255,255,255,0.5); }
+  .vc-verdict { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.15); display: inline-block; padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; }
+  .vc-text { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .vc-right { min-width: 200px; }
+  .vc-breakdown { list-style: none; padding: 0; }
+  .vc-breakdown li { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.8); }
+  .vc-breakdown li:last-child { border-bottom: none; }
+  .vc-pts { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: #fff; }
+
+  /* TEAM RESEARCH */
+  .team-research-notice { background: var(--amber-bg); border: 1px solid var(--amber); border-radius: 8px; padding: 12px 18px; font-size: 13px; color: var(--amber); margin-bottom: 12px; }
+  .team-overall-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .toc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .toc-title { font-size: 14px; font-weight: 700; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .toc-item { background: #fafaf7; border-radius: 6px; padding: 10px 14px; }
+  .toc-full { grid-column: 1 / -1; }
+  .toc-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); margin-bottom: 4px; }
+  .toc-val { font-size: 12.5px; color: var(--ink2); line-height: 1.6; }
+  .toc-queries { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--ink3); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; }
+  .member-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .member-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+  .member-name { font-size: 15px; font-weight: 700; }
+  .member-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .member-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .linkedin-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+  .linkedin-found { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0077b5; background: #eaf4fb; padding: 3px 10px; border-radius: 4px; }
+  .linkedin-none { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); background: #f0f0ee; padding: 3px 10px; border-radius: 4px; }
+  .member-flags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .flag-item { font-size: 11px; background: var(--red-bg); color: var(--red); padding: 3px 10px; border-radius: 4px; }
+  .member-achv { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .achv-item { font-size: 11px; background: var(--green-bg); color: var(--green); padding: 3px 10px; border-radius: 4px; }
+  .prev-startups { font-size: 12px; color: var(--blue); background: var(--blue-bg); padding: 5px 12px; border-radius: 4px; margin-bottom: 10px; }
+  .ps-label { font-weight: 600; }
+  .member-section-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink3); margin: 12px 0 6px; }
+  .member-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 6px; }
+  .member-table th { background: #fafaf7; padding: 7px 10px; text-align: left; font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); border-bottom: 1px solid var(--border); }
+  .member-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); line-height: 1.5; }
+  .member-table tr:last-child td { border-bottom: none; }
+  .member-assessment { background: #fafaf7; border-radius: 6px; padding: 12px 14px; margin-top: 10px; font-size: 12.5px; line-height: 1.7; color: var(--ink2); }
+  .ma-domain { margin-bottom: 6px; }
+  .ma-overall { color: var(--ink); }
+
+  /* FOOTER */
+  .footer { max-width: 960px; margin: 0 auto; padding: 20px 40px 40px; display: flex; justify-content: space-between; border-top: 1px solid var(--border); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink3); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-back" onclick="window.location.href='dashboard.html'">← 대시보드</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title">VN9 IMEX COMPANY LIMITED</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn" onclick="window.print()">PDF 저장</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="etag et-loc">Hanoi, Vietnam</span>
+          <span class="etag et-ind">Healthy Food</span>
+          <span class="etag et-lotte">L-Camp Vietnam 2026</span>
+        </div>
+        <div class="hero-name">VN9 IMEX COMPANY LIMITED</div>
+        <div class="hero-sub">설립 2024 · https://chaao.vn/</div>
+        <span class="hero-stage">Pre-seed</span>
+        <p class="hero-desc">VN9 IMEX는 베트남 현지 농산물(생강, 꿀)을 활용한 무방부제·무첨가당 음료 농축액 'ChaaÔ'를 제조하는 회사다. HACCP 인증 시설에서 생산하며 미국 FDA 등록 완료로 수출 준비를 갖췄고, B2B 유통 및 수출로 수익을 창출한다.</p>
+        <div class="hero-assumption">
+          <span class="hero-assumption-label">⚠ 핵심 미검증 가정</span>
+          ChaaÔ 제품이 유럽·북미·아시아 시장에서 기존 생강 음료 대비 차별화된 가치를 인정받아 수출 수요가 지속 확대될 것이라는 가정이 아직 검증되지 않았다.
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="result-pills">
+          <span class="rpill rpill-out">✕ 하</span>
+          <span class="rpill rpill-ir-fail">📄 IR Deck 읽기 실패</span>
+        </div>
+        <div class="score-display">
+          <span class="score-big">12</span><span class="score-denom"> / 30</span>
+          <div class="score-label">L-Camp 평가 점수</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><div class="kpi-val">$4,482</div><div class="kpi-desc">초기 수출 및 국내 B2B 매출 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">$34,500</div><div class="kpi-desc">7.7배 성장 목표 (계약 미확인) [미확인]</div></div>
+<div class="kpi"><div class="kpi-val">8건</div><div class="kpi-desc">2021-2025 미국 중심 선적 기록 [확인]</div></div>
+<div class="kpi"><div class="kpi-val">HACCP, FDA</div><div class="kpi-desc">식품 안전 인증 및 미국 수출 등록 [확인]</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- SCORECARD -->
+  <div class="sec">
+    <span class="sec-num">STEP 01</span>
+    <span class="sec-title">평가 스코어카드</span>
+    <span class="sec-badge sb-lotte">하</span>
+  </div>
+
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-top"><div class="sc-name">A. 시장 매력도 및 확장 가능성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">타겟 시장이 유럽·북미·아시아로 광범위하게 언급되나, 구체적인 SAM/SOM 분석이 전혀 제시되지 않음 [미확인]. 생강 음료 시장 내 경쟁 제품(Domaine de Canton, Fever-Tree 등) 대비 차별화 근거가 '무방부제·무첨가당'으로만 설명되며, 가격 경쟁력·유통 채널 확보 전략이 부재함 [미확인]. 8건의 수출 실적은 확인되나 단발성 거래인지 계속 거래인지 불명확하며, 시장 확장 가능성을 뒷받침할 재구매율·유통 파트너 확보 현황이 제시되지 않음 [미확인].</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">B. 비즈니스 우수성 및 투자 적합성</div><div class="sc-score l">2<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">수익 모델이 B2B 유통 및 수출로 간략히 언급되나, 단위 경제성(제조 원가, 마진율, CAC 등) 정보가 전무함 [미확인]. 2024년 매출 $4,482에서 2025년 목표 $34,500(7.7배)로의 급격한 성장 근거가 제시되지 않으며, 계약 기반 수주나 확정 주문 없이 목표만 제시됨 [미확인]. 투자 유치 이력 없고, 현재도 투자 유치 계획 없음. 2024년 설립 후 1년 미만의 운영 기간으로 비즈니스 모델의 검증 단계에 미달.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">C. 사회적 가치</div><div class="sc-score m">3<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-m">중</div><div class="sc-comment">무방부제·무첨가당 제품으로 건강한 소비 습관 촉진 및 베트남 농업 공동체 지원 의지는 명확히 표현됨 [부분 확인]. 그러나 현지 농민과의 실제 파트너십 현황, 공정 거래 조건, 농가 소득 개선 성과 등 구체적 임팩트 지표가 제시되지 않음 [미확인]. ESG 주장이 '장기 비전' 수준에 머물며, 측정 가능한 사회적 가치 창출 실적(예: 계약 농가 수, 농가 소득 증가율)이 부재함. 환경 측면에서도 포장재 지속가능성은 '탐색 중'이라고만 언급.</div></div>
+<div class="sc-card"><div class="sc-top"><div class="sc-name">D. 팀 역량 및 실행 기반</div><div class="sc-score l">1<span style="font-size:14px;color:var(--ink3);">/5</span></div></div><div class="sc-grade grade-l">하</div><div class="sc-comment">팀 역량 평가에서 치명적 투명성 결여. TEAM DEEP RESEARCH 결과, LinkedIn 프로필 미확인, 창립자 학력·경력 정보 전무, 팀 구성원 신원 미공개로 검증 불가 [미확인]. 회사는 HACCP 시설 운영 및 FDA 등록 등 사업 활동은 확인되나, 이것이 창립팀 고유 전문성인지 외부 파트너 의존인지 불명확함 [미확인]. '45년 R&D 전문성' 주장은 설립 연도(2024)와 모순되며 근거 불명 [미확인]. Key Person Risk 높음: 단일 Director만 확인되며, CTO/CFO/CMO 등 기능별 책임자 정보 부재. 식품 산업·국제 무역 분야의 입증된 전문성 없이 자기 보고만 존재.</div></div>
+    <!-- E항목: 전체 너비 -->
+    <div class="sc-card sc-full highlight">
+      <div class="sc-label">E · 롯데 PoC 적합성 (10점)</div>
+      <div class="sc-top">
+        <div class="sc-name lotte-name">롯데 PoC 적합성</div>
+        <div>
+          <div class="sc-score l">4<span style="font-size:14px;color:var(--ink3);">/10</span></div>
+        </div>
+      </div>
+      <div class="sc-grade grade-m">중</div>
+      <div class="sc-comment">식품·유통 분야로 롯데 주요 사업 영역에 부합하며, 롯데마트·롯데백화점 시범 판매 제안은 구체적임 [확인]. 그러나 PoC 아이디어가 단순 시범 입점 수준으로, 롯데의 특정 인프라나 데이터를 활용한 차별화 요소가 부족함. 예: 롯데 자체 PB 라인 연계, 롯데 멤버십 데이터 기반 타겟 마케팅, 롯데케미칼 친환경 포장재 협력 등 구체적 연계 방안 부재 [미확인]. F&B 계열사(롯데리아) 언급되었으나 메뉴 적용 등 운영 통합 아이디어 없음. 롯데 입장에서는 일반적인 신규 브랜드 입점 테스트 이상의 전략적 가치가 불분명.</div>
+    </div>
+  </div>
+
+  <div class="sc-summary">
+    <div>
+      <div class="ss-label">종합 평가 점수</div>
+      <div class="ss-sub">A 2 + B 2 + C 3 + D 1 + E 4</div>
+    </div>
+    <div class="ss-right">
+      <div><span class="ss-score">12</span><span class="ss-denom"> / 30</span></div>
+      <span class="ss-verdict ss-verdict sv-out">하</span>
+    </div>
+  </div>
+
+  <!-- LOTTE PoC -->
+  <div class="sec">
+    <span class="sec-num">LOTTE</span>
+    <span class="sec-title">롯데 PoC 협업 정보</span>
+  </div>
+
+  <div class="poc-box">
+    <div class="poc-box-title">🏢 롯데 협업 정보</div>
+    <div class="poc-grid">
+      <div class="poc-item">
+        <div class="poc-label">연계 사업 영역</div>
+        <div class="poc-val">Retail/Commerce (LOTTE Mart, LOTTE Department Store), F&B/Food (LOTTERIA)</div>
+      </div>
+      <div class="poc-item">
+        <div class="poc-label">협업 희망 계열사</div>
+        <div class="poc-val"></div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">제안 PoC 아이디어</div>
+        <div class="poc-val">롯데마트 또는 롯데백화점 내 3~6개월 시범 판매를 통해 ChaaÔ 생강 꿀 시럽의 소비자 반응, 구매 패턴, 제품-시장 적합성을 검증. 매장 내 시음 행사 및 온라인 채널 병행 판매로 가격·패키징 전략을 최적화하고, 향후 제품 라인 확장 및 장기 유통 파트너십 가능성을 평가.</div>
+      </div>
+      <div class="poc-item poc-full">
+        <div class="poc-label">ESG 임팩트 및 롯데 협업을 통한 임팩트 창출</div>
+        <div class="poc-val">Our solution contributes to Environmental, Social, and Governance (ESG) goals by promoting sustainable sourcing, supporting local agricultural communities, and providing healthier, clean-label food products.
+
+From an environmental perspective, our Ginger Honey Syrup is made from locally sourced fresh ginger and natural honey, supporting sustainable agriculture and reducing the environmental footprint associated with long supply chains. We are also committed to continuously exploring more sustainable packaging solutions and responsible sourcing practices to minimize environmental impact.
+
+From a social perspective, our long-term vision is to build a sustainable sourcing network that creates shared value for Vietnamese farmers, local communities, and consumers. As our business grows, we aim to establish closer partnerships with local farmers, creating more stable market opportunities and increasing the value of Vietnamese agricultural products through responsible business growth. In addition, our product promotes healthier consumption habits, as it is made from natural ingredients, is preservative-free, and contains no added sugar, meeting the growing consumer demand for clean-label and wellness-focused products.
+
+From a governance perspective, we maintain strict quality management and food safety controls throughout the entire production process. Our manufacturing facility operates under HACCP-certified food safety management systems, and our products are produced to meet international export requirements, including registration with the U.S. FDA. We are committed to product traceability, transparent sourcing, regulatory compliance, and ethical business practices, ensuring consistent quality, safety, and reliability for international customers and retail partners.
+
+A PoC collaboration with LOTTE would provide an opportunity to introduce a healthier and more sustainable beverage solution to a wider consumer audience. Through LOTTE’s retail ecosystem and market expertise, we could validate consumer demand for preservative-free and no-added-sugar products while creating opportunities to expand the use of responsibly sourced Vietnamese agricultural ingredients.
+
+The collaboration would also provide valuable consumer insights to support future product innovation, packaging sustainability initiatives, and ESG improvements. As demand grows, we hope to further strengthen partnerships with local agricultural communities and contribute to the long-term development of a more sustainable and inclusive food supply chain.
+
+Ultimately, this partnership would demonstrate how export-standard, clean-label food products can support responsible consumption, promote sustainable agriculture, and generate positive economic and social impact while delivering measurable ESG value across the value chain.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM DEEP RESEARCH -->
+  <div class="sec">
+    <span class="sec-num">RESEARCH</span>
+    <span class="sec-title">팀 딥리서치 — 창업자 및 핵심 멤버 배경 검증</span>
+  </div>
+
+  <div class="team-overall-card">
+  <div class="toc-header"><span class="toc-title">팀 종합 평가</span><span class="rpill-sm rp-h">핵심인물 의존도: 높음</span></div>
+  <div class="toc-grid">
+    <div class="toc-item"><div class="toc-label">도메인 커버리지</div><div class="toc-val">회사는 건강식품(생강 꿀 시럽, 천연 시럽) 제조 및 수출에 필요한 핵심 역량을 보유한 것으로 보임: (1) 제품 개발 - HACCP 인증 시설 운영, FDA 등록 완료, 천연 무방부제 제품 개발; (2) 국제 비즈니스 - 미국 시장 수출 실적, 국제 박람회 참가; (3) 품질 관리 - 식품 안전 인증 시스템 구축; (4) 현지 공급망 - 베트남 농업 자원 활용. 그러나 팀원의 개별 전문성과 경험 수준을 검증할 수 없어, 이러한 역량이 창립팀의 고유 전문성인지 외부 파트너/자문단을 통한 것인지 불명확함. 기술/R&D 리더십, 재무/투자 전문성, 마케팅 전략 전문가에 대한 정보 부재.</div></div>
+    <div class="toc-item"><div class="toc-label">팀 완성도</div><div class="toc-val">공개 정보상 단일 연락 담당자(Director)만 확인됨. 완전한 경영진 구성, 핵심 팀원의 역할 분담, 각 기능별 책임자(CTO, CFO, CMO 등) 정보가 전혀 공개되지 않음. 소규모 가족 기업이거나 단일 창립자가 대부분의 기능을 담당하는 구조일 가능성이 높음. 이는 확장성과 리스크 분산 측면에서 우려 사항. 주요 의사결정과 사업 운영이 한 사람에게 집중되어 있을 가능성이 높아, Key Person Risk가 매우 높음.</div></div>
+    <div class="toc-item toc-full"><div class="toc-label">신뢰도 평가</div><div class="toc-val">제한적 신뢰성. 회사의 사업 활동(제품 생산, 수출, 인증 취득, 박람회 참가)은 객관적으로 확인되며, 이는 실제 운영 중인 합법적 사업임을 시사함. 그러나 창립팀의 전문성, 경험, 배경에 대한 투명성이 극히 낮음. 베트남 중소 수출기업의 일반적 특성(낮은 디지털 프레즌스, 제한적 정보 공개)을 감안하더라도, 투자나 파트너십을 고려할 경우 추가 실사가 필수적임. 회사 웹사이트는 전문적이고 제품 정보가 명확하나, 팀 소개 페이지 부재는 의도적 정보 제한으로 해석될 수 있음.</div></div>
+    <div class="toc-item toc-full" style="background:var(--red-bg);border-radius:6px;padding:10px 14px;"><div class="toc-label" style="color:var(--red);">⚠ 핵심 취약점</div><div class="toc-val" style="color:var(--red);font-weight:600;">가장 큰 격차는 **창립팀의 투명성과 검증 가능한 전문성 부족**임. 구체적으로: (1) 창립자 및 핵심 팀원의 신원 정보 미공개; (2) 교육 배경 및 전문 자격 검증 불가; (3) 식품 산업, 국제 무역, 제품 개발 분야의 이전 경력 확인 불가; (4) 전문적 네트워크 및 온라인 프레즌스 부재; (5) 회사의 45년 R&D 경험 주장에 대한 근거 불명확 (개인 경력인지, 파트너/고문 네트워크인지 불분명). 이러한 격차로 인해 팀의 실제 역량과 확장 가능성을 평가하기 어려우며, 투자자나 파트너 입장에서 리스크가 높음. 추가 실사 시 직접 미팅, 시설 방문, 고객 레퍼런스 확인, 재무제표 검토가 필수적임.</div></div>
+  </div>
+  <div class="toc-queries">검색 쿼리: Nguyen Thi Thuy VN9 IMEX LinkedIn · Nguyen Thi Thuy chaao.vn LinkedIn · VN9 IMEX COMPANY LIMITED founder team · chaao.vn founder team members · chaao.vn Vietnam healthy food company · "VN9 IMEX" Vietnam founder director</div>
+</div><div class="member-card">
+  <div class="member-header">
+    <div class="member-info"><div class="member-name">Nguyen Thi Thuy</div><div class="member-role">Director</div></div>
+    <div class="member-meta"><span class="linkedin-none">LinkedIn 미확인</span><span class="sc-grade grade-m" style="margin-left:8px;">Domain: Medium</span></div>
+  </div><div class='member-flags'><span class='flag-item'>⑊ LinkedIn 프로필 미확인 - 전문적인 온라인 프레즌스 부족</span><span class='flag-item'>⑊ 창립자의 학력 정보 공개되지 않음</span><span class='flag-item'>⑊ 이전 직장 경력 및 근무 연수 검증 불가</span><span class='flag-item'>⑊ 팀 구성원의 구체적인 신원 및 역할 미공개 (웹사이트에 팀 소개 페이지 없음)</span><span class='flag-item'>⑊ 회사 설립 연도 및 창립 스토리 불명확</span><span class='flag-item'>⑊ 45년의 R&D 전문성을 주장하나, 이는 개인이나 회사의 운영 기간과 일치하지 않음 (외부 파트너 또는 자문단 가능성)</span></div><div class="member-section-title">경력</div><table class="member-table"><thead><tr><th>회사</th><th>직책</th><th>기간</th><th>비고</th><th>검증</th></tr></thead><tbody><tr><td>VN9 IMEX COMPANY LIMITED</td><td>Director</td><td>알 수 없음</td><td style="font-size:11px;">회사는 Dong Nai 지역에 현대적인 생산 시설을 보유하고 있으며, HACCP 및 FDA 인증을 받은 식품 안전 관리 시스템 하에서 제품을 생산함. ChaaÔ 브랜드로 생강 꿀 시럽 등 건강식품을 제조 및 수출함.</td><td style="font-size:10px;color:var(--ink3);">[Partially Verified]</td></tr></tbody></table><div class="member-assessment"><div class="ma-domain"><strong>도메인 연관성:</strong> 회사는 실제로 운영 중이며 HACCP 인증 시설에서 제품을 생산하고, FDA 등록 완료, 국제 무역 박람회(Vietnam International Sourcing Expo 2025) 참가 이력이 확인됨. 그러나 창립자 개인의 이전 경력, 식품 산업 경험, 국제 비즈니스 배경에 대한 검증 가능한 정보가 공개적으로 확인되지 않음. 회사 웹사이트와 무역 데이터는 실제 사업 활동을 뒷받침하지만, 팀의 구체적인 전문성과 경험은 확인 불가.</div><div class="ma-overall"><strong>종합 평가:</strong> VN9 IMEX COMPANY LIMITED는 실제 운영 중인 식품 제조 및 수출 회사로 확인되며, HACCP/FDA 인증, 국제 박람회 참가, 수출 실적 등 사업 활동의 증거가 존재함. 그러나 Nguyen Thi Thuy를 포함한 창립팀의 개인 배경, 교육 수준, 이전 경력에 대한 검증 가능한 정보가 극히 제한적임. 전문적인 온라인 프레즌스(LinkedIn 등) 부재는 투명성 측면에서 우려 사항. 회사의 자체 보고 역량(제품 개발, 국제 비즈니스, 공급망 관리)은 실제 사업 활동과 어느 정도 일치하나, 팀의 구체적인 전문성을 검증하기 어려움. 추가 실사를 통한 직접 인터뷰와 레퍼런스 체크가 필수적으로 요구됨.</div></div></div>
+
+  <!-- RISK -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">리스크 평가</span>
+  </div>
+
+  <table class="risk-table">
+    <thead><tr><th>리스크 항목</th><th>수준</th><th>비고</th></tr></thead>
+    <tbody><tr><td>팀 투명성 결여</td><td><span class="rpill-sm rp-h">높음</span></td><td>창립자 및 핵심 팀원의 배경 정보를 전혀 검증할 수 없어, 사업 확장 및 자금 조달 시 신뢰도 확보 곤란 [미확인]</td></tr>
+<tr><td>성장 계획 근거 부족</td><td><span class="rpill-sm rp-h">높음</span></td><td>2025년 7.7배 매출 성장 목표가 계약 기반 수주나 유통 파트너 확보 없이 제시됨 [미확인]</td></tr>
+<tr><td>시장 검증 미흡</td><td><span class="rpill-sm rp-h">높음</span></td><td>8건의 수출 실적이 재구매로 이어지는지, 주요 바이어와의 장기 계약이 체결되었는지 불명확 [미확인]</td></tr>
+<tr><td>Key Person Dependency</td><td><span class="rpill-sm rp-h">높음</span></td><td>단일 Director 중심 운영으로 핵심 인력 이탈 시 사업 지속성 위험 [확인]</td></tr>
+<tr><td>경쟁력 검증 부족</td><td><span class="rpill-sm rp-m">중간</span></td><td>무방부제·무첨가당 외 가격·브랜드·유통 측면의 차별화 전략 부재 [미확인]</td></tr></tbody>
+  </table>
+
+  <!-- DEEP DIVE -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">사업 유형별 핵심 평가 항목</span>
+  </div>
+
+  <div class="biz-type-badges"><span class="biz-badge inactive">– 기술 기반</span>
+<span class="biz-badge inactive">– 플랫폼</span>
+<span class="biz-badge active">✓ 제조/하드웨어</span>
+<span class="biz-badge inactive">– SaaS/소프트웨어</span>
+<span class="biz-badge active">✓ 커머스/브랜드</span>
+<span class="biz-badge inactive">– 헬스케어/바이오/웰니스</span>
+<span class="biz-badge inactive">– 물류/O2O</span>
+<span class="biz-badge inactive">– 기후테크/환경 솔루션</span>
+<span class="biz-badge inactive">– B2G/공공 교육 사회 서비스</span></div>
+
+  <div class="deep-category-label">Category B — 비즈니스 모델 & 수익성</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-1</span><span class="deep-title">단위 경제성 (Unit Economics)</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">제조 원가, 유통 마진, 물류비 등 단위 경제성 데이터가 전무하여 수익성 평가 불가능 [미확인]. 생강·꿀 원재료 조달 비용, HACCP 시설 운영비, 국제 배송비 등 식음료 수출 사업의 핵심 비용 구조가 제시되지 않음 [미확인]. B2B 모델임에도 고객사별 최소 주문량(MOQ), 거래당 마진율, 재구매 주기 등 실질적 수익 창출 메커니즘이 불명확함 [미확인]. 2024년 매출 $4,482는 8건 수출 실적 대비 건당 평균 $560 수준으로, 이것이 지속 가능한 거래 규모인지 샘플 판매인지 구분 안 됨 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-2</span><span class="deep-title">매출 성장 근거 및 파이프라인</span><span class="dvtag dv-r">근거 부족</span><span class="deep-arrow">▾</span></div><div class="deep-body">2025년 매출 목표 $34,500(전년 대비 670% 성장)에 대한 구체적 달성 경로가 제시되지 않음 [미확인]. 확정 주문서(PO), 유통 계약서, 바이어 MOU 등 매출 파이프라인 근거 자료가 전무함 [미확인]. 8건의 수출 실적이 단발성 거래인지 정기 계약인지 불명확하며, 재구매율·고객 유지율(retention rate) 데이터 부재로 성장성 검증 불가 [미확인]. 타겟 시장을 '유럽·북미·아시아'로 광범위하게 언급하나, 국가별·채널별 구체적 진출 전략 및 현지 유통 파트너 확보 현황이 제시되지 않음 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">B-3</span><span class="deep-title">자금 조달 및 재무 지속가능성</span><span class="dvtag dv-r">취약</span><span class="deep-arrow">▾</span></div><div class="deep-body">설립 이후 외부 투자 유치 이력이 전무하며, 현재도 투자 유치 계획이 없다고 명시됨 [확인]. HACCP 시설 운영, FDA 등록, 국제 배송 등 자본 집약적 활동을 자체 자금만으로 수행 중인 것으로 추정되나, 현금흐름 및 운영 자금 여력에 대한 정보 부재 [미확인]. 2024년 매출 $4,482 수준에서 R&D, 마케팅, 인건비 등 고정비 충당 가능 여부가 불투명하며, 손익분기점(BEP) 달성 시점 및 경로가 제시되지 않음 [미확인]. 스케일업 단계에서 필수적인 재고 확보, 마케팅 투자, 유통 채널 확대를 위한 자본 확보 전략이 부재함 [미확인].</div></div>
+<div class="deep-category-label">Category D — 팀 역량 & 실행력</div>
+<div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-1</span><span class="deep-title">창립팀 신원 및 전문성 검증</span><span class="dvtag dv-r">검증 불가</span><span class="deep-arrow">▾</span></div><div class="deep-body">LinkedIn 프로필 미확인, 창립자 실명·학력·경력 정보 전무로 팀 역량 객관적 검증이 전혀 불가능함 [미확인]. '45년 R&D 전문성' 주장은 2024년 설립 연도와 명백히 모순되며, 이것이 개인 경력인지 조직 역량인지 불명확함 [미확인]. 식음료 산업 경험, 국제 무역 실무 능력, 품질 관리 전문성 등 자기 보고(self-reported) 주장에 대한 제3자 검증 자료(이전 재직 회사, 프로젝트 실적, 인증서 등)가 일체 제시되지 않음 [미확인]. Key Person Risk 심각: 단일 Director만 등록되어 있으며, CTO/CFO/CMO 등 기능별 책임자 및 백업 인력 부재로 사업 연속성 위험 높음 [확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-2</span><span class="deep-title">운영 실행력 및 제품 시장 적합성</span><span class="dvtag dv-a">초기 단계</span><span class="deep-arrow">▾</span></div><div class="deep-body">2024년 설립 후 1년 미만 운영으로 비즈니스 모델 검증 기간이 극히 짧음 [확인]. 8건 수출 실적은 최소한의 제품 출하 능력을 입증하나, 고객 피드백 반영, 제품 개선 이력, 재구매 전환율 등 실행력을 뒷받침할 정성적·정량적 지표가 부재함 [미확인]. HACCP 인증 및 FDA 등록은 확인되나, 이것이 자체 R&D 역량의 결과인지 외부 컨설팅/제조 파트너 의존인지 불명확하여 내재화된 경쟁력으로 보기 어려움 [부분 확인]. 제품 라인이 단일 SKU(Ginger Honey Syrup)로 제한되어 있으며, 포트폴리오 확장 계획이나 신제품 개발 파이프라인이 제시되지 않음 [미확인].</div></div><div class="deep-card"><div class="deep-hd" onclick="toggleDeep(this)"><span class="deep-num">D-3</span><span class="deep-title">어드바이저 네트워크 및 멘토십</span><span class="dvtag dv-r">부재</span><span class="deep-arrow">▾</span></div><div class="deep-body">외부 어드바이저, 멘토, 산업 전문가 네트워크가 전혀 언급되지 않음 [미확인]. 식음료 수출 사업에 필수적인 법률·세무·통관·물류 전문가, 해외 유통 채널 경험자, 브랜드 마케팅 전문가 등 보완적 역량을 제공할 지원 체계가 부재함 [미확인]. 베트남 현지 농업 공동체와의 파트너십을 주장하나, 구체적인 협력 농가 수, 계약 조건, 품질 관리 체계 등 실행 가능한 공급망 구조가 제시되지 않음 [미확인]. L-Camp 참여 동기가 '롯데 유통망 활용'에 집중되어 있어, 자체 역량 강화보다 외부 의존도가 높을 가능성 시사.</div></div>
+
+  <!-- SWOT -->
+  <div class="sec">
+    <span class="sec-num">ANALYSIS</span>
+    <span class="sec-title">SWOT 분석</span>
+  </div>
+
+  <div class="swot-grid">
+    <div class="swot-card">
+      <div class="swot-title s">강점 (Strengths)</div>
+      <ul class="swot-list s"><li>HACCP 인증 생산 시설 및 미국 FDA 등록 완료로 수출 기준 충족 [확인]</li>
+<li>무방부제·무첨가당 클린라벨 제품으로 건강식품 소비 트렌드에 부합 [확인]</li>
+<li>베트남 농업 자원 활용으로 원가 경쟁력 잠재성 보유 [부분 확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title w">약점 (Weaknesses)</div>
+      <ul class="swot-list w"><li>창립팀의 학력·경력·전문성이 전혀 검증되지 않아 투명성 결여 [미확인]</li>
+<li>단일 Director 중심 구조로 Key Person Risk 높고 팀 확장성 불명확 [확인]</li>
+<li>시장 분석(SAM/SOM), 경쟁 전략, 단위 경제성 데이터 전무 [미확인]</li>
+<li>2024년 매출 $4,482에서 2025년 $34,500 목표의 7.7배 성장 근거 부재 [미확인]</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title o">기회 (Opportunities)</div>
+      <ul class="swot-list o"><li>롯데마트·롯데백화점 유통망을 통한 베트남 시장 내 인지도 확보 가능성</li>
+<li>천연 음료 시장 성장세와 클린라벨 제품 수요 증가 추세</li>
+<li>베트남 농산물 수출 정책 지원 및 FTA 활용 가능성</li></ul>
+    </div>
+    <div class="swot-card">
+      <div class="swot-title t">위협 (Threats)</div>
+      <ul class="swot-list t"><li>글로벌 프리미엄 생강 음료 브랜드(Domaine de Canton 등) 대비 브랜드 인지도 부재</li>
+<li>베트남 식품 수출 기업의 낮은 신뢰도 및 품질 일관성 우려</li>
+<li>롯데와의 PoC 없이 독자적 유통 채널 확보 어려움</li>
+<li>단일 제품 라인 의존으로 시장 변동 리스크 높음</li></ul>
+    </div>
+  </div>
+
+  <!-- VERDICT -->
+  <div class="sec" style="margin-bottom:12px;">
+    <span class="sec-num">VERDICT</span>
+    <span class="sec-title">최종 평가</span>
+  </div>
+
+  <div class="verdict-card">
+    <div class="vc-left">
+      <div class="vc-label">L-Camp Vietnam 2026 최종 평가</div>
+      <div class="vc-score-line">
+        <span class="vc-score">12</span>
+        <span class="vc-denom">/ 30</span>
+      </div>
+      <div class="vc-verdict">하</div>
+      <p class="vc-text">VN9 IMEX는 HACCP/FDA 인증을 갖춘 실제 운영 회사이며, 베트남산 천연 원료를 활용한 제품 컨셉은 건강식품 트렌드와 부합한다. 그러나 가장 큰 리스크는 **창립팀의 투명성 부재**로, 학력·경력·전문성을 전혀 검증할 수 없어 사업 확장 역량이 불명확하다. 수출 실적 8건은 확인되나 2024년 매출 $4,482에서 2025년 $34,500으로의 7.7배 성장 근거가 제시되지 않으며, 시장 분석·경쟁 전략·단위 경제성 정보가 전무하다. 롯데 PoC는 식품 유통에 부합하나, 단순 입점 테스트 이상의 전략적 연계점이 구체화되지 않았다. **핵심 미검증 가정: 무방부제 생강 시럽이 글로벌 시장에서 기존 프리미엄 브랜드 대비 차별화된 가치를 인정받아 지속 수요를 창출할 것이라는 전제가 입증되지 않았다.**</p>
+    </div>
+    <div class="vc-right">
+      <ul class="vc-breakdown">
+        <li><span>A. 시장 매력도</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>B. 비즈니스 우수성</span><span class="vc-pts">2 / 5</span></li>
+        <li><span>C. 사회적 가치</span><span class="vc-pts">3 / 5</span></li>
+        <li><span>D. 팀 역량</span><span class="vc-pts">1 / 5</span></li>
+        <li><span>E. 롯데 PoC 적합성</span><span class="vc-pts">4 / 10</span></li>
+        <li style="border-top:1px solid rgba(255,255,255,0.3);margin-top:4px;padding-top:8px;font-weight:700;"><span>합계</span><span class="vc-pts">12 / 30</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <span>VN9 IMEX COMPANY LIMITED · L-Camp Vietnam 2026 평가 리포트</span>
+  <span>평가 기준일 2026-06-12 · Confidential · Lotte Ventures</span>
+</footer>
+
+<script>
+  function toggleDeep(hd) {
+    const body = hd.nextElementSibling;
+    const arrow = hd.querySelector('.deep-arrow');
+    const open = body.classList.toggle('open');
+    arrow.style.transform = open ? 'rotate(180deg)' : '';
+  }
+</script>
+</body>
+</html>
